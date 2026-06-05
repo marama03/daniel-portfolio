@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Backstage — AI Agent Command Center</title>
+  <title>Backstage — AI Systems Architect</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,385 +12,357 @@
 </head>
 <body>
 
-  <!-- ── CANVAS LAYERS ── -->
-  <canvas id="canvas-particles" class="layer-canvas"></canvas>
-  <canvas id="canvas-grid"      class="layer-canvas"></canvas>
+  <!-- ── BACKGROUND LAYERS ── -->
+  <canvas id="canvas-stars" class="layer-canvas"></canvas>
+  <div class="grid-perspective" aria-hidden="true"></div>
 
-  <!-- ── X-SHAPED VOLUMETRIC LIGHT RAYS ── -->
+  <!-- ── LIGHT RAYS ── -->
   <div class="rays-wrap" aria-hidden="true">
     <div class="ray ray-tl"></div>
     <div class="ray ray-tr"></div>
-    <div class="ray ray-bl"></div>
-    <div class="ray ray-br"></div>
-    <div class="ray ray-center"></div>
+    <div class="ray ray-c"></div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-       FLOATING 3D DEVICE MOCKUPS  (outer space)
-       Using real Backstage screenshots
-  ══════════════════════════════════════════════ -->
-  <div class="space-field" id="spaceField" aria-hidden="false">
-
-    <!-- Monitor 1 — Swarm DAG (upper right, large) -->
-    <div class="device device-monitor dev-1" data-px="0.58" data-py="0.06" data-depth="0.4">
-      <div class="dev-screen dev-screen-monitor">
-        <img src="images/backstage-swarm-dag.jpg"
-             alt="Backstage — Swarm Orchestration DAG view"
-             class="dev-img" />
-      </div>
-      <div class="dev-monitor-neck"></div>
-      <div class="dev-monitor-stand"></div>
-      <div class="dev-glow dev-glow-orange"></div>
-    </div>
-
-    <!-- Monitor 2 — Output Review (mid-right) -->
-    <div class="device device-monitor dev-2" data-px="0.60" data-py="0.54" data-depth="0.3">
-      <div class="dev-screen dev-screen-monitor">
-        <img src="images/backstage-output-review.jpg"
-             alt="Backstage — Output Review workspace"
-             class="dev-img" />
-      </div>
-      <div class="dev-monitor-neck"></div>
-      <div class="dev-monitor-stand"></div>
-      <div class="dev-glow dev-glow-cyan"></div>
-    </div>
-
-    <!-- Laptop — Swarm Builder canvas (far right center) -->
-    <div class="device device-laptop dev-3" data-px="0.74" data-py="0.32" data-depth="0.5">
-      <div class="dev-screen">
-        <img src="images/backstage-swarm-builder.jpg"
-             alt="Backstage — Swarm Builder canvas"
-             class="dev-img" />
-      </div>
-      <div class="dev-base"></div>
-      <div class="dev-rim"></div>
-      <div class="dev-glow dev-glow-orange"></div>
-    </div>
-
-    <!-- Tablet — Decision Journal (upper far right) -->
-    <div class="device device-tablet dev-4" data-px="0.76" data-py="0.06" data-depth="0.25">
-      <div class="dev-screen dev-screen-tablet">
-        <img src="images/backstage-decision-journal.jpg"
-             alt="Backstage — Decision Journal timeline"
-             class="dev-img" />
-      </div>
-      <div class="dev-glow dev-glow-red"></div>
-    </div>
-
-    <!-- Left floating panel 1 — Agent status -->
-    <div class="device device-panel dev-5" data-px="0.01" data-py="0.34" data-depth="0.2">
-      <div class="panel-header-bar"><i class="fas fa-robot"></i> AGENT HEALTH</div>
-      <canvas class="panel-mini-wave" id="miniWave1"></canvas>
-      <div class="panel-bars-row">
-        <div class="pb" style="--ph:85%"></div><div class="pb" style="--ph:60%"></div>
-        <div class="pb" style="--ph:95%"></div><div class="pb" style="--ph:70%"></div>
-        <div class="pb" style="--ph:80%"></div><div class="pb" style="--ph:55%"></div>
-      </div>
-    </div>
-
-    <!-- Left floating panel 2 — Swarm activity -->
-    <div class="device device-panel dev-6" data-px="0.01" data-py="0.60" data-depth="0.15">
-      <div class="panel-header-bar"><i class="fas fa-network-wired"></i> SWARM OPS</div>
-      <canvas class="panel-mini-wave" id="miniWave2"></canvas>
-      <div class="panel-bars-row">
-        <div class="pb" style="--ph:50%"></div><div class="pb" style="--ph:90%"></div>
-        <div class="pb" style="--ph:65%"></div><div class="pb" style="--ph:40%"></div>
-        <div class="pb" style="--ph:75%"></div><div class="pb" style="--ph:85%"></div>
-      </div>
-    </div>
-
-    <!-- Right floating panel — Trigger engine -->
-    <div class="device device-panel dev-7" data-px="0.74" data-py="0.65" data-depth="0.2">
-      <div class="panel-header-bar"><i class="fas fa-bolt"></i> TRIGGER ENGINE</div>
-      <canvas class="panel-mini-wave" id="miniWave3"></canvas>
-      <div class="panel-bars-row">
-        <div class="pb" style="--ph:70%"></div><div class="pb" style="--ph:55%"></div>
-        <div class="pb" style="--ph:90%"></div><div class="pb" style="--ph:45%"></div>
-        <div class="pb" style="--ph:65%"></div><div class="pb" style="--ph:95%"></div>
-      </div>
-    </div>
-
-  </div><!-- /space-field -->
-
-  <!-- ═══════════════════════════════════════════
-       HUD RINGS — TOP CORNERS
-  ══════════════════════════════════════════════ -->
-  <div class="hud-ring hud-ring-tl" aria-hidden="true">
-    <svg viewBox="0 0 200 200" class="ring-svg ring-svg-tl">
-      <circle cx="100" cy="100" r="92" class="ring-track"/>
-      <circle cx="100" cy="100" r="92" class="ring-arc ring-arc-orange"/>
-      <circle cx="100" cy="100" r="76" class="ring-track"/>
-      <circle cx="100" cy="100" r="76" class="ring-arc ring-arc-cyan"/>
-      <circle cx="100" cy="100" r="60" class="ring-track"/>
-      <circle cx="100" cy="100" r="60" class="ring-arc ring-arc-orange2"/>
-      <circle cx="100" cy="100" r="44" class="ring-track"/>
-      <circle cx="100" cy="100" r="44" class="ring-arc ring-arc-red"/>
-      <line x1="75"  y1="100" x2="90"  y2="100" class="ring-cross"/>
-      <line x1="110" y1="100" x2="125" y2="100" class="ring-cross"/>
-      <line x1="100" y1="75"  x2="100" y2="90"  class="ring-cross"/>
-      <line x1="100" y1="110" x2="100" y2="125" class="ring-cross"/>
-      <circle cx="100" cy="100" r="4" class="ring-dot"/>
+  <!-- ── HUD RINGS (top corners) ── -->
+  <div class="hud-ring ring-tl" aria-hidden="true">
+    <svg viewBox="0 0 180 180">
+      <circle cx="90" cy="90" r="82" class="rt"/><circle cx="90" cy="90" r="82" class="ra ra-o"/>
+      <circle cx="90" cy="90" r="67" class="rt"/><circle cx="90" cy="90" r="67" class="ra ra-c"/>
+      <circle cx="90" cy="90" r="52" class="rt"/><circle cx="90" cy="90" r="52" class="ra ra-r"/>
+      <line x1="72" y1="90" x2="84" y2="90" class="rc"/>
+      <line x1="96" y1="90" x2="108" y2="90" class="rc"/>
+      <line x1="90" y1="72" x2="90" y2="84" class="rc"/>
+      <line x1="90" y1="96" x2="90" y2="108" class="rc"/>
+      <circle cx="90" cy="90" r="4" class="rd"/>
     </svg>
-    <div class="ring-label ring-label-tl">
-      <span>AGENT STATUS</span>
-      <span class="rl-val">ONLINE</span>
-    </div>
-    <div class="ring-label ring-label-tl2">
-      <span>SWARM HEALTH</span>
-      <span class="rl-val" id="powerLevel">97%</span>
+    <div class="ring-readout">
+      <span class="rr-label">AGENT STATUS</span>
+      <span class="rr-val">ONLINE</span>
+      <span class="rr-label">SWARM HEALTH</span>
+      <span class="rr-val" id="rval1">97%</span>
     </div>
   </div>
 
-  <div class="hud-ring hud-ring-tr" aria-hidden="true">
-    <svg viewBox="0 0 200 200" class="ring-svg ring-svg-tr">
-      <circle cx="100" cy="100" r="92" class="ring-track"/>
-      <circle cx="100" cy="100" r="92" class="ring-arc ring-arc-orange"/>
-      <circle cx="100" cy="100" r="76" class="ring-track"/>
-      <circle cx="100" cy="100" r="76" class="ring-arc ring-arc-cyan"/>
-      <circle cx="100" cy="100" r="60" class="ring-track"/>
-      <circle cx="100" cy="100" r="60" class="ring-arc ring-arc-orange2"/>
-      <circle cx="100" cy="100" r="44" class="ring-track"/>
-      <circle cx="100" cy="100" r="44" class="ring-arc ring-arc-red"/>
-      <line x1="75"  y1="100" x2="90"  y2="100" class="ring-cross"/>
-      <line x1="110" y1="100" x2="125" y2="100" class="ring-cross"/>
-      <line x1="100" y1="75"  x2="100" y2="90"  class="ring-cross"/>
-      <line x1="100" y1="110" x2="100" y2="125" class="ring-cross"/>
-      <circle cx="100" cy="100" r="4" class="ring-dot"/>
+  <div class="hud-ring ring-tr" aria-hidden="true">
+    <svg viewBox="0 0 180 180">
+      <circle cx="90" cy="90" r="82" class="rt"/><circle cx="90" cy="90" r="82" class="ra ra-o"/>
+      <circle cx="90" cy="90" r="67" class="rt"/><circle cx="90" cy="90" r="67" class="ra ra-c"/>
+      <circle cx="90" cy="90" r="52" class="rt"/><circle cx="90" cy="90" r="52" class="ra ra-r"/>
+      <line x1="72" y1="90" x2="84" y2="90" class="rc"/>
+      <line x1="96" y1="90" x2="108" y2="90" class="rc"/>
+      <line x1="90" y1="72" x2="90" y2="84" class="rc"/>
+      <line x1="90" y1="96" x2="90" y2="108" class="rc"/>
+      <circle cx="90" cy="90" r="4" class="rd"/>
     </svg>
-    <div class="ring-label ring-label-tr">
-      <span>TRIGGER SCAN</span>
-      <span class="rl-val" id="scanIndex">88%</span>
-    </div>
-    <div class="ring-label ring-label-tr2">
-      <span>CORTEX LOAD</span>
-      <span class="rl-val">NOMINAL</span>
+    <div class="ring-readout ring-readout-r">
+      <span class="rr-label">TRIGGER SCAN</span>
+      <span class="rr-val" id="rval2">88%</span>
+      <span class="rr-label">CORTEX LOAD</span>
+      <span class="rr-val">NOMINAL</span>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-       WIREFRAME SCHEMATICS — BOTTOM CORNERS
-  ══════════════════════════════════════════════ -->
-  <div class="schematic schematic-bl" aria-hidden="true">
-    <svg viewBox="0 0 220 180" class="sch-svg sch-svg-cyan">
-      <g class="sch-g">
-        <circle cx="60" cy="90" r="40"/>
-        <circle cx="60" cy="90" r="28"/>
-        <circle cx="60" cy="90" r="10"/>
-        <line x1="60" y1="50" x2="60" y2="40"/><line x1="60" y1="130" x2="60" y2="140"/>
-        <line x1="20" y1="90" x2="10" y2="90"/><line x1="100" y1="90" x2="110" y2="90"/>
-        <line x1="32" y1="62" x2="25" y2="55"/><line x1="88" y1="62" x2="95" y2="55"/>
-        <line x1="32" y1="118" x2="25" y2="125"/><line x1="88" y1="118" x2="95" y2="125"/>
-        <rect x="56" y="46" width="8" height="8"/><rect x="56" y="126" width="8" height="8"/>
-        <rect x="16" y="86" width="8" height="8"/><rect x="96" y="86" width="8" height="8"/>
-        <line x1="100" y1="90" x2="200" y2="60"/>
-        <rect x="140" y="50" width="50" height="30" rx="3"/>
-        <line x1="148" y1="58" x2="182" y2="58"/>
-        <line x1="148" y1="66" x2="170" y2="66"/>
-        <line x1="148" y1="74" x2="176" y2="74"/>
-        <line x1="10" y1="155" x2="120" y2="155"/>
-        <line x1="10" y1="165" x2="90" y2="165"/>
-        <line x1="10" y1="175" x2="70" y2="175"/>
+  <!-- ── WIREFRAME SCHEMATICS (bottom corners) ── -->
+  <div class="schematic sch-bl" aria-hidden="true">
+    <svg viewBox="0 0 200 160">
+      <g class="sg sg-cyan">
+        <circle cx="55" cy="80" r="36"/><circle cx="55" cy="80" r="24"/><circle cx="55" cy="80" r="9"/>
+        <line x1="55" y1="44" x2="55" y2="36"/><line x1="55" y1="116" x2="55" y2="124"/>
+        <line x1="19" y1="80" x2="10" y2="80"/><line x1="91" y1="80" x2="100" y2="80"/>
+        <rect x="51" y="40" width="8" height="7"/><rect x="51" y="113" width="8" height="7"/>
+        <rect x="13" y="76" width="7" height="8"/><rect x="90" y="76" width="7" height="8"/>
+        <line x1="91" y1="80" x2="185" y2="55"/>
+        <rect x="128" y="44" width="46" height="26" rx="3"/>
+        <line x1="135" y1="52" x2="167" y2="52"/><line x1="135" y1="60" x2="155" y2="60"/><line x1="135" y1="68" x2="161" y2="68"/>
+        <line x1="8" y1="140" x2="110" y2="140"/><line x1="8" y1="150" x2="82" y2="150"/>
       </g>
     </svg>
   </div>
 
-  <div class="schematic schematic-br" aria-hidden="true">
-    <svg viewBox="0 0 220 180" class="sch-svg sch-svg-orange">
-      <g class="sch-g">
-        <circle cx="160" cy="90" r="40"/>
-        <circle cx="160" cy="90" r="28"/>
-        <circle cx="160" cy="90" r="10"/>
-        <line x1="160" y1="50" x2="160" y2="40"/><line x1="160" y1="130" x2="160" y2="140"/>
-        <line x1="120" y1="90" x2="110" y2="90"/><line x1="200" y1="90" x2="210" y2="90"/>
-        <line x1="132" y1="62" x2="125" y2="55"/><line x1="188" y1="62" x2="195" y2="55"/>
-        <line x1="132" y1="118" x2="125" y2="125"/><line x1="188" y1="118" x2="195" y2="125"/>
-        <rect x="156" y="46" width="8" height="8"/><rect x="156" y="126" width="8" height="8"/>
-        <rect x="116" y="86" width="8" height="8"/><rect x="196" y="86" width="8" height="8"/>
-        <line x1="120" y1="90" x2="20" y2="60"/>
-        <rect x="30" y="50" width="50" height="30" rx="3"/>
-        <line x1="38" y1="58" x2="72" y2="58"/>
-        <line x1="38" y1="66" x2="60" y2="66"/>
-        <line x1="38" y1="74" x2="66" y2="74"/>
-        <line x1="100" y1="155" x2="210" y2="155"/>
-        <line x1="130" y1="165" x2="210" y2="165"/>
-        <line x1="150" y1="175" x2="210" y2="175"/>
+  <div class="schematic sch-br" aria-hidden="true">
+    <svg viewBox="0 0 200 160">
+      <g class="sg sg-orange">
+        <circle cx="145" cy="80" r="36"/><circle cx="145" cy="80" r="24"/><circle cx="145" cy="80" r="9"/>
+        <line x1="145" y1="44" x2="145" y2="36"/><line x1="145" y1="116" x2="145" y2="124"/>
+        <line x1="109" y1="80" x2="100" y2="80"/><line x1="181" y1="80" x2="190" y2="80"/>
+        <rect x="141" y="40" width="8" height="7"/><rect x="141" y="113" width="8" height="7"/>
+        <rect x="103" y="76" width="7" height="8"/><rect x="180" y="76" width="7" height="8"/>
+        <line x1="109" y1="80" x2="15" y2="55"/>
+        <rect x="26" y="44" width="46" height="26" rx="3"/>
+        <line x1="33" y1="52" x2="65" y2="52"/><line x1="33" y1="60" x2="53" y2="60"/><line x1="33" y1="68" x2="59" y2="68"/>
+        <line x1="90" y1="140" x2="192" y2="140"/><line x1="118" y1="150" x2="192" y2="150"/>
       </g>
     </svg>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-       RIGHT-SIDE HEX TELEMETRY COLUMN
-  ══════════════════════════════════════════════ -->
-  <aside class="hex-column" id="hexColumn" aria-hidden="true">
-    <div class="hex-stream" id="hexStream"></div>
-  </aside>
+  <!-- ── HEX DATA STREAM (far right) ── -->
+  <aside class="hex-col" aria-hidden="true"><div class="hex-inner" id="hexInner"></div></aside>
 
-  <!-- ═══════════════════════════════════════════
-       LEFT CONTACT MENU
-  ══════════════════════════════════════════════ -->
-  <aside class="contact-menu" id="contactMenu">
-    <button class="contact-btn" onclick="openLink('website')" aria-label="Visit website">
-      <span class="cbtn-icon"><i class="fas fa-globe"></i></span>
-      <span class="cbtn-label">Website</span>
-    </button>
-    <button class="contact-btn" onclick="openLink('email')" aria-label="Send email">
-      <span class="cbtn-icon"><i class="fas fa-envelope"></i></span>
-      <span class="cbtn-label">Email</span>
-    </button>
-    <button class="contact-btn" onclick="openLink('schedule')" aria-label="Schedule a call">
-      <span class="cbtn-icon"><i class="fas fa-phone-alt"></i></span>
-      <span class="cbtn-label">Schedule Call</span>
-    </button>
-  </aside>
+  <!-- ══════════════════════════════════════════
+       GALAXY ZONE — floating Backstage screenshots
+       Right side, behind the main card
+  ═══════════════════════════════════════════ -->
+  <div class="galaxy-zone" id="galaxyZone" aria-hidden="true">
+    <canvas id="canvas-nebula" class="nebula-canvas"></canvas>
 
-  <!-- ═══════════════════════════════════════════
-       MAIN STAGE
-  ══════════════════════════════════════════════ -->
+    <div class="gal-device gd-1" data-drift="1.4">
+      <div class="gd-frame gd-frame-monitor">
+        <img src="images/backstage-swarm-dag.jpg" alt="Swarm DAG" class="gd-img" />
+      </div>
+      <div class="gd-glow gd-glow-orange"></div>
+    </div>
+
+    <div class="gal-device gd-2" data-drift="0.9">
+      <div class="gd-frame gd-frame-wide">
+        <img src="images/backstage-output-review.jpg" alt="Output Review" class="gd-img" />
+      </div>
+      <div class="gd-glow gd-glow-cyan"></div>
+    </div>
+
+    <div class="gal-device gd-3" data-drift="1.8">
+      <div class="gd-frame gd-frame-laptop">
+        <img src="images/backstage-swarm-builder.jpg" alt="Swarm Builder" class="gd-img" />
+      </div>
+      <div class="gd-glow gd-glow-red"></div>
+    </div>
+
+    <div class="gal-device gd-4" data-drift="1.2">
+      <div class="gd-frame gd-frame-tall">
+        <img src="images/backstage-decision-journal.jpg" alt="Decision Journal" class="gd-img" />
+      </div>
+      <div class="gd-glow gd-glow-orange"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       LEFT COLUMN — About Me + Contact
+  ═══════════════════════════════════════════ -->
+  <aside class="left-col" id="leftCol">
+
+    <!-- ABOUT ME PANEL (static) -->
+    <div class="about-panel" id="aboutPanel">
+      <div class="about-ring-wrap">
+        <!-- Neon ring SVG behind photo -->
+        <svg class="about-ring-svg" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="54" class="ar-track"/>
+          <circle cx="60" cy="60" r="54" class="ar-spin ar-spin-o"/>
+          <circle cx="60" cy="60" r="46" class="ar-track"/>
+          <circle cx="60" cy="60" r="46" class="ar-spin ar-spin-c"/>
+          <circle cx="60" cy="60" r="38" class="ar-track"/>
+          <circle cx="60" cy="60" r="38" class="ar-spin ar-spin-r"/>
+        </svg>
+        <!-- Profile photo — click to upload -->
+        <div class="about-photo" id="aboutPhoto" title="Click to upload your photo">
+          <div class="photo-placeholder">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-info">
+        <div class="about-name" id="aboutName">YOUR NAME</div>
+        <div class="about-title">AI Systems Architect</div>
+        <div class="about-divider"></div>
+        <p class="about-bio" id="aboutBio">Building autonomous agent systems that work while you sleep. Operator, not bottleneck.</p>
+        <div class="about-socials">
+          <a href="#" class="social-btn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-btn" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="#" class="social-btn" title="Twitter / X"><i class="fab fa-x-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT BUTTONS -->
+    <div class="contact-stack">
+      <button class="cbtn" onclick="openLink('website')">
+        <span class="cbtn-ic"><i class="fas fa-globe"></i></span>
+        <span class="cbtn-lbl">Website</span>
+      </button>
+      <button class="cbtn" onclick="openLink('email')">
+        <span class="cbtn-ic"><i class="fas fa-envelope"></i></span>
+        <span class="cbtn-lbl">Email</span>
+      </button>
+      <button class="cbtn" onclick="openLink('schedule')">
+        <span class="cbtn-ic"><i class="fas fa-phone-alt"></i></span>
+        <span class="cbtn-lbl">Schedule Call</span>
+      </button>
+    </div>
+
+  </aside><!-- /left-col -->
+
+  <!-- ══════════════════════════════════════════
+       MAIN STAGE — Title + Card + Nav
+  ═══════════════════════════════════════════ -->
   <main class="stage" id="stage">
 
-    <!-- ── PROJECT TITLE ── -->
-    <div class="title-zone" aria-live="polite">
-      <h1 class="project-title" id="projectTitle">BACKSTAGE</h1>
-      <div class="title-underline"></div>
-      <p class="project-tagline" id="projectTagline">AI Agent Command Center — Windows Native</p>
+    <!-- Project title + tagline (updates on left/right) -->
+    <div class="title-zone">
+      <h1 class="proj-title" id="projTitle">BACKSTAGE</h1>
+      <p class="proj-sub" id="projSub">AI Agent Command Center — Windows Native</p>
+      <div class="title-rule"></div>
     </div>
 
-    <!-- ── CAROUSEL ROW ── -->
-    <div class="carousel-row">
+    <!-- ── CARD ARENA ── -->
+    <div class="card-arena">
 
-      <!-- PREV ARROW -->
-      <button class="nav-arrow nav-prev" id="prevBtn" aria-label="Previous view">
-        <svg viewBox="0 0 60 80" class="arrow-svg">
-          <polygon points="50,10 10,40 50,70" class="arrow-poly"/>
-          <polygon points="50,10 10,40 50,70" class="arrow-poly-glow"/>
-        </svg>
+      <!-- LEFT/RIGHT project nav arrows -->
+      <button class="nav-lr nav-left"  id="btnLeft"  aria-label="Previous project">
+        <svg viewBox="0 0 50 70"><polygon points="42,8 8,35 42,62" class="ap"/><polygon points="42,8 8,35 42,62" class="apg"/></svg>
       </button>
 
-      <!-- CARD VIEWPORT -->
-      <div class="card-viewport" id="cardViewport">
-        <div class="card-track" id="cardTrack">
+      <!-- CARD STACK — up/down flips between FEATURES & BENEFITS -->
+      <div class="card-stage" id="cardStage">
 
-          <!-- ─── CARD 1: Command Center + Swarm ─── -->
-          <article class="proj-card" data-index="0">
-            <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
-            <span class="cc cc-bl"></span><span class="cc cc-br"></span>
-            <div class="scan-sweep"></div>
-            <div class="card-inner">
-              <div class="card-img-strip" id="cardImg0" title="Click to upload image">
-                <img src="images/backstage-swarm-dag.jpg"
-                     alt="Backstage Swarm Orchestration" />
-              </div>
-              <div class="card-cols">
-                <div class="card-col">
-                  <h3 class="col-heading">FEATURES</h3>
-                  <ul class="col-list">
-                    <li>One command center for every agent — scheduled tasks, services, MCP servers &amp; Claude stack in one native Windows dashboard</li>
-                    <li>Swarm orchestration on a live canvas — design in Claude, drop it in, watch nodes auto-layout, hit Run</li>
-                    <li>In-house trigger engine — 15 trigger types with guards and anti-thrash logic (cron, file-watch, MCP events)</li>
-                    <li>CONTEXT tab — see whether the cognitive architecture your agents read is healthy: green / yellow / red</li>
-                    <li>Catches silent failure — STALE detection and NEEDS REVIEW queue flag quietly degrading agents</li>
-                    <li>Repair with AI — one click feeds config + logs to Claude and rewrites the fix</li>
-                    <li>Runs on Claude Max, not API bills — uses the Claude CLI you already pay for: $0/mo added cost</li>
-                  </ul>
-                </div>
-                <div class="col-divider"></div>
-                <div class="card-col">
-                  <h3 class="col-heading">BENEFITS</h3>
-                  <ul class="col-list">
-                    <li>The boring-but-valuable work runs while you sleep — wake up to drafts, prospects &amp; reports already done</li>
-                    <li>You stay the operator, not the bottleneck — approve, reject, leave a one-line "why." System gets sharper over time</li>
-                    <li>Nothing fails in the dark — Toast, Telegram &amp; email alerts the moment an agent breaks or drifts</li>
-                    <li>Your moat becomes visible — Backstage shows at a glance whether your cognitive architecture is load-bearing</li>
-                    <li>See business outcomes, not just activity — posts published, prospects sourced, calls booked per dollar of Claude time</li>
-                    <li>Control it from your phone — Tailscale + Telegram + installable PWA, fire &amp; check any agent from anywhere</li>
-                    <li>Local-first, you own the data — everything runs on your machine behind an encrypted vault</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="card-foot">
-                <div class="card-tags">
-                  <span class="ctag">Windows Native</span>
-                  <span class="ctag">Claude Max</span>
-                  <span class="ctag">MCP</span>
-                  <span class="ctag">Swarm AI</span>
-                </div>
-                <button class="card-cta-btn" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
-              </div>
+        <!-- Slide 0: FEATURES view of project 0 -->
+        <div class="proj-slide active-slide" data-proj="0" data-face="features">
+          <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
+          <span class="cc cc-bl"></span><span class="cc cc-br"></span>
+          <div class="sweep-line"></div>
+          <div class="slide-inner">
+            <div class="slide-img-bar" data-imgbar="0" title="Click to upload screenshot">
+              <img src="images/backstage-swarm-dag.jpg" alt="Backstage Swarm DAG" />
             </div>
-          </article>
-
-          <!-- ─── CARD 2: Intelligence + Control ─── -->
-          <article class="proj-card" data-index="1">
-            <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
-            <span class="cc cc-bl"></span><span class="cc cc-br"></span>
-            <div class="scan-sweep"></div>
-            <div class="card-inner">
-              <div class="card-img-strip" id="cardImg1" title="Click to upload image">
-                <img src="images/backstage-output-review.jpg"
-                     alt="Backstage Output Review" />
-              </div>
-              <div class="card-cols">
-                <div class="card-col">
-                  <h3 class="col-heading">OUTPUT REVIEW</h3>
-                  <ul class="col-list">
-                    <li>Karpathy Proposer scans recent self_healing.json + corrections and proposes new playbooks</li>
-                    <li>Accepted proposals are marked for code-gen — Backstage captures diffs as corrections</li>
-                    <li>Re-indexes QMD automatically after 3+ corrections — Karpathy auto-improve button appears</li>
-                    <li>Iterator reads your Cortex rules + prior corrections before each revision cycle</li>
-                    <li>Rich markdown output viewer with push-to-sheet and save-final workflows</li>
-                    <li>Recent outputs sidebar with timestamped agent run history</li>
-                    <li>One-line natural language edit commands — "drop the em-dashes," "make the opening sharper"</li>
-                  </ul>
-                </div>
-                <div class="col-divider"></div>
-                <div class="card-col">
-                  <h3 class="col-heading">INTELLIGENCE LAYER</h3>
-                  <ul class="col-list">
-                    <li>Decision Journal — unified activity timeline of every spawn, decision, correction &amp; MCP call</li>
-                    <li>Click "Why?" on any entry to see the full reasoning behind every agent decision</li>
-                    <li>Self-Healing / Shadow Run / Spawn Trace views for focused deep-dives</li>
-                    <li>Activity feed filterable by type and agent — 300+ events tracked in real time</li>
-                    <li>Safety system monitors and flags drift before it reaches your clients</li>
-                    <li>System panel with multi-tenant config — operator + client environments in one place</li>
-                    <li>Client Magic Links via HMAC-SHA256 — signed, expiring access with no database needed</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="card-foot">
-                <div class="card-tags">
-                  <span class="ctag">Self-Healing</span>
-                  <span class="ctag">Cortex AI</span>
-                  <span class="ctag">Multi-Tenant</span>
-                  <span class="ctag">Zero-DB Auth</span>
-                </div>
-                <button class="card-cta-btn" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
-              </div>
+            <div class="slide-face-label">
+              <span class="face-badge">FEATURES</span>
+              <span class="face-hint">▲▼ flip for benefits</span>
             </div>
-          </article>
+            <ul class="slide-list">
+              <li>One command center for every agent — scheduled tasks, services, MCP servers &amp; Claude stack in one native Windows dashboard</li>
+              <li>Swarm orchestration on a live canvas — design in Claude, drop it in, watch nodes auto-layout, hit Run and it spawns headless</li>
+              <li>In-house trigger engine — 15 trigger types with guards and anti-thrash logic (cron, file-watch, MCP events)</li>
+              <li>CONTEXT tab — see whether the cognitive architecture your agents read is healthy: green / yellow / red on every file</li>
+              <li>Catches silent failure — STALE detection and NEEDS REVIEW queue flag quietly degrading agents before it costs you</li>
+              <li>Repair with AI — one click feeds config + logs to Claude and rewrites the fix. No digging through Task Scheduler XML</li>
+              <li>Runs on Claude Max, not API bills — uses the Claude CLI you already pay for: $0/mo in recurring cost added</li>
+            </ul>
+            <div class="slide-foot">
+              <div class="slide-tags">
+                <span class="stag">Windows Native</span><span class="stag">Claude Max</span><span class="stag">MCP</span><span class="stag">Swarm AI</span>
+              </div>
+              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
 
-        </div><!-- /card-track -->
-      </div><!-- /card-viewport -->
+        <!-- Slide 1: BENEFITS view of project 0 -->
+        <div class="proj-slide" data-proj="0" data-face="benefits">
+          <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
+          <span class="cc cc-bl"></span><span class="cc cc-br"></span>
+          <div class="sweep-line"></div>
+          <div class="slide-inner">
+            <div class="slide-img-bar" data-imgbar="0" title="Click to upload screenshot">
+              <img src="images/backstage-swarm-dag.jpg" alt="Backstage Swarm DAG" />
+            </div>
+            <div class="slide-face-label">
+              <span class="face-badge face-badge-benefits">BENEFITS</span>
+              <span class="face-hint">▲▼ flip for features</span>
+            </div>
+            <ul class="slide-list">
+              <li>The boring-but-valuable work runs while you sleep — wake up to drafts, prospects &amp; reports already done</li>
+              <li>You stay the operator, not the bottleneck — approve, reject, leave a one-line "why." The system learns your judgment</li>
+              <li>Nothing fails in the dark — Toast, Telegram &amp; email alerts the moment an agent breaks, drifts, or goes stale</li>
+              <li>Your moat becomes visible — Backstage shows at a glance whether your cognitive architecture is load-bearing</li>
+              <li>See business outcomes, not just activity — posts published, prospects sourced, calls booked per dollar of Claude time</li>
+              <li>Control it from your phone — Tailscale + Telegram + installable PWA. Fire, pause &amp; check any agent from anywhere</li>
+              <li>Local-first, you own the data — everything runs on your machine behind an encrypted vault. Cloud-ready when you want it</li>
+            </ul>
+            <div class="slide-foot">
+              <div class="slide-tags">
+                <span class="stag">Self-Healing</span><span class="stag">Cortex AI</span><span class="stag">Local-First</span><span class="stag">PWA</span>
+              </div>
+              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
 
-      <!-- NEXT ARROW -->
-      <button class="nav-arrow nav-next" id="nextBtn" aria-label="Next view">
-        <svg viewBox="0 0 60 80" class="arrow-svg">
-          <polygon points="10,10 50,40 10,70" class="arrow-poly"/>
-          <polygon points="10,10 50,40 10,70" class="arrow-poly-glow"/>
-        </svg>
+        <!-- Slide 2: FEATURES view of project 1 (Intelligence Layer) -->
+        <div class="proj-slide" data-proj="1" data-face="features">
+          <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
+          <span class="cc cc-bl"></span><span class="cc cc-br"></span>
+          <div class="sweep-line"></div>
+          <div class="slide-inner">
+            <div class="slide-img-bar" data-imgbar="1" title="Click to upload screenshot">
+              <img src="images/backstage-output-review.jpg" alt="Output Review" />
+            </div>
+            <div class="slide-face-label">
+              <span class="face-badge">FEATURES</span>
+              <span class="face-hint">▲▼ flip for benefits</span>
+            </div>
+            <ul class="slide-list">
+              <li>Output Review — Karpathy Proposer scans corrections + spawn errors and proposes new playbooks for failure patterns</li>
+              <li>Accepted proposals are marked for code-gen — Backstage captures diffs as corrections and re-indexes QMD automatically</li>
+              <li>Iterator reads Cortex rules + prior corrections before each revision — "Save Final" captures the diff permanently</li>
+              <li>Decision Journal — unified activity timeline of every spawn, decision, correction, Cortex rule added, and MCP call</li>
+              <li>Click "Why?" on any entry to see the full reasoning chain behind every agent decision in chronological order</li>
+              <li>System panel with multi-tenant config — operator + client environments, export bundles for client deployment</li>
+              <li>Client Magic Links — HMAC-SHA256 signed, expiring access tokens. No database needed, no extra infrastructure</li>
+            </ul>
+            <div class="slide-foot">
+              <div class="slide-tags">
+                <span class="stag">Karpathy Proposer</span><span class="stag">Cortex</span><span class="stag">Multi-Tenant</span>
+              </div>
+              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: BENEFITS view of project 1 -->
+        <div class="proj-slide" data-proj="1" data-face="benefits">
+          <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
+          <span class="cc cc-bl"></span><span class="cc cc-br"></span>
+          <div class="sweep-line"></div>
+          <div class="slide-inner">
+            <div class="slide-img-bar" data-imgbar="1" title="Click to upload screenshot">
+              <img src="images/backstage-output-review.jpg" alt="Output Review" />
+            </div>
+            <div class="slide-face-label">
+              <span class="face-badge face-badge-benefits">BENEFITS</span>
+              <span class="face-hint">▲▼ flip for features</span>
+            </div>
+            <ul class="slide-list">
+              <li>Every agent action is auditable — 300+ events tracked with full reasoning. Compliance and trust baked in from day one</li>
+              <li>Drift caught before it costs you — safety system and STALE detection flag degrading agents before clients see the output</li>
+              <li>AI gets smarter on your judgment — 3+ corrections unlocks Karpathy auto-improve, compounding over time</li>
+              <li>Multiple clients, one operator — manage Demo, Dev, Prod, and Staging environments without context-switching chaos</li>
+              <li>White-glove client delivery — export bundles + magic link portal. Clients see their data, not your infrastructure</li>
+              <li>No surprise bills — multi-tenant runs entirely on Claude Max. Add clients without adding API cost</li>
+              <li>Rollback &amp; restore — automatic snapshots before every Promote. One click to revert if something breaks</li>
+            </ul>
+            <div class="slide-foot">
+              <div class="slide-tags">
+                <span class="stag">Self-Healing</span><span class="stag">Audit Trail</span><span class="stag">Zero Extra Cost</span>
+              </div>
+              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /card-stage -->
+
+      <!-- RIGHT nav arrow -->
+      <button class="nav-lr nav-right" id="btnRight" aria-label="Next project">
+        <svg viewBox="0 0 50 70"><polygon points="8,8 42,35 8,62" class="ap"/><polygon points="8,8 42,35 8,62" class="apg"/></svg>
       </button>
 
-    </div><!-- /carousel-row -->
+    </div><!-- /card-arena -->
+
+    <!-- ── UP / DOWN face-flip arrows ── -->
+    <div class="nav-ud-wrap">
+      <button class="nav-ud nav-up"   id="btnUp"   aria-label="Previous face"><i class="fas fa-chevron-up"></i></button>
+      <div class="nav-ud-info">
+        <span class="ud-proj"  id="udProjLabel">01 / 02</span>
+        <span class="ud-face"  id="udFaceLabel">FEATURES</span>
+      </div>
+      <button class="nav-ud nav-down" id="btnDown" aria-label="Next face"><i class="fas fa-chevron-down"></i></button>
+    </div>
 
     <!-- ── BOTTOM HUD BAR ── -->
-    <div class="bottom-bar">
-      <div class="waveform-wrap">
-        <canvas id="waveform-main" class="waveform-cvs"></canvas>
-      </div>
-      <div class="carousel-dots" id="carouselDots"></div>
-      <div class="status-readout">
-        <span class="sr-item"><span class="blink-dot"></span>LIVE</span>
-        <span class="sr-item">VIEW <span id="curIdx">01</span> / <span id="totIdx">02</span></span>
-        <span class="sr-item" id="yearLabel"></span>
+    <div class="hud-foot">
+      <canvas id="waveform" class="wave-cvs"></canvas>
+      <div class="hud-dots" id="hudDots"></div>
+      <div class="hud-status">
+        <span class="hs-item"><span class="blink-dot"></span>LIVE</span>
+        <span class="hs-item" id="yearLbl"></span>
       </div>
     </div>
 
