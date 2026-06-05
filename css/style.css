@@ -121,6 +121,11 @@ html, body {
 @keyframes float5 { from { transform: translateY(0px)  rotateX(3deg)  rotateY(-5deg); }
                     to   { transform: translateY(-12px) rotateX(-3deg) rotateY(5deg);  } }
 
+/* ── Depth of field — devices farther back are more blurred ── */
+.dev-3 { filter: drop-shadow(0 0 14px rgba(0,229,255,0.5)) blur(0px); }
+.dev-4 { filter: drop-shadow(0 0 14px rgba(239,65,36,0.4)) blur(0.4px); opacity: 0.85; }
+.dev-5, .dev-6, .dev-7 { filter: blur(0.5px) brightness(0.85); }
+
 /* ── Initial positions via JS (left/top set inline) ── */
 /* ── Laptop ── */
 .device-laptop {
@@ -327,8 +332,8 @@ html, body {
   opacity: 0;
   animation: schFade 3s ease-in-out 0.5s forwards, schFlicker 6s ease-in-out 3.5s infinite alternate;
 }
-.schematic-bl { left: 160px; }
-.schematic-br { right: 40px; }
+.schematic-bl { left: 180px; bottom: 44px; }
+.schematic-br { right: 48px; bottom: 44px; }
 
 @keyframes schFade    { from { opacity: 0; } to { opacity: 0.45; } }
 @keyframes schFlicker { from { opacity: 0.25; } to { opacity: 0.55; } }
