@@ -218,10 +218,10 @@ class Carousel {
   layoutCards() {
     // Position all cards in the track
     const vw = this.viewport.clientWidth;
-    const cardW = Math.min(vw * 0.78, 660);
+    const cardW = Math.min(Math.max(vw * 0.72, 320), 660);
     const gap = 24;
 
-    this.cards.forEach((card, i) => {
+    this.cards.forEach((card) => {
       card.style.width = cardW + 'px';
     });
 
@@ -231,7 +231,7 @@ class Carousel {
 
   updateTrackPosition(animate = true) {
     const vw = this.viewport.clientWidth;
-    const cardW = Math.min(vw * 0.78, 660);
+    const cardW = Math.min(Math.max(vw * 0.72, 320), 660);
     const gap = 24;
 
     // Each card offset

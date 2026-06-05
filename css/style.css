@@ -449,6 +449,8 @@ html, body {
   width: 280px;
   z-index: 11;
   pointer-events: none;
+  perspective: 800px;
+  transform-style: preserve-3d;
 }
 
 .mockup {
@@ -1104,6 +1106,29 @@ html, body {
   .hud-header .hud-corner-left,
   .hud-header .hud-corner-right { display: none; }
   .status-bar .status-item:last-child { display: none; }
+}
+
+/* ============================================================
+   ACTIVE CARD VOLUMETRIC GLOW
+   ============================================================ */
+.project-card.active::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--radius) + 2px);
+  background: transparent;
+  box-shadow:
+    0 0 30px rgba(236,115,35,0.25),
+    0 0 80px rgba(236,115,35,0.1),
+    inset 0 0 30px rgba(236,115,35,0.05);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Card hover on active */
+.project-card.active:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--glow-lg), 0 40px 100px rgba(0,0,0,0.8);
 }
 
 /* ============================================================
