@@ -1,806 +1,694 @@
 /* ============================================================
-   PORTFOLIO HUD — MAIN JAVASCRIPT
+   PORTFOLIO HUD  ·  Main JavaScript
    Netflix × Iron Man × Motion Array
    ============================================================ */
-
 'use strict';
 
-// ============================================================
-// CONFIGURATION
-// ============================================================
-const CONFIG = {
-  // Contact links — update these with your real info
+/* ── CONFIG ─────────────────────────────────────────────── */
+const CFG = {
   website:  'https://yourwebsite.com',
   email:    'mailto:you@example.com',
   schedule: 'https://calendly.com/yourlink',
 
-  // Carousel settings
-  autoplay:      false,
-  autoplayDelay: 5000,
-
-  // Colors
-  primaryColor:  '#ec7323',
-  cyanColor:     '#00e5ff',
-  redColor:      '#ef4124',
+  // Project data — edit these to match your real projects
+  projects: [
+    { title: 'PROJECT NEXUS',     tagline: 'Enterprise SaaS collaboration platform' },
+    { title: 'ORBIT ANALYTICS',   tagline: 'AI-powered intelligence dashboard'       },
+    { title: 'VAULT PLATFORM',    tagline: 'Zero-trust enterprise security suite'     },
+    { title: 'PULSE CONNECT',     tagline: 'Creator community web platform'          },
+  ],
 };
 
-// ============================================================
-// UTILITY
-// ============================================================
-const $ = (sel, ctx = document) => ctx.querySelector(sel);
-const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
-
-// ============================================================
-// CONTACT LINKS
-// ============================================================
-function openLink(type) {
-  const map = {
-    website:  CONFIG.website,
-    email:    CONFIG.email,
-    schedule: CONFIG.schedule,
-  };
-  const url = map[type];
-  if (url) window.open(url, '_blank', 'noopener');
-}
-
-// ============================================================
-// WEB AUDIO — SWOOSH SOUND
-// ============================================================
+/* ── GLOBALS ─────────────────────────────────────────────── */
 let audioCtx = null;
 
-function initAudio() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
+/* ── HELPERS ─────────────────────────────────────────────── */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+/* ============================================================
+   CONTACT LINKS
+   ============================================================ */
+function openLink(type) {
+  const map = { website: CFG.website, email: CFG.email, schedule: CFG.schedule };
+  if (map[type]) window.open(map[type], '_blank', 'noopener');
+}
+window.openLink = openLink;
+
+/* ============================================================
+   SWOOSH  (Web Audio API)
+   ============================================================ */
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
 
-function playSwoosh(direction = 'next') {
+function swoosh(dir = 'next') {
   try {
-    const ctx = initAudio();
-    if (ctx.state === 'suspended') ctx.resume();
+    const ctx = getAudio();
+    const t   = ctx.currentTime;
+    const dur = 0.48;
 
-    const now = ctx.currentTime;
-    const duration = 0.45;
+    // — oscillator (sawtooth sweep) —
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const bpf  = ctx.createBiquadFilter();
+    const pan  = ctx.createStereoPanner();
 
-    // Create oscillator for the "whoosh" tone
-    const osc = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-    const filter = ctx.createBiquadFilter();
+    osc.connect(bpf); bpf.connect(gain); gain.connect(pan); pan.connect(ctx.destination);
 
-    // Distortion/wobble via panner
-    const panner = ctx.createStereoPanner();
-
-    // Connect nodes
-    osc.connect(filter);
-    filter.connect(gainNode);
-    gainNode.connect(panner);
-    panner.connect(ctx.destination);
-
-    // Oscillator type
     osc.type = 'sawtooth';
-
-    // Frequency sweep (swoosh up for next, down for prev)
-    if (direction === 'next') {
-      osc.frequency.setValueAtTime(80, now);
-      osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
-      osc.frequency.exponentialRampToValueAtTime(200, now + duration);
+    if (dir === 'next') {
+      osc.frequency.setValueAtTime(70, t);
+      osc.frequency.exponentialRampToValueAtTime(1400, t + 0.14);
+      osc.frequency.exponentialRampToValueAtTime(180, t + dur);
+      pan.pan.setValueAtTime(-0.7, t);
+      pan.pan.linearRampToValueAtTime(0.7, t + dur);
     } else {
-      osc.frequency.setValueAtTime(1200, now);
-      osc.frequency.exponentialRampToValueAtTime(80, now + 0.15);
-      osc.frequency.exponentialRampToValueAtTime(600, now + duration);
+      osc.frequency.setValueAtTime(1400, t);
+      osc.frequency.exponentialRampToValueAtTime(70, t + 0.14);
+      osc.frequency.exponentialRampToValueAtTime(700, t + dur);
+      pan.pan.setValueAtTime(0.7, t);
+      pan.pan.linearRampToValueAtTime(-0.7, t + dur);
     }
 
-    // Gain envelope (attack + decay)
-    gainNode.gain.setValueAtTime(0, now);
-    gainNode.gain.linearRampToValueAtTime(0.18, now + 0.04);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.18, t + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
 
-    // Low-pass filter sweeping open
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(200, now);
-    filter.frequency.exponentialRampToValueAtTime(4000, now + 0.15);
-    filter.frequency.exponentialRampToValueAtTime(800, now + duration);
-    filter.Q.value = 1.5;
+    bpf.type = 'bandpass';
+    bpf.frequency.setValueAtTime(300, t);
+    bpf.frequency.exponentialRampToValueAtTime(5000, t + 0.14);
+    bpf.Q.value = 1.2;
 
-    // Stereo pan (swoosh left-to-right or right-to-left)
-    if (direction === 'next') {
-      panner.pan.setValueAtTime(-0.6, now);
-      panner.pan.linearRampToValueAtTime(0.6, now + duration);
-    } else {
-      panner.pan.setValueAtTime(0.6, now);
-      panner.pan.linearRampToValueAtTime(-0.6, now + duration);
-    }
+    osc.start(t); osc.stop(t + dur);
 
-    // Add a secondary noise layer for texture
-    const bufferSize = ctx.sampleRate * duration;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * 0.3;
-    }
-    const noise = ctx.createBufferSource();
-    noise.buffer = buffer;
-
-    const noiseFilter = ctx.createBiquadFilter();
-    noiseFilter.type = 'bandpass';
-    noiseFilter.frequency.setValueAtTime(800, now);
-    noiseFilter.frequency.linearRampToValueAtTime(3000, now + 0.1);
-
-    const noiseGain = ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.06, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-    noise.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(ctx.destination);
-
-    // Start and stop
-    osc.start(now);
-    osc.stop(now + duration);
-    noise.start(now);
-    noise.stop(now + duration);
-
-  } catch (e) {
-    // Silently fail if audio isn't supported
-    console.warn('Audio not available:', e);
-  }
+    // — noise layer —
+    const size = Math.floor(ctx.sampleRate * dur);
+    const buf  = ctx.createBuffer(1, size, ctx.sampleRate);
+    const d    = buf.getChannelData(0);
+    for (let i = 0; i < size; i++) d[i] = (Math.random() * 2 - 1) * 0.25;
+    const ns  = ctx.createBufferSource();
+    ns.buffer = buf;
+    const nf  = ctx.createBiquadFilter();
+    nf.type   = 'bandpass';
+    nf.frequency.setValueAtTime(600, t);
+    nf.frequency.linearRampToValueAtTime(3200, t + 0.12);
+    const ng  = ctx.createGain();
+    ng.gain.setValueAtTime(0.07, t);
+    ng.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    ns.connect(nf); nf.connect(ng); ng.connect(ctx.destination);
+    ns.start(t); ns.stop(t + dur);
+  } catch (_) {}
 }
 
-// ============================================================
-// CAROUSEL
-// ============================================================
+/* ============================================================
+   CAROUSEL
+   ============================================================ */
 class Carousel {
   constructor() {
-    this.track     = $('#carouselTrack');
-    this.viewport  = $('#carouselViewport');
-    this.prevBtn   = $('#prevBtn');
-    this.nextBtn   = $('#nextBtn');
-    this.dotsWrap  = $('#carouselDots');
-    this.indexEl   = $('#currentIndex');
-    this.totalEl   = $('#totalCards');
+    this.track   = $('#cardTrack');
+    this.vp      = $('#cardViewport');
+    this.cards   = $$('.proj-card');
+    this.total   = this.cards.length;
+    this.cur     = 0;
+    this.busy    = false;
 
-    this.cards     = $$('.project-card');
-    this.total     = this.cards.length;
-    this.current   = 0;
-    this.isAnimating = false;
-    this.autoTimer = null;
+    this.prevBtn = $('#prevBtn');
+    this.nextBtn = $('#nextBtn');
+    this.dotsEl  = $('#carouselDots');
+    this.curEl   = $('#curIdx');
+    this.totEl   = $('#totIdx');
+    this.titleEl = $('#projectTitle');
 
-    this.init();
+    this._init();
   }
 
-  init() {
-    if (!this.track || this.total === 0) return;
+  _init() {
+    if (!this.track) return;
 
-    // Set total
-    if (this.totalEl) this.totalEl.textContent = String(this.total).padStart(2, '0');
+    // Total label
+    if (this.totEl) this.totEl.textContent = String(this.total).padStart(2, '0');
 
     // Build dots
-    this.buildDots();
+    this._buildDots();
 
     // Initial layout
-    this.layoutCards();
-    this.updateActive(true);
+    this._layout(false);
+    this._setActive();
 
-    // Events
-    this.prevBtn.addEventListener('click', () => this.navigate('prev'));
-    this.nextBtn.addEventListener('click', () => this.navigate('next'));
+    // Buttons
+    this.prevBtn?.addEventListener('click', () => this._nav('prev'));
+    this.nextBtn?.addEventListener('click', () => this._nav('next'));
 
     // Keyboard
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft')  this.navigate('prev');
-      if (e.key === 'ArrowRight') this.navigate('next');
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') this._nav('next');
+      if (e.key === 'ArrowLeft')  this._nav('prev');
     });
 
-    // Touch / swipe support
-    this.initSwipe();
+    // Touch swipe
+    let tx0 = 0;
+    this.vp.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
+    this.vp.addEventListener('touchend',   e => {
+      const dx = tx0 - e.changedTouches[0].clientX;
+      if (Math.abs(dx) > 45) this._nav(dx > 0 ? 'next' : 'prev');
+    }, { passive: true });
 
-    // Autoplay
-    if (CONFIG.autoplay) this.startAutoplay();
-
-    // Set year
-    const yearEl = $('#currentYear');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
+    // Resize
+    let rt;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = setTimeout(() => { this._layout(false); this._setActive(); }, 120);
+    });
   }
 
-  buildDots() {
-    if (!this.dotsWrap) return;
-    this.dotsWrap.innerHTML = '';
+  _buildDots() {
+    if (!this.dotsEl) return;
+    this.dotsEl.innerHTML = '';
     this.cards.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', `Go to project ${i + 1}`);
-      dot.addEventListener('click', () => this.goTo(i));
-      this.dotsWrap.appendChild(dot);
+      const d = document.createElement('button');
+      d.className = 'cdot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', `Project ${i + 1}`);
+      d.addEventListener('click', () => this._goto(i));
+      this.dotsEl.appendChild(d);
     });
   }
 
-  layoutCards() {
-    // Position all cards in the track
-    const vw = this.viewport.clientWidth;
-    const cardW = Math.min(Math.max(vw * 0.72, 320), 660);
-    const gap = 24;
-
-    this.cards.forEach((card) => {
-      card.style.width = cardW + 'px';
-    });
-
-    // Center the active card; place prev/next on sides
-    this.updateTrackPosition(false);
+  _cardWidth() {
+    const vw = this.vp.clientWidth;
+    return clamp(vw * 0.9, 300, 720);
   }
 
-  updateTrackPosition(animate = true) {
-    const vw = this.viewport.clientWidth;
-    const cardW = Math.min(Math.max(vw * 0.72, 320), 660);
-    const gap = 24;
-
-    // Each card offset
-    const offset = this.current * (cardW + gap);
-    // Center adjustment
-    const center = (vw - cardW) / 2;
+  _layout(animate = true) {
+    const cw  = this._cardWidth();
+    const gap = 28;
+    this.cards.forEach(c => { c.style.width = cw + 'px'; });
+    const offset = this.cur * (cw + gap);
+    const center = (this.vp.clientWidth - cw) / 2;
     const tx = center - offset;
-
     this.track.style.transition = animate
-      ? 'transform 0.6s cubic-bezier(0.68, -0.15, 0.265, 1.35)'
+      ? 'transform 0.62s cubic-bezier(0.68,-0.15,0.265,1.35)'
       : 'none';
     this.track.style.transform = `translateX(${tx}px)`;
   }
 
-  updateActive(instant = false) {
-    this.cards.forEach((card, i) => {
-      card.classList.remove('active', 'prev', 'next');
-      if (i === this.current) {
-        card.classList.add('active');
-      } else if (i === this.current - 1) {
-        card.classList.add('prev');
-      } else if (i === this.current + 1) {
-        card.classList.add('next');
-      }
+  _setActive() {
+    this.cards.forEach((c, i) => {
+      c.classList.remove('is-active', 'is-side');
+      if (i === this.cur) c.classList.add('is-active');
+      else c.classList.add('is-side');
     });
 
     // Update dots
-    $$('.carousel-dot', this.dotsWrap).forEach((dot, i) => {
-      dot.classList.toggle('active', i === this.current);
-    });
+    $$('.cdot', this.dotsEl).forEach((d, i) => d.classList.toggle('active', i === this.cur));
 
-    // Update index display
-    if (this.indexEl) {
-      this.indexEl.textContent = String(this.current + 1).padStart(2, '0');
+    // Update counter
+    if (this.curEl) this.curEl.textContent = String(this.cur + 1).padStart(2, '0');
+
+    // Update title
+    const p = CFG.projects[this.cur];
+    if (this.titleEl && p) {
+      this.titleEl.style.opacity = '0';
+      this.titleEl.style.transform = 'translateY(-8px)';
+      setTimeout(() => {
+        this.titleEl.textContent = p.title;
+        this.titleEl.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+        this.titleEl.style.opacity = '1';
+        this.titleEl.style.transform = 'translateY(0)';
+      }, 200);
     }
 
-    // Update mockup screens
-    this.updateMockups();
-
-    // Update dial values
-    this.updateDials();
+    // Animate ring values
+    _animRingVal('powerLevel', 70, 99);
+    _animRingVal('scanIndex', 60, 98);
   }
 
-  navigate(direction) {
-    if (this.isAnimating) return;
-    this.isAnimating = true;
-
-    const prevIdx = this.current;
-
-    if (direction === 'next') {
-      this.current = (this.current + 1) % this.total;
-    } else {
-      this.current = (this.current - 1 + this.total) % this.total;
-    }
-
-    // Play swoosh
-    playSwoosh(direction);
-
-    // Animate arrow flash
-    const btn = direction === 'next' ? this.nextBtn : this.prevBtn;
-    this.flashArrow(btn);
-
-    // Update position
-    this.updateTrackPosition(true);
-    this.updateActive(false);
-
-    // Add screen flash effect
-    this.screenFlash(direction);
-
-    setTimeout(() => {
-      this.isAnimating = false;
-    }, 700);
+  _nav(dir) {
+    if (this.busy) return;
+    this.busy = true;
+    this.cur = dir === 'next'
+      ? (this.cur + 1) % this.total
+      : (this.cur - 1 + this.total) % this.total;
+    swoosh(dir);
+    _screenFlash(dir);
+    _arrowFlash(dir === 'next' ? this.nextBtn : this.prevBtn);
+    this._layout(true);
+    this._setActive();
+    setTimeout(() => { this.busy = false; }, 680);
   }
 
-  goTo(index) {
-    if (this.isAnimating || index === this.current) return;
-    const direction = index > this.current ? 'next' : 'prev';
-    this.isAnimating = true;
-    this.current = index;
-    playSwoosh(direction);
-    this.updateTrackPosition(true);
-    this.updateActive(false);
-    setTimeout(() => { this.isAnimating = false; }, 700);
-  }
-
-  flashArrow(btn) {
-    btn.style.transform = 'scale(1.3)';
-    setTimeout(() => { btn.style.transform = ''; }, 200);
-  }
-
-  screenFlash(direction) {
-    const flash = document.createElement('div');
-    flash.style.cssText = `
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 999;
-      background: linear-gradient(${direction === 'next' ? 'to right' : 'to left'},
-        transparent,
-        rgba(236,115,35,0.06),
-        transparent
-      );
-      animation: flashFade 0.4s ease-out forwards;
-    `;
-    document.body.appendChild(flash);
-    setTimeout(() => flash.remove(), 450);
-  }
-
-  updateMockups() {
-    // You can update mockup screens here with card-specific images
-    // For now, we update the placeholders with the current project number
-    const screens = ['#mockupScreen1', '#mockupScreen2', '#mockupScreen3'];
-    screens.forEach((sel) => {
-      const el = $(sel);
-      if (!el) return;
-      // If the current card has an image, show it; otherwise keep placeholder
-      const activeCard = this.cards[this.current];
-      const img = activeCard ? $('img', activeCard) : null;
-      // placeholder stays unless user adds real images
-    });
-  }
-
-  updateDials() {
-    // Randomize dial values per card for dynamic effect
-    const vals = [
-      { tl: 87, tr: 94 },
-      { tl: 73, tr: 88 },
-      { tl: 95, tr: 79 },
-      { tl: 81, tr: 92 },
-    ];
-    const v = vals[this.current % vals.length];
-    const tlEl = $('#dialValueTL');
-    const trEl = $('#dialValueTR');
-    if (tlEl) this.animateNumber(tlEl, parseInt(tlEl.textContent), v.tl, '%');
-    if (trEl) this.animateNumber(trEl, parseInt(trEl.textContent), v.tr, '%');
-  }
-
-  animateNumber(el, from, to, suffix = '') {
-    const steps = 20;
-    const step = (to - from) / steps;
-    let count = 0;
-    const id = setInterval(() => {
-      count++;
-      el.textContent = Math.round(from + step * count) + suffix;
-      if (count >= steps) clearInterval(id);
-    }, 25);
-  }
-
-  initSwipe() {
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    this.viewport.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    this.viewport.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].clientX;
-      const diff = touchStartX - touchEndX;
-      if (Math.abs(diff) > 50) {
-        this.navigate(diff > 0 ? 'next' : 'prev');
-      }
-    }, { passive: true });
-  }
-
-  startAutoplay() {
-    this.autoTimer = setInterval(() => {
-      this.navigate('next');
-    }, CONFIG.autoplayDelay);
-
-    // Pause on hover
-    this.viewport.addEventListener('mouseenter', () => {
-      clearInterval(this.autoTimer);
-    });
-    this.viewport.addEventListener('mouseleave', () => {
-      this.startAutoplay();
-    });
+  _goto(i) {
+    if (this.busy || i === this.cur) return;
+    const dir = i > this.cur ? 'next' : 'prev';
+    this.busy = true;
+    this.cur  = i;
+    swoosh(dir);
+    this._layout(true);
+    this._setActive();
+    setTimeout(() => { this.busy = false; }, 680);
   }
 }
 
-// ============================================================
-// WAVEFORM VISUALIZER
-// ============================================================
-class Waveform {
-  constructor(canvasId) {
-    this.canvas = document.getElementById(canvasId);
-    if (!this.canvas) return;
-    this.ctx = this.canvas.getContext('2d');
-    this.phase = 0;
-    this.resize();
-    this.animate();
-    window.addEventListener('resize', () => this.resize());
-  }
-
-  resize() {
-    const wrap = this.canvas.parentElement;
-    this.canvas.width  = wrap ? Math.min(wrap.clientWidth - 90, 250) : 200;
-    this.canvas.height = 30;
-  }
-
-  draw() {
-    const { canvas, ctx } = this;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const w = canvas.width;
-    const h = canvas.height;
-    const mid = h / 2;
-
-    ctx.beginPath();
-    ctx.strokeStyle = '#ec7323';
-    ctx.lineWidth = 1.5;
-    ctx.shadowColor = '#ec7323';
-    ctx.shadowBlur = 6;
-
-    for (let x = 0; x < w; x++) {
-      const t = (x / w) * Math.PI * 8 + this.phase;
-      // Multi-frequency interference pattern
-      const y = mid
-        + Math.sin(t) * 8
-        + Math.sin(t * 2.3 + 1) * 4
-        + Math.sin(t * 0.5) * 5;
-
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-
-    // Second wave (cyan)
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgba(0,229,255,0.4)';
-    ctx.lineWidth = 1;
-    ctx.shadowColor = '#00e5ff';
-    ctx.shadowBlur = 4;
-
-    for (let x = 0; x < w; x++) {
-      const t = (x / w) * Math.PI * 6 + this.phase * 0.7;
-      const y = mid + Math.sin(t + 1) * 6 + Math.cos(t * 1.5) * 3;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-  }
-
-  animate() {
-    this.phase += 0.05;
-    this.draw();
-    requestAnimationFrame(() => this.animate());
-  }
+function _screenFlash(dir) {
+  const d = document.createElement('div');
+  const side = dir === 'next' ? 'to right' : 'to left';
+  d.style.cssText = `
+    position:fixed;inset:0;pointer-events:none;z-index:999;
+    background:linear-gradient(${side},transparent,rgba(236,115,35,.07),transparent);
+    animation:flashOver 0.4s ease-out forwards;
+  `;
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 450);
 }
 
-// ============================================================
-// PARTICLE SYSTEM
-// ============================================================
-class ParticleSystem {
-  constructor(canvasId) {
-    this.canvas = document.getElementById(canvasId);
-    if (!this.canvas) return;
-    this.ctx    = this.canvas.getContext('2d');
-    this.particles = [];
-    this.resize();
-    this.initParticles();
-    this.animate();
-    window.addEventListener('resize', () => {
-      this.resize();
-      this.initParticles();
-    });
-  }
+function _arrowFlash(btn) {
+  if (!btn) return;
+  btn.style.transform = 'scale(1.3)';
+  setTimeout(() => { btn.style.transform = ''; }, 180);
+}
 
-  resize() {
-    this.canvas.width  = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-  }
+function _animRingVal(id, lo, hi) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const target = Math.floor(Math.random() * (hi - lo) + lo);
+  const start  = parseInt(el.textContent) || lo;
+  const steps  = 18;
+  const step   = (target - start) / steps;
+  let n = 0;
+  const suffix = el.textContent.includes('%') ? '%' : '';
+  const t = setInterval(() => {
+    n++;
+    el.textContent = Math.round(start + step * n) + '%';
+    if (n >= steps) clearInterval(t);
+  }, 25);
+}
 
-  initParticles() {
-    this.particles = [];
-    const count = Math.floor((window.innerWidth * window.innerHeight) / 18000);
-    for (let i = 0; i < count; i++) {
-      this.particles.push(this.createParticle(true));
-    }
+/* ============================================================
+   PARTICLE SYSTEM
+   ============================================================ */
+class Particles {
+  constructor(id) {
+    this.c = document.getElementById(id);
+    if (!this.c) return;
+    this.g = this.c.getContext('2d');
+    this.p = [];
+    this._resize();
+    this._populate();
+    this._tick();
+    window.addEventListener('resize', () => { this._resize(); this._populate(); });
   }
-
-  createParticle(randomY = false) {
+  _resize() {
+    this.c.width  = window.innerWidth;
+    this.c.height = window.innerHeight;
+  }
+  _populate() {
+    this.p = [];
+    const n = Math.floor((this.c.width * this.c.height) / 16000);
+    for (let i = 0; i < n; i++) this.p.push(this._mk(true));
+  }
+  _mk(rnd = false) {
     return {
-      x: Math.random() * this.canvas.width,
-      y: randomY ? Math.random() * this.canvas.height : this.canvas.height + 10,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: -(Math.random() * 0.8 + 0.2),
-      size: Math.random() * 1.5 + 0.5,
-      opacity: Math.random() * 0.5 + 0.1,
-      color: Math.random() > 0.7 ? '#00e5ff' : '#ec7323',
-      pulse: Math.random() * Math.PI * 2,
+      x:  Math.random() * this.c.width,
+      y:  rnd ? Math.random() * this.c.height : this.c.height + 5,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: -(Math.random() * 0.7 + 0.15),
+      r:  Math.random() * 1.4 + 0.4,
+      a:  Math.random() * 0.45 + 0.1,
+      ph: Math.random() * Math.PI * 2,
+      col: Math.random() > 0.65 ? '#00e5ff' : '#ec7323',
     };
   }
-
-  update() {
-    this.particles.forEach((p, i) => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.pulse += 0.04;
-      p.opacity = (Math.sin(p.pulse) * 0.3 + 0.3);
-
-      if (p.y < -10) {
-        this.particles[i] = this.createParticle(false);
-      }
+  _tick() {
+    const { c, g } = this;
+    g.clearRect(0, 0, c.width, c.height);
+    this.p.forEach((p, i) => {
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.ph += 0.035;
+      const a = (Math.sin(p.ph) * 0.28 + 0.32);
+      g.beginPath();
+      g.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      g.fillStyle = p.col;
+      g.globalAlpha = a;
+      g.fill();
+      if (p.y < -8) this.p[i] = this._mk(false);
     });
-  }
-
-  draw() {
-    const { canvas, ctx } = this;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    this.particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = p.opacity;
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-  }
-
-  animate() {
-    this.update();
-    this.draw();
-    requestAnimationFrame(() => this.animate());
+    g.globalAlpha = 1;
+    requestAnimationFrame(() => this._tick());
   }
 }
 
-// ============================================================
-// HUD DIAL — TICK MARKS BUILDER
-// ============================================================
-function buildDialTicks(id) {
-  const g = document.getElementById(id);
-  if (!g) return;
-  const cx = 80, cy = 80;
-  const radii = [72, 58, 43];
-  const counts = [24, 16, 12];
+/* ============================================================
+   3D GRID CANVAS
+   ============================================================ */
+class GridBg {
+  constructor(id) {
+    this.c = document.getElementById(id);
+    if (!this.c) return;
+    this.g = this.c.getContext('2d');
+    this._resize();
+    this._tick();
+    window.addEventListener('resize', () => this._resize());
+  }
+  _resize() {
+    this.c.width  = window.innerWidth;
+    this.c.height = window.innerHeight;
+  }
+  _tick() {
+    const { c, g } = this;
+    g.clearRect(0, 0, c.width, c.height);
 
-  radii.forEach((r, ri) => {
-    const n = counts[ri];
-    for (let i = 0; i < n; i++) {
-      const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
-      const x1 = cx + Math.cos(angle) * (r - 3);
-      const y1 = cy + Math.sin(angle) * (r - 3);
-      const x2 = cx + Math.cos(angle) * (r + 3);
-      const y2 = cy + Math.sin(angle) * (r + 3);
+    const now = Date.now() / 1000;
+    const pulse = (Math.sin(now * 0.4) * 0.5 + 0.5) * 0.04 + 0.02;
 
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      line.setAttribute('x1', x1);
-      line.setAttribute('y1', y1);
-      line.setAttribute('x2', x2);
-      line.setAttribute('y2', y2);
-      line.setAttribute('stroke', i % 4 === 0 ? '#ec7323' : 'rgba(236,115,35,0.3)');
-      line.setAttribute('stroke-width', i % 4 === 0 ? '1.5' : '0.8');
-      g.appendChild(line);
+    g.strokeStyle = `rgba(236,115,35,${pulse})`;
+    g.lineWidth = 0.7;
+
+    // Perspective grid — vanishing point at center-bottom
+    const vx = c.width / 2;
+    const vy = c.height * 0.6;
+    const cols = 22;
+    const rows = 14;
+
+    // Vertical lines
+    for (let i = 0; i <= cols; i++) {
+      const x = (i / cols) * c.width;
+      g.beginPath();
+      g.moveTo(x, 0);
+      g.lineTo(vx + (x - vx) * 0.08, vy);
+      g.stroke();
     }
+    // Horizontal lines (perspective compression)
+    for (let j = 0; j <= rows; j++) {
+      const t  = j / rows;
+      const ty = t * vy;
+      const xl = vx - (vx) * (1 - t * 0.92);
+      const xr = vx + (c.width - vx) * (1 - t * 0.92);
+      g.beginPath();
+      g.moveTo(xl, ty);
+      g.lineTo(xr, ty);
+      g.stroke();
+    }
+
+    requestAnimationFrame(() => this._tick());
+  }
+}
+
+/* ============================================================
+   WAVEFORM
+   ============================================================ */
+class Waveform {
+  constructor(id) {
+    this.c = document.getElementById(id);
+    if (!this.c) return;
+    this.g   = this.c.getContext('2d');
+    this.ph  = 0;
+    this._resize();
+    this._tick();
+    window.addEventListener('resize', () => this._resize());
+  }
+  _resize() {
+    const wrap = this.c.closest('.waveform-wrap');
+    this.c.width  = wrap ? Math.min(wrap.clientWidth - 10, 300) : 260;
+    this.c.height = 32;
+  }
+  _draw() {
+    const { c, g, ph } = this;
+    g.clearRect(0, 0, c.width, c.height);
+    const mid = c.height / 2;
+
+    // Orange primary
+    g.beginPath();
+    g.strokeStyle = '#ec7323';
+    g.lineWidth   = 1.6;
+    g.shadowColor = '#ec7323';
+    g.shadowBlur  = 7;
+    for (let x = 0; x < c.width; x++) {
+      const t = (x / c.width) * Math.PI * 9 + ph;
+      const y = mid + Math.sin(t) * 9 + Math.sin(t * 2.4 + 1) * 4 + Math.sin(t * 0.5) * 5;
+      x === 0 ? g.moveTo(x, y) : g.lineTo(x, y);
+    }
+    g.stroke();
+
+    // Cyan secondary
+    g.beginPath();
+    g.strokeStyle = 'rgba(0,229,255,0.4)';
+    g.lineWidth   = 1;
+    g.shadowColor = '#00e5ff';
+    g.shadowBlur  = 4;
+    for (let x = 0; x < c.width; x++) {
+      const t = (x / c.width) * Math.PI * 6 + ph * 0.65;
+      const y = mid + Math.sin(t + 1.2) * 7 + Math.cos(t * 1.8) * 3;
+      x === 0 ? g.moveTo(x, y) : g.lineTo(x, y);
+    }
+    g.stroke();
+    g.shadowBlur = 0;
+  }
+  _tick() {
+    this.ph += 0.05;
+    this._draw();
+    requestAnimationFrame(() => this._tick());
+  }
+}
+
+/* ── mini waveforms for floating panels ── */
+class MiniWave {
+  constructor(id, color = '#ec7323') {
+    this.c   = document.getElementById(id);
+    if (!this.c) return;
+    this.g   = this.c.getContext('2d');
+    this.ph  = Math.random() * Math.PI * 2;
+    this.col = color;
+    this.c.width  = this.c.offsetWidth  || 120;
+    this.c.height = 22;
+    this._tick();
+  }
+  _tick() {
+    const { c, g, ph, col } = this;
+    g.clearRect(0, 0, c.width, c.height);
+    const mid = c.height / 2;
+    g.beginPath();
+    g.strokeStyle = col;
+    g.lineWidth   = 1.2;
+    g.shadowColor = col;
+    g.shadowBlur  = 4;
+    for (let x = 0; x < c.width; x++) {
+      const t = (x / c.width) * Math.PI * 7 + ph;
+      const y = mid + Math.sin(t) * 6 + Math.sin(t * 2 + 1) * 3;
+      x === 0 ? g.moveTo(x, y) : g.lineTo(x, y);
+    }
+    g.stroke();
+    g.shadowBlur = 0;
+    this.ph += 0.06;
+    requestAnimationFrame(() => this._tick());
+  }
+}
+
+/* ============================================================
+   HEX TELEMETRY COLUMN
+   ============================================================ */
+function buildHexStream() {
+  const el = $('#hexStream');
+  if (!el) return;
+  const chars = '0123456789ABCDEF';
+  const rand6 = () => Array.from({ length: 8 }, () => chars[Math.floor(Math.random() * 16)]).join('');
+  // Build enough lines to scroll
+  const lines = Array.from({ length: 80 }, (_, i) =>
+    `<div>${rand6()}</div>`
+  ).join('');
+  // Duplicate for seamless scroll
+  el.innerHTML = lines + lines;
+
+  // Randomly flicker individual lines
+  setInterval(() => {
+    const all = $$('div', el);
+    const pick = all[Math.floor(Math.random() * all.length)];
+    if (pick) {
+      pick.textContent = rand6();
+      pick.style.color = Math.random() > 0.8 ? '#00e5ff' : 'rgba(236,115,35,0.5)';
+    }
+  }, 120);
+}
+
+/* ============================================================
+   3D DEVICE POSITIONING  (place via CSS left/top)
+   ============================================================ */
+function positionDevices() {
+  const devices = $$('.device');
+  devices.forEach(d => {
+    const px = parseFloat(d.dataset.px || 0.5);
+    const py = parseFloat(d.dataset.py || 0.5);
+    d.style.left = (px * 100) + '%';
+    d.style.top  = (py * 100) + '%';
   });
 }
 
-// ============================================================
-// MOUSE COORDINATE TRACKER
-// ============================================================
-function initMouseTracker() {
-  const xEl = $('#mouseX');
-  const yEl = $('#mouseY');
-  if (!xEl || !yEl) return;
-
-  document.addEventListener('mousemove', (e) => {
-    xEl.textContent = String(e.clientX).padStart(4, '0');
-    yEl.textContent = String(e.clientY).padStart(4, '0');
-  });
-}
-
-// ============================================================
-// PARALLAX — MOCKUP FLOATING
-// ============================================================
+/* ============================================================
+   PARALLAX  (mouse-driven 3D depth on devices)
+   ============================================================ */
 function initParallax() {
-  const mockups = $$('.mockup');
-  if (!mockups.length) return;
+  const devices = $$('.device');
+  if (!devices.length) return;
 
-  document.addEventListener('mousemove', (e) => {
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
-    const dx = (e.clientX - cx) / cx; // -1 to 1
-    const dy = (e.clientY - cy) / cy;
+  let mx = 0.5, my = 0.5;
+  let cx = 0.5, cy = 0.5; // smoothed
 
-    mockups.forEach((m) => {
-      const depth = parseFloat(m.dataset.depth || 0.3);
-      const tx = dx * depth * 20;
-      const ty = dy * depth * 15;
-      const rx = -dy * depth * 8;
-      const ry = dx * depth * 8;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX / window.innerWidth;
+    my = e.clientY / window.innerHeight;
+  });
 
-      m.style.transform = `
-        translate(${tx}px, ${ty}px)
-        rotateX(${rx}deg)
-        rotateY(${ry}deg)
-      `;
+  function tick() {
+    // Smooth follow
+    cx += (mx - cx) * 0.06;
+    cy += (my - cy) * 0.06;
+
+    const dx = (cx - 0.5) * 2; // -1 to 1
+    const dy = (cy - 0.5) * 2;
+
+    devices.forEach(d => {
+      const depth = parseFloat(d.dataset.depth || 0.3);
+      // Offset from base position
+      const ox = dx * depth * 28;
+      const oy = dy * depth * 18;
+      const rx = -dy * depth * 7;
+      const ry =  dx * depth * 10;
+
+      // Combine with float animation by only adding translate via data attribute
+      d.style.marginLeft = ox + 'px';
+      d.style.marginTop  = oy + 'px';
     });
-  });
+
+    requestAnimationFrame(tick);
+  }
+  tick();
 }
 
-// ============================================================
-// RESIZE HANDLER
-// ============================================================
-function initResize(carousel) {
-  let debounce;
-  window.addEventListener('resize', () => {
-    clearTimeout(debounce);
-    debounce = setTimeout(() => {
-      carousel.layoutCards();
-      carousel.updateActive(true);
-    }, 150);
-  });
-}
-
-// ============================================================
-// FLASH CSS ANIMATION KEYFRAME (dynamic inject)
-// ============================================================
-function injectDynamicStyles() {
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes flashFade {
-      from { opacity: 1; }
-      to   { opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-// ============================================================
-// SCAN LINE STAGGER
-// ============================================================
-function initScanLines() {
-  const lines = $$('.card-scan-line');
-  lines.forEach((line, i) => {
-    line.style.animationDelay = `${i * 0.8}s`;
-    line.style.animationDuration = `${3 + i * 0.5}s`;
-  });
-}
-
-// ============================================================
-// HUD PANEL LIVE BARS ANIMATION
-// ============================================================
+/* ============================================================
+   PANEL BAR ANIMATION
+   ============================================================ */
 function animatePanelBars() {
-  const bars = $$('.panel-bar');
-  bars.forEach(bar => {
+  $$('.pb').forEach(b => {
     setInterval(() => {
       const h = Math.floor(Math.random() * 70 + 20) + '%';
-      bar.style.setProperty('--h', h);
-    }, 800 + Math.random() * 600);
+      b.style.setProperty('--ph', h);
+    }, 700 + Math.random() * 500);
   });
 }
 
-// ============================================================
-// BOOT SEQUENCE INTRO ANIMATION
-// ============================================================
-function bootSequence() {
-  const wrapper = document.querySelector('.app-wrapper');
-  const menu    = document.querySelector('.contact-menu');
-  const header  = document.querySelector('.hud-header');
-  const footer  = document.querySelector('.hud-footer');
-  const carousel = document.querySelector('.carousel-section');
-
-  // Initial state — invisible
-  [menu, header, footer, carousel].forEach(el => {
-    if (el) el.style.opacity = '0';
-  });
-
-  // Staggered fade-in
-  setTimeout(() => { if (header)   { header.style.transition = 'opacity 0.5s ease'; header.style.opacity = '1'; } }, 200);
-  setTimeout(() => { if (menu)     { menu.style.transition = 'opacity 0.6s ease'; menu.style.opacity = '1'; } }, 400);
-  setTimeout(() => { if (carousel) { carousel.style.transition = 'opacity 0.7s ease'; carousel.style.opacity = '1'; } }, 600);
-  setTimeout(() => { if (footer)   { footer.style.transition = 'opacity 0.5s ease'; footer.style.opacity = '1'; } }, 800);
-
-  // After boot, remove inline opacity so CSS takes over
-  setTimeout(() => {
-    [menu, header, footer, carousel].forEach(el => {
-      if (el) el.style.opacity = el.style.transition = '';
-    });
-  }, 1500);
-}
-
-// ============================================================
-// CTA BUTTON HANDLERS ON CARDS
-// ============================================================
-function initCardCTAs() {
-  $$('.card-cta').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      // Pulse animation
-      btn.style.transform = 'scale(1.05)';
-      setTimeout(() => { btn.style.transform = ''; }, 150);
-    });
-  });
-}
-
-// ============================================================
-// IMAGE UPLOAD SUPPORT
-// Each card-image-banner can be clicked to upload a real image
-// ============================================================
+/* ============================================================
+   IMAGE UPLOAD  (card strips + device screens)
+   ============================================================ */
 function initImageUpload() {
-  $$('.card-image-banner').forEach((banner, idx) => {
-    banner.style.cursor = 'pointer';
-    banner.title = 'Click to upload project image';
-
-    banner.addEventListener('click', () => {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-      input.onchange = (e) => {
+  // Card image strips
+  $$('.card-img-strip').forEach((strip, i) => {
+    strip.addEventListener('click', () => {
+      const inp = document.createElement('input');
+      inp.type  = 'file';
+      inp.accept = 'image/*';
+      inp.onchange = e => {
         const file = e.target.files[0];
         if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          banner.innerHTML = `<img src="${ev.target.result}" alt="Project screenshot" style="width:100%;height:100%;object-fit:cover;border-radius:4px;" />`;
+        const fr = new FileReader();
+        fr.onload = ev => {
+          strip.innerHTML = `<img src="${ev.target.result}" alt="Project ${i+1} screenshot" />`;
+          // Mirror to the matching device screen
+          const devEl = document.getElementById(`devScreen${i + 1}`);
+          if (devEl) {
+            devEl.innerHTML = `<img src="${ev.target.result}" alt="Device preview" style="width:100%;height:100%;object-fit:cover;" />`;
+          }
         };
-        reader.readAsDataURL(file);
+        fr.readAsDataURL(file);
       };
-      input.click();
+      inp.click();
+    });
+  });
+
+  // Device screens also accept clicks
+  $$('.dev-screen-inner').forEach((screen, i) => {
+    screen.addEventListener('click', () => {
+      const inp = document.createElement('input');
+      inp.type  = 'file';
+      inp.accept = 'image/*';
+      inp.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const fr = new FileReader();
+        fr.onload = ev => {
+          screen.innerHTML = `<img src="${ev.target.result}" alt="Project screenshot" style="width:100%;height:100%;object-fit:cover;" />`;
+        };
+        fr.readAsDataURL(file);
+      };
+      inp.click();
     });
   });
 }
 
-// ============================================================
-// INIT — DOMContentLoaded
-// ============================================================
+/* ============================================================
+   BOOT SEQUENCE
+   ============================================================ */
+function boot() {
+  const stage   = $('.stage');
+  const menu    = $('.contact-menu');
+  const rings   = $$('.hud-ring');
+  const sch     = $$('.schematic');
+
+  // Start invisible
+  if (stage) { stage.style.opacity = '0'; }
+  if (menu)  { menu.style.opacity  = '0'; }
+
+  setTimeout(() => {
+    if (stage) { stage.style.transition = 'opacity 0.6s ease'; stage.style.opacity = '1'; }
+  }, 150);
+  setTimeout(() => {
+    if (menu)  { menu.style.transition  = 'opacity 0.6s ease'; menu.style.opacity  = '1'; }
+  }, 400);
+  setTimeout(() => {
+    if (stage) { stage.style.transition = stage.style.opacity = ''; }
+    if (menu)  { menu.style.transition  = menu.style.opacity  = ''; }
+  }, 1200);
+}
+
+/* ============================================================
+   YEAR
+   ============================================================ */
+function setYear() {
+  const el = $('#yearLabel');
+  if (el) el.textContent = '© ' + new Date().getFullYear();
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  injectDynamicStyles();
+  // Inject flash keyframe
+  const s = document.createElement('style');
+  s.textContent = '@keyframes flashOver { from{opacity:1} to{opacity:0} }';
+  document.head.appendChild(s);
 
-  // Boot sequence
-  bootSequence();
+  boot();
+  setYear();
+  positionDevices();
 
-  // Build HUD dial tick marks
-  buildDialTicks('dialTicks');
-  buildDialTicks('dialTicksTR');
+  new Particles('canvas-particles');
+  new GridBg('canvas-grid');
+  new Waveform('waveform-main');
+  new MiniWave('miniWave1', '#ec7323');
+  new MiniWave('miniWave2', '#00e5ff');
+  new MiniWave('miniWave3', '#ef4124');
 
-  // Carousel
   const carousel = new Carousel();
 
-  // Waveform
-  new Waveform('waveform');
-
-  // Particles
-  new ParticleSystem('particles-canvas');
-
-  // Mouse tracker
-  initMouseTracker();
-
-  // Parallax on mockups
-  initParallax();
-
-  // Resize handler
-  initResize(carousel);
-
-  // Scan line stagger
-  initScanLines();
-
-  // Panel bars
+  buildHexStream();
   animatePanelBars();
-
-  // Card CTAs
-  initCardCTAs();
-
-  // Image upload
+  initParallax();
   initImageUpload();
 
-  // Make openLink global
-  window.openLink = openLink;
-
-  console.log('%c 🔴 PORTFOLIO HUD ONLINE ', 'background:#000022;color:#ec7323;font-size:14px;font-weight:bold;font-family:monospace;padding:6px 12px;border:1px solid #ec7323;');
+  console.log(
+    '%c 🔴 PORTFOLIO HUD ONLINE ',
+    'background:#000022;color:#ec7323;font-size:13px;font-weight:bold;font-family:monospace;padding:5px 12px;border:1px solid #ec7323;border-radius:3px;'
+  );
 });

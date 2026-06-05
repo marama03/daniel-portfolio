@@ -7,257 +7,286 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
 </head>
 <body>
 
-  <!-- Particle Canvas Background -->
-  <canvas id="particles-canvas"></canvas>
+  <!-- ── CANVAS LAYERS ── -->
+  <canvas id="canvas-particles" class="layer-canvas"></canvas>
+  <canvas id="canvas-grid"      class="layer-canvas"></canvas>
 
-  <!-- 3D Grid Background -->
-  <div class="grid-bg"></div>
-
-  <!-- Volumetric Light Rays -->
-  <div class="light-rays">
-    <div class="ray ray-1"></div>
-    <div class="ray ray-2"></div>
-    <div class="ray ray-3"></div>
-    <div class="ray ray-4"></div>
-    <div class="ray ray-5"></div>
+  <!-- ── X-SHAPED VOLUMETRIC LIGHT RAYS ── -->
+  <div class="rays-wrap" aria-hidden="true">
+    <div class="ray ray-tl"></div>
+    <div class="ray ray-tr"></div>
+    <div class="ray ray-bl"></div>
+    <div class="ray ray-br"></div>
+    <div class="ray ray-center"></div>
   </div>
 
-  <!-- Main App Wrapper -->
-  <div class="app-wrapper">
+  <!-- ═══════════════════════════════════════════
+       FLOATING 3D DEVICE MOCKUPS  (outer space)
+  ══════════════════════════════════════════════ -->
+  <div class="space-field" id="spaceField" aria-hidden="true">
 
-    <!-- ===== LEFT CONTACT MENU ===== -->
-    <aside class="contact-menu" id="contactMenu">
-      <div class="menu-label">CONTACT</div>
-      <div class="menu-divider"></div>
+    <!-- Laptop 1 — upper right -->
+    <div class="device device-laptop dev-1" data-px="0.4" data-py="0.25">
+      <div class="dev-screen">
+        <div class="dev-screen-inner" id="devScreen1">
+          <div class="dev-placeholder"><i class="fas fa-desktop"></i><span>UPLOAD IMAGE</span></div>
+        </div>
+      </div>
+      <div class="dev-base"></div>
+      <div class="dev-rim"></div>
+    </div>
 
-      <button class="contact-btn" id="btn-website" onclick="openLink('website')">
-        <span class="btn-icon"><i class="fas fa-globe"></i></span>
-        <span class="btn-text">Website</span>
-        <span class="btn-glow"></span>
+    <!-- Laptop 2 — mid-right lower -->
+    <div class="device device-laptop dev-2" data-px="0.55" data-py="0.65">
+      <div class="dev-screen">
+        <div class="dev-screen-inner" id="devScreen2">
+          <div class="dev-placeholder"><i class="fas fa-code"></i><span>UPLOAD IMAGE</span></div>
+        </div>
+      </div>
+      <div class="dev-base"></div>
+      <div class="dev-rim"></div>
+    </div>
+
+    <!-- Phone — right center -->
+    <div class="device device-phone dev-3" data-px="0.68" data-py="0.42">
+      <div class="dev-screen dev-screen-phone">
+        <div class="dev-screen-inner" id="devScreen3">
+          <div class="dev-placeholder"><i class="fas fa-mobile-alt"></i><span>MOBILE</span></div>
+        </div>
+      </div>
+      <div class="dev-notch"></div>
+    </div>
+
+    <!-- Tablet — far right -->
+    <div class="device device-tablet dev-4" data-px="0.62" data-py="0.22">
+      <div class="dev-screen dev-screen-tablet">
+        <div class="dev-screen-inner" id="devScreen4">
+          <div class="dev-placeholder"><i class="fas fa-tablet-alt"></i><span>TABLET</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Left floating panel 1 -->
+    <div class="device device-panel dev-5" data-px="0.06" data-py="0.45">
+      <div class="panel-header-bar">DATA STREAM 01</div>
+      <canvas class="panel-mini-wave" id="miniWave1"></canvas>
+      <div class="panel-bars-row">
+        <div class="pb" style="--ph:60%"></div><div class="pb" style="--ph:80%"></div>
+        <div class="pb" style="--ph:45%"></div><div class="pb" style="--ph:70%"></div>
+        <div class="pb" style="--ph:90%"></div><div class="pb" style="--ph:55%"></div>
+      </div>
+    </div>
+
+    <!-- Left floating panel 2 -->
+    <div class="device device-panel dev-6" data-px="0.04" data-py="0.68">
+      <div class="panel-header-bar">SIGNAL ANALYSIS</div>
+      <canvas class="panel-mini-wave" id="miniWave2"></canvas>
+      <div class="panel-bars-row">
+        <div class="pb" style="--ph:50%"></div><div class="pb" style="--ph:90%"></div>
+        <div class="pb" style="--ph:65%"></div><div class="pb" style="--ph:40%"></div>
+        <div class="pb" style="--ph:75%"></div><div class="pb" style="--ph:85%"></div>
+      </div>
+    </div>
+
+    <!-- Right floating panel -->
+    <div class="device device-panel dev-7" data-px="0.76" data-py="0.68">
+      <div class="panel-header-bar">SYSTEM OUTPUT</div>
+      <canvas class="panel-mini-wave" id="miniWave3"></canvas>
+      <div class="panel-bars-row">
+        <div class="pb" style="--ph:70%"></div><div class="pb" style="--ph:55%"></div>
+        <div class="pb" style="--ph:85%"></div><div class="pb" style="--ph:40%"></div>
+        <div class="pb" style="--ph:65%"></div><div class="pb" style="--ph:95%"></div>
+      </div>
+    </div>
+
+  </div><!-- /space-field -->
+
+  <!-- ═══════════════════════════════════════════
+       HUD RINGS — TOP CORNERS
+  ══════════════════════════════════════════════ -->
+  <div class="hud-ring hud-ring-tl" aria-hidden="true">
+    <svg viewBox="0 0 200 200" class="ring-svg ring-svg-tl">
+      <circle cx="100" cy="100" r="92" class="ring-track"/>
+      <circle cx="100" cy="100" r="92" class="ring-arc ring-arc-orange"/>
+      <circle cx="100" cy="100" r="76" class="ring-track"/>
+      <circle cx="100" cy="100" r="76" class="ring-arc ring-arc-cyan"/>
+      <circle cx="100" cy="100" r="60" class="ring-track"/>
+      <circle cx="100" cy="100" r="60" class="ring-arc ring-arc-orange2"/>
+      <circle cx="100" cy="100" r="44" class="ring-track"/>
+      <circle cx="100" cy="100" r="44" class="ring-arc ring-arc-red"/>
+      <!-- Crosshair -->
+      <line x1="75"  y1="100" x2="90"  y2="100" class="ring-cross"/>
+      <line x1="110" y1="100" x2="125" y2="100" class="ring-cross"/>
+      <line x1="100" y1="75"  x2="100" y2="90"  class="ring-cross"/>
+      <line x1="100" y1="110" x2="100" y2="125" class="ring-cross"/>
+      <circle cx="100" cy="100" r="4" class="ring-dot"/>
+    </svg>
+    <div class="ring-label ring-label-tl">
+      <span>SYSTEM STATUS</span>
+      <span class="rl-val">ONLINE</span>
+    </div>
+    <div class="ring-label ring-label-tl2">
+      <span>POWER LEVEL</span>
+      <span class="rl-val" id="powerLevel">97%</span>
+    </div>
+  </div>
+
+  <div class="hud-ring hud-ring-tr" aria-hidden="true">
+    <svg viewBox="0 0 200 200" class="ring-svg ring-svg-tr">
+      <circle cx="100" cy="100" r="92" class="ring-track"/>
+      <circle cx="100" cy="100" r="92" class="ring-arc ring-arc-orange"/>
+      <circle cx="100" cy="100" r="76" class="ring-track"/>
+      <circle cx="100" cy="100" r="76" class="ring-arc ring-arc-cyan"/>
+      <circle cx="100" cy="100" r="60" class="ring-track"/>
+      <circle cx="100" cy="100" r="60" class="ring-arc ring-arc-orange2"/>
+      <circle cx="100" cy="100" r="44" class="ring-track"/>
+      <circle cx="100" cy="100" r="44" class="ring-arc ring-arc-red"/>
+      <line x1="75"  y1="100" x2="90"  y2="100" class="ring-cross"/>
+      <line x1="110" y1="100" x2="125" y2="100" class="ring-cross"/>
+      <line x1="100" y1="75"  x2="100" y2="90"  class="ring-cross"/>
+      <line x1="100" y1="110" x2="100" y2="125" class="ring-cross"/>
+      <circle cx="100" cy="100" r="4" class="ring-dot"/>
+    </svg>
+    <div class="ring-label ring-label-tr">
+      <span>SCAN INDEX</span>
+      <span class="rl-val" id="scanIndex">88%</span>
+    </div>
+    <div class="ring-label ring-label-tr2">
+      <span>LOAD STATUS</span>
+      <span class="rl-val">NOMINAL</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       WIREFRAME SCHEMATICS — BOTTOM CORNERS
+  ══════════════════════════════════════════════ -->
+  <div class="schematic schematic-bl" aria-hidden="true">
+    <svg viewBox="0 0 220 180" class="sch-svg sch-svg-cyan">
+      <g class="sch-g">
+        <!-- Gear assembly -->
+        <circle cx="60" cy="90" r="40"/>
+        <circle cx="60" cy="90" r="28"/>
+        <circle cx="60" cy="90" r="10"/>
+        <line x1="60" y1="50" x2="60" y2="40"/><line x1="60" y1="130" x2="60" y2="140"/>
+        <line x1="20" y1="90" x2="10" y2="90"/><line x1="100" y1="90" x2="110" y2="90"/>
+        <line x1="32" y1="62" x2="25" y2="55"/><line x1="88" y1="62" x2="95" y2="55"/>
+        <line x1="32" y1="118" x2="25" y2="125"/><line x1="88" y1="118" x2="95" y2="125"/>
+        <!-- Teeth -->
+        <rect x="56" y="46" width="8" height="8"/><rect x="56" y="126" width="8" height="8"/>
+        <rect x="16" y="86" width="8" height="8"/><rect x="96" y="86" width="8" height="8"/>
+        <!-- Arm -->
+        <line x1="100" y1="90" x2="200" y2="60"/>
+        <rect x="140" y="50" width="50" height="30" rx="3"/>
+        <line x1="148" y1="58" x2="182" y2="58"/>
+        <line x1="148" y1="66" x2="170" y2="66"/>
+        <line x1="148" y1="74" x2="176" y2="74"/>
+        <!-- Base lines -->
+        <line x1="10" y1="155" x2="120" y2="155"/>
+        <line x1="10" y1="165" x2="90" y2="165"/>
+        <line x1="10" y1="175" x2="70" y2="175"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="schematic schematic-br" aria-hidden="true">
+    <svg viewBox="0 0 220 180" class="sch-svg sch-svg-orange">
+      <g class="sch-g">
+        <circle cx="160" cy="90" r="40"/>
+        <circle cx="160" cy="90" r="28"/>
+        <circle cx="160" cy="90" r="10"/>
+        <line x1="160" y1="50" x2="160" y2="40"/><line x1="160" y1="130" x2="160" y2="140"/>
+        <line x1="120" y1="90" x2="110" y2="90"/><line x1="200" y1="90" x2="210" y2="90"/>
+        <line x1="132" y1="62" x2="125" y2="55"/><line x1="188" y1="62" x2="195" y2="55"/>
+        <line x1="132" y1="118" x2="125" y2="125"/><line x1="188" y1="118" x2="195" y2="125"/>
+        <rect x="156" y="46" width="8" height="8"/><rect x="156" y="126" width="8" height="8"/>
+        <rect x="116" y="86" width="8" height="8"/><rect x="196" y="86" width="8" height="8"/>
+        <line x1="120" y1="90" x2="20" y2="60"/>
+        <rect x="30" y="50" width="50" height="30" rx="3"/>
+        <line x1="38" y1="58" x2="72" y2="58"/>
+        <line x1="38" y1="66" x2="60" y2="66"/>
+        <line x1="38" y1="74" x2="66" y2="74"/>
+        <line x1="100" y1="155" x2="210" y2="155"/>
+        <line x1="130" y1="165" x2="210" y2="165"/>
+        <line x1="150" y1="175" x2="210" y2="175"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       RIGHT-SIDE HEX TELEMETRY COLUMN
+  ══════════════════════════════════════════════ -->
+  <aside class="hex-column" id="hexColumn" aria-hidden="true">
+    <div class="hex-stream" id="hexStream"></div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════
+       LEFT CONTACT MENU
+  ══════════════════════════════════════════════ -->
+  <aside class="contact-menu" id="contactMenu">
+    <button class="contact-btn" onclick="openLink('website')" aria-label="Visit website">
+      <span class="cbtn-icon"><i class="fas fa-globe"></i></span>
+      <span class="cbtn-label">Website</span>
+    </button>
+    <button class="contact-btn" onclick="openLink('email')" aria-label="Send email">
+      <span class="cbtn-icon"><i class="fas fa-envelope"></i></span>
+      <span class="cbtn-label">Email</span>
+    </button>
+    <button class="contact-btn" onclick="openLink('schedule')" aria-label="Schedule a call">
+      <span class="cbtn-icon"><i class="fas fa-phone-alt"></i></span>
+      <span class="cbtn-label">Schedule Call</span>
+    </button>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN STAGE
+  ══════════════════════════════════════════════ -->
+  <main class="stage" id="stage">
+
+    <!-- ── PROJECT TITLE ── -->
+    <div class="title-zone" aria-live="polite">
+      <h1 class="project-title" id="projectTitle">PROJECT TITLE</h1>
+      <div class="title-underline"></div>
+    </div>
+
+    <!-- ── CAROUSEL ROW ── -->
+    <div class="carousel-row">
+
+      <!-- PREV ARROW -->
+      <button class="nav-arrow nav-prev" id="prevBtn" aria-label="Previous project">
+        <svg viewBox="0 0 60 80" class="arrow-svg">
+          <polygon points="50,10 10,40 50,70" class="arrow-poly"/>
+          <polygon points="50,10 10,40 50,70" class="arrow-poly-glow"/>
+        </svg>
       </button>
 
-      <button class="contact-btn" id="btn-email" onclick="openLink('email')">
-        <span class="btn-icon"><i class="fas fa-envelope"></i></span>
-        <span class="btn-text">Email</span>
-        <span class="btn-glow"></span>
-      </button>
+      <!-- CARD VIEWPORT -->
+      <div class="card-viewport" id="cardViewport">
+        <div class="card-track" id="cardTrack">
 
-      <button class="contact-btn" id="btn-schedule" onclick="openLink('schedule')">
-        <span class="btn-icon"><i class="fas fa-calendar-alt"></i></span>
-        <span class="btn-text">Schedule Call</span>
-        <span class="btn-glow"></span>
-      </button>
+          <!-- ─── CARD 1 ─── -->
+          <article class="proj-card" data-index="0">
+            <!-- Corner brackets -->
+            <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
+            <span class="cc cc-bl"></span><span class="cc cc-br"></span>
+            <!-- Scan line -->
+            <div class="scan-sweep"></div>
 
-      <!-- Menu decorative lines -->
-      <div class="menu-deco-lines">
-        <div class="deco-line"></div>
-        <div class="deco-line"></div>
-        <div class="deco-line"></div>
-      </div>
-    </aside>
-
-    <!-- ===== MAIN STAGE ===== -->
-    <main class="main-stage">
-
-      <!-- Top HUD Bar -->
-      <header class="hud-header">
-        <div class="hud-corner-left">
-          <span class="hud-label">SYSTEM ONLINE</span>
-          <div class="hud-bar"><div class="hud-bar-fill"></div></div>
-        </div>
-        <div class="hud-title-area">
-          <div class="hud-name">YOUR NAME</div>
-          <div class="hud-subtitle">PORTFOLIO SHOWCASE v2.4</div>
-        </div>
-        <div class="hud-corner-right">
-          <div class="hud-bar"><div class="hud-bar-fill"></div></div>
-          <span class="hud-label">CLASSIFIED: OPEN</span>
-        </div>
-      </header>
-
-      <!-- ===== HUD CORNER DIALS ===== -->
-      <div class="hud-dial hud-dial--tl" id="dialTL">
-        <svg viewBox="0 0 160 160" class="dial-svg">
-          <circle cx="80" cy="80" r="70" class="dial-track"/>
-          <circle cx="80" cy="80" r="70" class="dial-fill dial-fill--orange" id="dialFillTL"/>
-          <circle cx="80" cy="80" r="55" class="dial-track"/>
-          <circle cx="80" cy="80" r="55" class="dial-fill dial-fill--cyan" id="dialFillCyan"/>
-          <circle cx="80" cy="80" r="40" class="dial-track"/>
-          <circle cx="80" cy="80" r="40" class="dial-fill dial-fill--orange2" id="dialFillOrange2"/>
-          <!-- Tick marks -->
-          <g class="dial-ticks" id="dialTicks"></g>
-          <!-- Center reticle -->
-          <circle cx="80" cy="80" r="6" class="dial-center-dot"/>
-          <line x1="60" y1="80" x2="74" y2="80" class="dial-crosshair"/>
-          <line x1="86" y1="80" x2="100" y2="80" class="dial-crosshair"/>
-          <line x1="80" y1="60" x2="80" y2="74" class="dial-crosshair"/>
-          <line x1="80" y1="86" x2="80" y2="100" class="dial-crosshair"/>
-        </svg>
-        <div class="dial-label">PROJ SCAN</div>
-        <div class="dial-value" id="dialValueTL">87%</div>
-      </div>
-
-      <div class="hud-dial hud-dial--tr" id="dialTR">
-        <svg viewBox="0 0 160 160" class="dial-svg">
-          <circle cx="80" cy="80" r="70" class="dial-track"/>
-          <circle cx="80" cy="80" r="70" class="dial-fill dial-fill--orange" id="dialFillTR"/>
-          <circle cx="80" cy="80" r="55" class="dial-track"/>
-          <circle cx="80" cy="80" r="55" class="dial-fill dial-fill--cyan" id="dialFillCyanTR"/>
-          <circle cx="80" cy="80" r="40" class="dial-track"/>
-          <circle cx="80" cy="80" r="40" class="dial-fill dial-fill--orange2"/>
-          <g class="dial-ticks" id="dialTicksTR"></g>
-          <circle cx="80" cy="80" r="6" class="dial-center-dot"/>
-          <line x1="60" y1="80" x2="74" y2="80" class="dial-crosshair"/>
-          <line x1="86" y1="80" x2="100" y2="80" class="dial-crosshair"/>
-          <line x1="80" y1="60" x2="80" y2="74" class="dial-crosshair"/>
-          <line x1="80" y1="86" x2="80" y2="100" class="dial-crosshair"/>
-        </svg>
-        <div class="dial-label">IMPACT INDEX</div>
-        <div class="dial-value" id="dialValueTR">94%</div>
-      </div>
-
-      <!-- ===== WIREFRAME SCHEMATICS (bottom corners) ===== -->
-      <div class="schematic schematic--bl">
-        <svg viewBox="0 0 200 150" class="schematic-svg">
-          <g class="schematic-lines">
-            <rect x="20" y="20" width="80" height="50" rx="4"/>
-            <rect x="30" y="30" width="60" height="30" rx="2"/>
-            <circle cx="100" cy="90" r="25"/>
-            <circle cx="100" cy="90" r="15"/>
-            <circle cx="100" cy="90" r="5"/>
-            <line x1="20" y1="90" x2="75" y2="90"/>
-            <line x1="125" y1="90" x2="180" y2="90"/>
-            <line x1="100" y1="20" x2="100" y2="65"/>
-            <line x1="100" y1="115" x2="100" y2="140"/>
-            <polygon points="150,20 180,20 180,60 150,60"/>
-            <line x1="155" y1="25" x2="175" y2="25"/>
-            <line x1="155" y1="35" x2="175" y2="35"/>
-            <line x1="155" y1="45" x2="165" y2="45"/>
-            <line x1="20" y1="110" x2="80" y2="110"/>
-            <line x1="20" y1="120" x2="60" y2="120"/>
-            <line x1="20" y1="130" x2="70" y2="130"/>
-          </g>
-        </svg>
-      </div>
-
-      <div class="schematic schematic--br">
-        <svg viewBox="0 0 200 150" class="schematic-svg schematic-svg--flip">
-          <g class="schematic-lines">
-            <rect x="20" y="20" width="80" height="50" rx="4"/>
-            <rect x="30" y="30" width="60" height="30" rx="2"/>
-            <circle cx="100" cy="90" r="25"/>
-            <circle cx="100" cy="90" r="15"/>
-            <circle cx="100" cy="90" r="5"/>
-            <line x1="20" y1="90" x2="75" y2="90"/>
-            <line x1="125" y1="90" x2="180" y2="90"/>
-            <line x1="100" y1="20" x2="100" y2="65"/>
-            <line x1="100" y1="115" x2="100" y2="140"/>
-            <polygon points="150,20 180,20 180,60 150,60"/>
-            <line x1="155" y1="25" x2="175" y2="25"/>
-            <line x1="155" y1="35" x2="175" y2="35"/>
-            <line x1="155" y1="45" x2="165" y2="45"/>
-            <line x1="20" y1="110" x2="80" y2="110"/>
-            <line x1="20" y1="120" x2="60" y2="120"/>
-            <line x1="20" y1="130" x2="70" y2="130"/>
-          </g>
-        </svg>
-      </div>
-
-      <!-- ===== 3D FLOATING MOCKUPS ===== -->
-      <div class="mockup-field" id="mockupField">
-        <!-- Laptop mockup 1 -->
-        <div class="mockup mockup-laptop mockup--1" data-depth="0.3">
-          <div class="mockup-screen">
-            <div class="mockup-content" id="mockupScreen1">
-              <div class="mockup-placeholder">
-                <i class="fas fa-desktop"></i>
-                <span>PROJECT PREVIEW</span>
-              </div>
-            </div>
-          </div>
-          <div class="mockup-base"></div>
-          <div class="mockup-glow"></div>
-        </div>
-
-        <!-- Phone mockup -->
-        <div class="mockup mockup-phone mockup--2" data-depth="0.5">
-          <div class="mockup-screen mockup-screen--phone">
-            <div class="mockup-content" id="mockupScreen2">
-              <div class="mockup-placeholder">
-                <i class="fas fa-mobile-alt"></i>
-                <span>MOBILE VIEW</span>
-              </div>
-            </div>
-          </div>
-          <div class="mockup-glow"></div>
-        </div>
-
-        <!-- Tablet mockup -->
-        <div class="mockup mockup-tablet mockup--3" data-depth="0.2">
-          <div class="mockup-screen mockup-screen--tablet">
-            <div class="mockup-content" id="mockupScreen3">
-              <div class="mockup-placeholder">
-                <i class="fas fa-tablet-alt"></i>
-                <span>TABLET VIEW</span>
-              </div>
-            </div>
-          </div>
-          <div class="mockup-glow"></div>
-        </div>
-      </div>
-
-      <!-- ===== CAROUSEL SECTION ===== -->
-      <section class="carousel-section">
-
-        <!-- Previous Arrow -->
-        <button class="carousel-arrow carousel-arrow--prev" id="prevBtn" aria-label="Previous project">
-          <div class="arrow-rings">
-            <div class="arrow-ring arrow-ring--outer"></div>
-            <div class="arrow-ring arrow-ring--inner"></div>
-          </div>
-          <i class="fas fa-chevron-left arrow-icon"></i>
-        </button>
-
-        <!-- Carousel Track -->
-        <div class="carousel-viewport" id="carouselViewport">
-          <div class="carousel-track" id="carouselTrack">
-
-            <!-- PROJECT CARDS — Add/edit projects here -->
-
-            <!-- Card 1 -->
-            <article class="project-card" data-index="0">
-              <div class="card-corner card-corner--tl"></div>
-              <div class="card-corner card-corner--tr"></div>
-              <div class="card-corner card-corner--bl"></div>
-              <div class="card-corner card-corner--br"></div>
-              <div class="card-scan-line"></div>
-
-              <header class="card-header">
-                <div class="card-number">01</div>
-                <h2 class="card-title">PROJECT NEXUS</h2>
-                <p class="card-tagline">Next-generation SaaS platform for enterprise collaboration</p>
-              </header>
-
-              <div class="card-image-banner">
-                <div class="card-image-placeholder">
-                  <i class="fas fa-code"></i>
-                  <span>UPLOAD PROJECT IMAGE</span>
-                </div>
+            <div class="card-inner">
+              <!-- Image strip -->
+              <div class="card-img-strip" id="cardImg0" title="Click to upload project image">
+                <div class="img-placeholder"><i class="fas fa-image"></i><span>CLICK TO UPLOAD PROJECT IMAGE</span></div>
               </div>
 
-              <div class="card-body">
-                <div class="card-column">
-                  <h3 class="column-title">
-                    <span class="title-bracket">[</span>
-                    FEATURES
-                    <span class="title-bracket">]</span>
-                  </h3>
-                  <ul class="feature-list">
+              <!-- Features + Benefits -->
+              <div class="card-cols">
+                <div class="card-col">
+                  <h3 class="col-heading">FEATURES</h3>
+                  <ul class="col-list">
                     <li>Real-time collaborative workspaces</li>
                     <li>AI-powered workflow automation</li>
                     <li>Seamless third-party integrations</li>
@@ -265,14 +294,10 @@
                     <li>Cross-platform mobile support</li>
                   </ul>
                 </div>
-                <div class="card-divider-vert"></div>
-                <div class="card-column">
-                  <h3 class="column-title">
-                    <span class="title-bracket">[</span>
-                    BENEFITS
-                    <span class="title-bracket">]</span>
-                  </h3>
-                  <ul class="feature-list">
+                <div class="col-divider"></div>
+                <div class="card-col">
+                  <h3 class="col-heading">BENEFITS</h3>
+                  <ul class="col-list">
                     <li>40% reduction in team overhead</li>
                     <li>Deploy in under 10 minutes</li>
                     <li>99.9% uptime SLA guaranteed</li>
@@ -282,45 +307,30 @@
                 </div>
               </div>
 
-              <footer class="card-footer">
+              <!-- Card footer -->
+              <div class="card-foot">
                 <div class="card-tags">
-                  <span class="tag">React</span>
-                  <span class="tag">Node.js</span>
-                  <span class="tag">PostgreSQL</span>
+                  <span class="ctag">React</span><span class="ctag">Node.js</span><span class="ctag">PostgreSQL</span>
                 </div>
-                <button class="card-cta">VIEW PROJECT <i class="fas fa-arrow-right"></i></button>
-              </footer>
-            </article>
-
-            <!-- Card 2 -->
-            <article class="project-card" data-index="1">
-              <div class="card-corner card-corner--tl"></div>
-              <div class="card-corner card-corner--tr"></div>
-              <div class="card-corner card-corner--bl"></div>
-              <div class="card-corner card-corner--br"></div>
-              <div class="card-scan-line"></div>
-
-              <header class="card-header">
-                <div class="card-number">02</div>
-                <h2 class="card-title">ORBIT ANALYTICS</h2>
-                <p class="card-tagline">Intelligence platform turning data into actionable insights</p>
-              </header>
-
-              <div class="card-image-banner">
-                <div class="card-image-placeholder">
-                  <i class="fas fa-chart-bar"></i>
-                  <span>UPLOAD PROJECT IMAGE</span>
-                </div>
+                <button class="card-cta-btn">VIEW PROJECT <i class="fas fa-chevron-right"></i></button>
               </div>
+            </div>
+          </article>
 
-              <div class="card-body">
-                <div class="card-column">
-                  <h3 class="column-title">
-                    <span class="title-bracket">[</span>
-                    FEATURES
-                    <span class="title-bracket">]</span>
-                  </h3>
-                  <ul class="feature-list">
+          <!-- ─── CARD 2 ─── -->
+          <article class="proj-card" data-index="1">
+            <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
+            <span class="cc cc-bl"></span><span class="cc cc-br"></span>
+            <div class="scan-sweep"></div>
+
+            <div class="card-inner">
+              <div class="card-img-strip" id="cardImg1" title="Click to upload project image">
+                <div class="img-placeholder"><i class="fas fa-image"></i><span>CLICK TO UPLOAD PROJECT IMAGE</span></div>
+              </div>
+              <div class="card-cols">
+                <div class="card-col">
+                  <h3 class="col-heading">FEATURES</h3>
+                  <ul class="col-list">
                     <li>Real-time data pipeline ingestion</li>
                     <li>Custom drag-and-drop dashboards</li>
                     <li>Predictive ML model builder</li>
@@ -328,14 +338,10 @@
                     <li>REST & GraphQL API access</li>
                   </ul>
                 </div>
-                <div class="card-divider-vert"></div>
-                <div class="card-column">
-                  <h3 class="column-title">
-                    <span class="title-bracket">[</span>
-                    BENEFITS
-                    <span class="title-bracket">]</span>
-                  </h3>
-                  <ul class="feature-list">
+                <div class="col-divider"></div>
+                <div class="card-col">
+                  <h3 class="col-heading">BENEFITS</h3>
+                  <ul class="col-list">
                     <li>Decisions made 3× faster</li>
                     <li>Reduce analyst time by 60%</li>
                     <li>No SQL skills required</li>
@@ -344,61 +350,40 @@
                   </ul>
                 </div>
               </div>
-
-              <footer class="card-footer">
+              <div class="card-foot">
                 <div class="card-tags">
-                  <span class="tag">Python</span>
-                  <span class="tag">Spark</span>
-                  <span class="tag">D3.js</span>
+                  <span class="ctag">Python</span><span class="ctag">Spark</span><span class="ctag">D3.js</span>
                 </div>
-                <button class="card-cta">VIEW PROJECT <i class="fas fa-arrow-right"></i></button>
-              </footer>
-            </article>
-
-            <!-- Card 3 -->
-            <article class="project-card" data-index="2">
-              <div class="card-corner card-corner--tl"></div>
-              <div class="card-corner card-corner--tr"></div>
-              <div class="card-corner card-corner--bl"></div>
-              <div class="card-corner card-corner--br"></div>
-              <div class="card-scan-line"></div>
-
-              <header class="card-header">
-                <div class="card-number">03</div>
-                <h2 class="card-title">VAULT PLATFORM</h2>
-                <p class="card-tagline">Enterprise-grade security infrastructure at scale</p>
-              </header>
-
-              <div class="card-image-banner">
-                <div class="card-image-placeholder">
-                  <i class="fas fa-shield-alt"></i>
-                  <span>UPLOAD PROJECT IMAGE</span>
-                </div>
+                <button class="card-cta-btn">VIEW PROJECT <i class="fas fa-chevron-right"></i></button>
               </div>
+            </div>
+          </article>
 
-              <div class="card-body">
-                <div class="card-column">
-                  <h3 class="column-title">
-                    <span class="title-bracket">[</span>
-                    FEATURES
-                    <span class="title-bracket">]</span>
-                  </h3>
-                  <ul class="feature-list">
-                    <li>Zero-trust architecture</li>
+          <!-- ─── CARD 3 ─── -->
+          <article class="proj-card" data-index="2">
+            <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
+            <span class="cc cc-bl"></span><span class="cc cc-br"></span>
+            <div class="scan-sweep"></div>
+
+            <div class="card-inner">
+              <div class="card-img-strip" id="cardImg2" title="Click to upload project image">
+                <div class="img-placeholder"><i class="fas fa-image"></i><span>CLICK TO UPLOAD PROJECT IMAGE</span></div>
+              </div>
+              <div class="card-cols">
+                <div class="card-col">
+                  <h3 class="col-heading">FEATURES</h3>
+                  <ul class="col-list">
+                    <li>Zero-trust security architecture</li>
                     <li>AES-256 encryption at rest</li>
                     <li>Multi-factor biometric auth</li>
                     <li>Real-time threat detection AI</li>
                     <li>Automated compliance reports</li>
                   </ul>
                 </div>
-                <div class="card-divider-vert"></div>
-                <div class="card-column">
-                  <h3 class="column-title">
-                    <span class="title-bracket">[</span>
-                    BENEFITS
-                    <span class="title-bracket">]</span>
-                  </h3>
-                  <ul class="feature-list">
+                <div class="col-divider"></div>
+                <div class="card-col">
+                  <h3 class="col-heading">BENEFITS</h3>
+                  <ul class="col-list">
                     <li>99.99% threat prevention rate</li>
                     <li>Reduce compliance costs 50%</li>
                     <li>5-minute incident response</li>
@@ -407,46 +392,29 @@
                   </ul>
                 </div>
               </div>
-
-              <footer class="card-footer">
+              <div class="card-foot">
                 <div class="card-tags">
-                  <span class="tag">Go</span>
-                  <span class="tag">Kubernetes</span>
-                  <span class="tag">Vault</span>
+                  <span class="ctag">Go</span><span class="ctag">Kubernetes</span><span class="ctag">Vault</span>
                 </div>
-                <button class="card-cta">VIEW PROJECT <i class="fas fa-arrow-right"></i></button>
-              </footer>
-            </article>
-
-            <!-- Card 4 -->
-            <article class="project-card" data-index="3">
-              <div class="card-corner card-corner--tl"></div>
-              <div class="card-corner card-corner--tr"></div>
-              <div class="card-corner card-corner--bl"></div>
-              <div class="card-corner card-corner--br"></div>
-              <div class="card-scan-line"></div>
-
-              <header class="card-header">
-                <div class="card-number">04</div>
-                <h2 class="card-title">PULSE CONNECT</h2>
-                <p class="card-tagline">Community-driven web platform for creative professionals</p>
-              </header>
-
-              <div class="card-image-banner">
-                <div class="card-image-placeholder">
-                  <i class="fas fa-users"></i>
-                  <span>UPLOAD PROJECT IMAGE</span>
-                </div>
+                <button class="card-cta-btn">VIEW PROJECT <i class="fas fa-chevron-right"></i></button>
               </div>
+            </div>
+          </article>
 
-              <div class="card-body">
-                <div class="card-column">
-                  <h3 class="column-title">
-                    <span class="title-bracket">[</span>
-                    FEATURES
-                    <span class="title-bracket">]</span>
-                  </h3>
-                  <ul class="feature-list">
+          <!-- ─── CARD 4 ─── -->
+          <article class="proj-card" data-index="3">
+            <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
+            <span class="cc cc-bl"></span><span class="cc cc-br"></span>
+            <div class="scan-sweep"></div>
+
+            <div class="card-inner">
+              <div class="card-img-strip" id="cardImg3" title="Click to upload project image">
+                <div class="img-placeholder"><i class="fas fa-image"></i><span>CLICK TO UPLOAD PROJECT IMAGE</span></div>
+              </div>
+              <div class="card-cols">
+                <div class="card-col">
+                  <h3 class="col-heading">FEATURES</h3>
+                  <ul class="col-list">
                     <li>Live streaming & video rooms</li>
                     <li>Portfolio showcase builder</li>
                     <li>Monetization & tip system</li>
@@ -454,14 +422,10 @@
                     <li>Creator analytics suite</li>
                   </ul>
                 </div>
-                <div class="card-divider-vert"></div>
-                <div class="card-column">
-                  <h3 class="column-title">
-                    <span class="title-bracket">[</span>
-                    BENEFITS
-                    <span class="title-bracket">]</span>
-                  </h3>
-                  <ul class="feature-list">
+                <div class="col-divider"></div>
+                <div class="card-col">
+                  <h3 class="col-heading">BENEFITS</h3>
+                  <ul class="col-list">
                     <li>Grow audience 10× faster</li>
                     <li>Earn from day one</li>
                     <li>500ms global latency</li>
@@ -470,77 +434,42 @@
                   </ul>
                 </div>
               </div>
-
-              <footer class="card-footer">
+              <div class="card-foot">
                 <div class="card-tags">
-                  <span class="tag">Next.js</span>
-                  <span class="tag">WebRTC</span>
-                  <span class="tag">Redis</span>
+                  <span class="ctag">Next.js</span><span class="ctag">WebRTC</span><span class="ctag">Redis</span>
                 </div>
-                <button class="card-cta">VIEW PROJECT <i class="fas fa-arrow-right"></i></button>
-              </footer>
-            </article>
+                <button class="card-cta-btn">VIEW PROJECT <i class="fas fa-chevron-right"></i></button>
+              </div>
+            </div>
+          </article>
 
-          </div><!-- end carousel-track -->
-        </div><!-- end carousel-viewport -->
+        </div><!-- /card-track -->
+      </div><!-- /card-viewport -->
 
-        <!-- Next Arrow -->
-        <button class="carousel-arrow carousel-arrow--next" id="nextBtn" aria-label="Next project">
-          <div class="arrow-rings">
-            <div class="arrow-ring arrow-ring--outer"></div>
-            <div class="arrow-ring arrow-ring--inner"></div>
-          </div>
-          <i class="fas fa-chevron-right arrow-icon"></i>
-        </button>
+      <!-- NEXT ARROW -->
+      <button class="nav-arrow nav-next" id="nextBtn" aria-label="Next project">
+        <svg viewBox="0 0 60 80" class="arrow-svg">
+          <polygon points="10,10 50,40 10,70" class="arrow-poly"/>
+          <polygon points="10,10 50,40 10,70" class="arrow-poly-glow"/>
+        </svg>
+      </button>
 
-      </section><!-- end carousel-section -->
+    </div><!-- /carousel-row -->
 
-      <!-- ===== BOTTOM HUD BAR ===== -->
-      <footer class="hud-footer">
-        <!-- Waveform Visualizer -->
-        <div class="waveform-wrap">
-          <canvas id="waveform" class="waveform-canvas"></canvas>
-          <div class="waveform-label">SIGNAL ACTIVE</div>
-        </div>
-
-        <!-- Carousel Dot Indicators -->
-        <div class="carousel-dots" id="carouselDots"></div>
-
-        <!-- Status bar -->
-        <div class="status-bar">
-          <span class="status-item"><span class="status-dot status-dot--green"></span>LIVE</span>
-          <span class="status-item">PROJECT <span id="currentIndex">01</span>/<span id="totalCards">04</span></span>
-          <span class="status-item">© <span id="currentYear"></span></span>
-        </div>
-      </footer>
-
-    </main><!-- end main-stage -->
-
-  </div><!-- end app-wrapper -->
-
-  <!-- Floating HUD Data Panels -->
-  <div class="hud-panel hud-panel--1">
-    <div class="panel-header">SYS STATUS</div>
-    <div class="panel-waveform" id="miniWave1"></div>
-    <div class="panel-val">ONLINE <span class="panel-highlight">●</span></div>
-  </div>
-
-  <div class="hud-panel hud-panel--2">
-    <div class="panel-header">LOAD INDEX</div>
-    <div class="panel-bars">
-      <div class="panel-bar" style="--h:70%"></div>
-      <div class="panel-bar" style="--h:50%"></div>
-      <div class="panel-bar" style="--h:90%"></div>
-      <div class="panel-bar" style="--h:60%"></div>
-      <div class="panel-bar" style="--h:80%"></div>
+    <!-- ── BOTTOM HUD BAR ── -->
+    <div class="bottom-bar">
+      <div class="waveform-wrap">
+        <canvas id="waveform-main" class="waveform-cvs"></canvas>
+      </div>
+      <div class="carousel-dots" id="carouselDots"></div>
+      <div class="status-readout">
+        <span class="sr-item"><span class="blink-dot"></span>LIVE</span>
+        <span class="sr-item">PROJECT <span id="curIdx">01</span> / <span id="totIdx">04</span></span>
+        <span class="sr-item" id="yearLabel"></span>
+      </div>
     </div>
-  </div>
 
-  <div class="hud-panel hud-panel--3">
-    <div class="panel-header">COORDINATES</div>
-    <div class="panel-coord">X: <span id="mouseX">0000</span></div>
-    <div class="panel-coord">Y: <span id="mouseY">0000</span></div>
-  </div>
+  </main><!-- /stage -->
 
   <script src="js/main.js"></script>
 </body>
