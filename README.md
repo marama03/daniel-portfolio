@@ -1,51 +1,55 @@
-# 🔴 Portfolio HUD — Splash & Showcase Page
+# 🔴 Portfolio HUD — BACKSTAGE Showcase
 
 > **Netflix × Iron Man × Motion Array**  
-> Holographic HUD portfolio with 3D floating device mockups in outer space, swoosh-sound carousel, and cinematic orange/cyan neon aesthetics.
+> Holographic HUD portfolio showcasing **Backstage** — AI Agent Command Center
 
 ---
 
 ## ✅ Completed Features
 
-### Visual Design (matches reference image)
-- 🌟 **Massive glowing PROJECT TITLE** at top-center — orange-to-gold gradient with neon drop-shadow; animates on slide change
-- 🟧 **Central carousel card** — dark glassmorphic background, orange neon corner brackets, scan-sweep line on active card
-- **FEATURES + BENEFITS two-column layout** inside each card — white bold headers, arrow bullet lists
-- 🔺 **Left/Right navigation chevron arrows** — layered orange + cyan neon polygon glow
-- ⭕ **HUD telemetry rings** — top-left and top-right spinning concentric circles with orange/cyan/red arcs, crosshair, and live readout labels
-- 🔧 **Wireframe schematics** — bottom-left (cyan) and bottom-right (orange) isometric gear assembly blueprints
-- 📺 **Floating 3D device mockups** — laptop ×2, phone, tablet — floating in outer space with parallax mouse-tracking depth
-- 📊 **Floating data panels** — left side ×2, right side ×1 — with live waveforms and animated bar charts
-- 🔢 **Right-side hex telemetry column** — scrolling orange monospace data stream with random flicker
-- 🌊 **Bottom waveform visualizer** — dual-frequency animated canvas (orange + cyan)
-- ✨ **X-shaped volumetric light rays** — four diagonal orange beams from the center-back
-- 🌌 **Perspective 3D grid** — vanishing-point canvas grid that pulses over the dark space background
-- 🪐 **Particle field** — rising orange/cyan ambient particles
-- **Staggered boot sequence** — elements fade in with cinematic delay
+### Current Project: Backstage
+- **Card 1** — Command Center + Swarm Orchestration (7 features / 7 benefits)
+- **Card 2** — Output Review + Intelligence Layer (7 features / 7 benefits)
+- **Floating 3D monitors** showing 4 real Backstage screenshots in outer space:
+  - `backstage-swarm-dag.jpg` — Swarm Orchestration DAG flowchart
+  - `backstage-output-review.jpg` — Output Review workspace
+  - `backstage-swarm-builder.jpg` — Swarm Builder canvas
+  - `backstage-decision-journal.jpg` — Decision Journal timeline
 
-### Left Contact Menu (3 pill buttons)
-- 🌐 **Website** — globe icon, orange glow border
-- ✉️ **Email** — envelope icon
-- 📞 **Schedule Call** — phone icon
-- Hover: slides right, intensified glow, inner highlight
+### Visual Design
+- 🌟 **BACKSTAGE title** with orange-gold gradient neon glow, animated tagline
+- 🟧 **Central carousel card** — dark glassmorphic background, orange neon corner brackets, scan sweep
+- **FEATURES + BENEFITS two-column layout** — 7 bullet points each, real product copy
+- 🔺 **Left/Right navigation chevron arrows** — layered orange + cyan neon glow
+- ⭕ **HUD telemetry rings** — top-left/right spinning with "AGENT HEALTH" / "TRIGGER SCAN" labels
+- 🔧 **Wireframe schematics** — bottom corners (cyan/orange)
+- 📺 **3D floating device mockups** — 2 monitors + 1 laptop + 1 tablet with real screenshots
+- 📊 **Floating data panels** — Agent Health / Swarm Ops / Trigger Engine with live waveforms
+- 🔢 **Right-side hex telemetry stream** — scrolling monospace data
+- 🌊 **Bottom waveform** — dual-frequency canvas
+- ✨ **X-shaped light rays** + perspective grid + particle field
 
 ### Interactivity
-- 🎵 **Swoosh sound** on every carousel transition (Web Audio API — synthesized sawtooth + noise)
-- ↔️ **Smooth spring-curve carousel** — cubic-bezier animation
-- ⌨️ **Keyboard navigation** (← → arrow keys)
-- 👆 **Touch/swipe support** on mobile
-- 🖱️ **Dot indicator** navigation (bottom center)
-- 🖼️ **Click-to-upload images** — click card strip OR device screen to upload project screenshots; image mirrors to matching device
-- 🐭 **Mouse parallax** — device mockups shift in 3D depth as mouse moves
+- 🎵 **Swoosh sound** on carousel transitions
+- ⌨️ Keyboard ← → navigation
+- 👆 Touch/swipe support
+- 🖱️ Mouse parallax on all floating devices
+- 🖼️ Click card image strip to replace with your own screenshot
+- ⭕ Dot indicators + staggered boot sequence
 
 ---
 
 ## 📂 File Structure
 
 ```
-index.html      — Full page markup
-css/style.css   — All styling, HUD elements, animations
-js/main.js      — Carousel, audio, particles, waveform, parallax, grid
+index.html                          — Full page markup (Backstage content)
+css/style.css                       — All styling, HUD elements, animations
+js/main.js                          — Carousel, audio, particles, waveform, parallax
+images/
+  backstage-swarm-dag.jpg           — Swarm Orchestration DAG screenshot
+  backstage-output-review.jpg       — Output Review workspace screenshot
+  backstage-swarm-builder.jpg       — Swarm Builder canvas screenshot
+  backstage-decision-journal.jpg    — Decision Journal timeline screenshot
 README.md
 ```
 
@@ -59,58 +63,19 @@ const CFG = {
   website:  'https://yourwebsite.com',
   email:    'mailto:you@example.com',
   schedule: 'https://calendly.com/yourlink',
-  ...
 };
 ```
 
-### 2. Update project titles — `js/main.js` CFG.projects array
-```js
-projects: [
-  { title: 'MY APP NAME',   tagline: 'Short description' },
-  { title: 'SECOND PROJECT', tagline: 'Another description' },
-  ...
-]
-```
+### 2. Add more projects / cards
+- Duplicate an `<article class="proj-card">` block in `index.html`
+- Add matching entry to `CFG.projects` array in `js/main.js`
+- Update `totIdx` if hardcoded
 
-### 3. Edit features/benefits — `index.html`
-Find each `<article class="proj-card">` and update the `<ul class="col-list">` bullets.
-
-### 4. Upload project images
-Click any card's image strip (dashed area) or click a floating device screen when viewing the live page. The image will mirror to the matching device mockup.
-
-### 5. Add your name to the HUD header
-The title zone shows the current project title. To add your name/brand, edit the `.hud-ring` label text in `index.html`:
-```html
-<span>YOUR NAME</span>
-```
-
----
-
-## 🎨 Color Palette
-
-| Variable | Value | Usage |
-|---|---|---|
-| `--bg` | `#060b19` | Page background |
-| `--bg2` | `#000022` | Deep space overlay |
-| `--orange` | `#ec7323` | Primary accent, borders, glows |
-| `--orange2` | `#ef4124` | Red-orange gradient end |
-| `--cyan` | `#00e5ff` | Secondary accent, ring arcs, tags |
-| `--gold` | `#ffb300` | Title gradient highlight |
-| `--white` | `#ffffff` | Card headings |
-| `--grey-lt` | `#c8cce0` | Body text |
+### 3. Swap floating device images
+Replace files in `images/` folder or update `src` attributes on `.dev-img` elements in `index.html`
 
 ---
 
 ## 🚀 Deploy
 
 Go to the **Publish tab** to make it live with one click.
-
----
-
-## 📋 Recommended Next Steps
-
-1. Upload real project screenshots by clicking each card's image area
-2. Replace placeholder Features/Benefits text with your real content
-3. Update `CFG.projects` array with your actual project names
-4. Set your contact links in `CFG`
-5. Add more project cards by duplicating the `<article class="proj-card">` block and adding a matching entry to `CFG.projects`
