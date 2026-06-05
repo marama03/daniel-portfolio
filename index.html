@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio — Project Showcase</title>
+  <title>Backstage — AI Agent Command Center</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,64 +27,70 @@
 
   <!-- ═══════════════════════════════════════════
        FLOATING 3D DEVICE MOCKUPS  (outer space)
+       Using real Backstage screenshots
   ══════════════════════════════════════════════ -->
-  <div class="space-field" id="spaceField" aria-hidden="true">
+  <div class="space-field" id="spaceField" aria-hidden="false">
 
-    <!-- Laptop 1 — upper right -->
-    <div class="device device-laptop dev-1" data-px="0.58" data-py="0.12" data-depth="0.4">
+    <!-- Monitor 1 — Swarm DAG (upper right, large) -->
+    <div class="device device-monitor dev-1" data-px="0.58" data-py="0.06" data-depth="0.4">
+      <div class="dev-screen dev-screen-monitor">
+        <img src="https://www.genspark.ai/api/files/s/iUxaHzuq"
+             alt="Backstage — Swarm Orchestration DAG view"
+             class="dev-img" />
+      </div>
+      <div class="dev-monitor-neck"></div>
+      <div class="dev-monitor-stand"></div>
+      <div class="dev-glow dev-glow-orange"></div>
+    </div>
+
+    <!-- Monitor 2 — Output Review (mid-right) -->
+    <div class="device device-monitor dev-2" data-px="0.60" data-py="0.54" data-depth="0.3">
+      <div class="dev-screen dev-screen-monitor">
+        <img src="https://www.genspark.ai/api/files/s/XhaB9RIi"
+             alt="Backstage — Output Review workspace"
+             class="dev-img" />
+      </div>
+      <div class="dev-monitor-neck"></div>
+      <div class="dev-monitor-stand"></div>
+      <div class="dev-glow dev-glow-cyan"></div>
+    </div>
+
+    <!-- Laptop — Swarm Builder canvas (far right center) -->
+    <div class="device device-laptop dev-3" data-px="0.74" data-py="0.32" data-depth="0.5">
       <div class="dev-screen">
-        <div class="dev-screen-inner" id="devScreen1">
-          <div class="dev-placeholder"><i class="fas fa-desktop"></i><span>UPLOAD IMAGE</span></div>
-        </div>
+        <img src="https://www.genspark.ai/api/files/s/ekIq6XXd"
+             alt="Backstage — Swarm Builder canvas"
+             class="dev-img" />
       </div>
       <div class="dev-base"></div>
       <div class="dev-rim"></div>
+      <div class="dev-glow dev-glow-orange"></div>
     </div>
 
-    <!-- Laptop 2 — mid-right lower -->
-    <div class="device device-laptop dev-2" data-px="0.62" data-py="0.60" data-depth="0.3">
-      <div class="dev-screen">
-        <div class="dev-screen-inner" id="devScreen2">
-          <div class="dev-placeholder"><i class="fas fa-code"></i><span>UPLOAD IMAGE</span></div>
-        </div>
-      </div>
-      <div class="dev-base"></div>
-      <div class="dev-rim"></div>
-    </div>
-
-    <!-- Phone — right center -->
-    <div class="device device-phone dev-3" data-px="0.76" data-py="0.38" data-depth="0.5">
-      <div class="dev-screen dev-screen-phone">
-        <div class="dev-screen-inner" id="devScreen3">
-          <div class="dev-placeholder"><i class="fas fa-mobile-alt"></i><span>MOBILE</span></div>
-        </div>
-      </div>
-      <div class="dev-notch"></div>
-    </div>
-
-    <!-- Tablet — far right -->
-    <div class="device device-tablet dev-4" data-px="0.72" data-py="0.10" data-depth="0.25">
+    <!-- Tablet — Decision Journal (upper far right) -->
+    <div class="device device-tablet dev-4" data-px="0.76" data-py="0.06" data-depth="0.25">
       <div class="dev-screen dev-screen-tablet">
-        <div class="dev-screen-inner" id="devScreen4">
-          <div class="dev-placeholder"><i class="fas fa-tablet-alt"></i><span>TABLET</span></div>
-        </div>
+        <img src="https://www.genspark.ai/api/files/s/rBpodthO"
+             alt="Backstage — Decision Journal timeline"
+             class="dev-img" />
       </div>
+      <div class="dev-glow dev-glow-red"></div>
     </div>
 
-    <!-- Left floating panel 1 -->
-    <div class="device device-panel dev-5" data-px="0.01" data-py="0.38" data-depth="0.2">
-      <div class="panel-header-bar">DATA STREAM 01</div>
+    <!-- Left floating panel 1 — Agent status -->
+    <div class="device device-panel dev-5" data-px="0.01" data-py="0.34" data-depth="0.2">
+      <div class="panel-header-bar"><i class="fas fa-robot"></i> AGENT HEALTH</div>
       <canvas class="panel-mini-wave" id="miniWave1"></canvas>
       <div class="panel-bars-row">
-        <div class="pb" style="--ph:60%"></div><div class="pb" style="--ph:80%"></div>
-        <div class="pb" style="--ph:45%"></div><div class="pb" style="--ph:70%"></div>
-        <div class="pb" style="--ph:90%"></div><div class="pb" style="--ph:55%"></div>
+        <div class="pb" style="--ph:85%"></div><div class="pb" style="--ph:60%"></div>
+        <div class="pb" style="--ph:95%"></div><div class="pb" style="--ph:70%"></div>
+        <div class="pb" style="--ph:80%"></div><div class="pb" style="--ph:55%"></div>
       </div>
     </div>
 
-    <!-- Left floating panel 2 -->
-    <div class="device device-panel dev-6" data-px="0.01" data-py="0.62" data-depth="0.15">
-      <div class="panel-header-bar">SIGNAL ANALYSIS</div>
+    <!-- Left floating panel 2 — Swarm activity -->
+    <div class="device device-panel dev-6" data-px="0.01" data-py="0.60" data-depth="0.15">
+      <div class="panel-header-bar"><i class="fas fa-network-wired"></i> SWARM OPS</div>
       <canvas class="panel-mini-wave" id="miniWave2"></canvas>
       <div class="panel-bars-row">
         <div class="pb" style="--ph:50%"></div><div class="pb" style="--ph:90%"></div>
@@ -93,13 +99,13 @@
       </div>
     </div>
 
-    <!-- Right floating panel -->
-    <div class="device device-panel dev-7" data-px="0.74" data-py="0.64" data-depth="0.2">
-      <div class="panel-header-bar">SYSTEM OUTPUT</div>
+    <!-- Right floating panel — Trigger engine -->
+    <div class="device device-panel dev-7" data-px="0.74" data-py="0.65" data-depth="0.2">
+      <div class="panel-header-bar"><i class="fas fa-bolt"></i> TRIGGER ENGINE</div>
       <canvas class="panel-mini-wave" id="miniWave3"></canvas>
       <div class="panel-bars-row">
         <div class="pb" style="--ph:70%"></div><div class="pb" style="--ph:55%"></div>
-        <div class="pb" style="--ph:85%"></div><div class="pb" style="--ph:40%"></div>
+        <div class="pb" style="--ph:90%"></div><div class="pb" style="--ph:45%"></div>
         <div class="pb" style="--ph:65%"></div><div class="pb" style="--ph:95%"></div>
       </div>
     </div>
@@ -119,7 +125,6 @@
       <circle cx="100" cy="100" r="60" class="ring-arc ring-arc-orange2"/>
       <circle cx="100" cy="100" r="44" class="ring-track"/>
       <circle cx="100" cy="100" r="44" class="ring-arc ring-arc-red"/>
-      <!-- Crosshair -->
       <line x1="75"  y1="100" x2="90"  y2="100" class="ring-cross"/>
       <line x1="110" y1="100" x2="125" y2="100" class="ring-cross"/>
       <line x1="100" y1="75"  x2="100" y2="90"  class="ring-cross"/>
@@ -127,11 +132,11 @@
       <circle cx="100" cy="100" r="4" class="ring-dot"/>
     </svg>
     <div class="ring-label ring-label-tl">
-      <span>SYSTEM STATUS</span>
+      <span>AGENT STATUS</span>
       <span class="rl-val">ONLINE</span>
     </div>
     <div class="ring-label ring-label-tl2">
-      <span>POWER LEVEL</span>
+      <span>SWARM HEALTH</span>
       <span class="rl-val" id="powerLevel">97%</span>
     </div>
   </div>
@@ -153,11 +158,11 @@
       <circle cx="100" cy="100" r="4" class="ring-dot"/>
     </svg>
     <div class="ring-label ring-label-tr">
-      <span>SCAN INDEX</span>
+      <span>TRIGGER SCAN</span>
       <span class="rl-val" id="scanIndex">88%</span>
     </div>
     <div class="ring-label ring-label-tr2">
-      <span>LOAD STATUS</span>
+      <span>CORTEX LOAD</span>
       <span class="rl-val">NOMINAL</span>
     </div>
   </div>
@@ -168,7 +173,6 @@
   <div class="schematic schematic-bl" aria-hidden="true">
     <svg viewBox="0 0 220 180" class="sch-svg sch-svg-cyan">
       <g class="sch-g">
-        <!-- Gear assembly -->
         <circle cx="60" cy="90" r="40"/>
         <circle cx="60" cy="90" r="28"/>
         <circle cx="60" cy="90" r="10"/>
@@ -176,16 +180,13 @@
         <line x1="20" y1="90" x2="10" y2="90"/><line x1="100" y1="90" x2="110" y2="90"/>
         <line x1="32" y1="62" x2="25" y2="55"/><line x1="88" y1="62" x2="95" y2="55"/>
         <line x1="32" y1="118" x2="25" y2="125"/><line x1="88" y1="118" x2="95" y2="125"/>
-        <!-- Teeth -->
         <rect x="56" y="46" width="8" height="8"/><rect x="56" y="126" width="8" height="8"/>
         <rect x="16" y="86" width="8" height="8"/><rect x="96" y="86" width="8" height="8"/>
-        <!-- Arm -->
         <line x1="100" y1="90" x2="200" y2="60"/>
         <rect x="140" y="50" width="50" height="30" rx="3"/>
         <line x1="148" y1="58" x2="182" y2="58"/>
         <line x1="148" y1="66" x2="170" y2="66"/>
         <line x1="148" y1="74" x2="176" y2="74"/>
-        <!-- Base lines -->
         <line x1="10" y1="155" x2="120" y2="155"/>
         <line x1="10" y1="165" x2="90" y2="165"/>
         <line x1="10" y1="175" x2="70" y2="175"/>
@@ -249,15 +250,16 @@
 
     <!-- ── PROJECT TITLE ── -->
     <div class="title-zone" aria-live="polite">
-      <h1 class="project-title" id="projectTitle">PROJECT TITLE</h1>
+      <h1 class="project-title" id="projectTitle">BACKSTAGE</h1>
       <div class="title-underline"></div>
+      <p class="project-tagline" id="projectTagline">AI Agent Command Center — Windows Native</p>
     </div>
 
     <!-- ── CAROUSEL ROW ── -->
     <div class="carousel-row">
 
       <!-- PREV ARROW -->
-      <button class="nav-arrow nav-prev" id="prevBtn" aria-label="Previous project">
+      <button class="nav-arrow nav-prev" id="prevBtn" aria-label="Previous view">
         <svg viewBox="0 0 60 80" class="arrow-svg">
           <polygon points="50,10 10,40 50,70" class="arrow-poly"/>
           <polygon points="50,10 10,40 50,70" class="arrow-poly-glow"/>
@@ -268,177 +270,100 @@
       <div class="card-viewport" id="cardViewport">
         <div class="card-track" id="cardTrack">
 
-          <!-- ─── CARD 1 ─── -->
+          <!-- ─── CARD 1: Command Center + Swarm ─── -->
           <article class="proj-card" data-index="0">
-            <!-- Corner brackets -->
             <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
             <span class="cc cc-bl"></span><span class="cc cc-br"></span>
-            <!-- Scan line -->
             <div class="scan-sweep"></div>
-
             <div class="card-inner">
-              <!-- Image strip -->
-              <div class="card-img-strip" id="cardImg0" title="Click to upload project image">
-                <div class="img-placeholder"><i class="fas fa-image"></i><span>CLICK TO UPLOAD PROJECT IMAGE</span></div>
+              <div class="card-img-strip" id="cardImg0" title="Click to upload image">
+                <img src="https://www.genspark.ai/api/files/s/iUxaHzuq"
+                     alt="Backstage Swarm Orchestration" />
               </div>
-
-              <!-- Features + Benefits -->
               <div class="card-cols">
                 <div class="card-col">
                   <h3 class="col-heading">FEATURES</h3>
                   <ul class="col-list">
-                    <li>Real-time collaborative workspaces</li>
-                    <li>AI-powered workflow automation</li>
-                    <li>Seamless third-party integrations</li>
-                    <li>Advanced role-based permissions</li>
-                    <li>Cross-platform mobile support</li>
+                    <li>One command center for every agent — scheduled tasks, services, MCP servers &amp; Claude stack in one native Windows dashboard</li>
+                    <li>Swarm orchestration on a live canvas — design in Claude, drop it in, watch nodes auto-layout, hit Run</li>
+                    <li>In-house trigger engine — 15 trigger types with guards and anti-thrash logic (cron, file-watch, MCP events)</li>
+                    <li>CONTEXT tab — see whether the cognitive architecture your agents read is healthy: green / yellow / red</li>
+                    <li>Catches silent failure — STALE detection and NEEDS REVIEW queue flag quietly degrading agents</li>
+                    <li>Repair with AI — one click feeds config + logs to Claude and rewrites the fix</li>
+                    <li>Runs on Claude Max, not API bills — uses the Claude CLI you already pay for: $0/mo added cost</li>
                   </ul>
                 </div>
                 <div class="col-divider"></div>
                 <div class="card-col">
                   <h3 class="col-heading">BENEFITS</h3>
                   <ul class="col-list">
-                    <li>40% reduction in team overhead</li>
-                    <li>Deploy in under 10 minutes</li>
-                    <li>99.9% uptime SLA guaranteed</li>
-                    <li>Scales to 100k+ concurrent users</li>
-                    <li>SOC 2 Type II compliant</li>
+                    <li>The boring-but-valuable work runs while you sleep — wake up to drafts, prospects &amp; reports already done</li>
+                    <li>You stay the operator, not the bottleneck — approve, reject, leave a one-line "why." System gets sharper over time</li>
+                    <li>Nothing fails in the dark — Toast, Telegram &amp; email alerts the moment an agent breaks or drifts</li>
+                    <li>Your moat becomes visible — Backstage shows at a glance whether your cognitive architecture is load-bearing</li>
+                    <li>See business outcomes, not just activity — posts published, prospects sourced, calls booked per dollar of Claude time</li>
+                    <li>Control it from your phone — Tailscale + Telegram + installable PWA, fire &amp; check any agent from anywhere</li>
+                    <li>Local-first, you own the data — everything runs on your machine behind an encrypted vault</li>
                   </ul>
                 </div>
               </div>
-
-              <!-- Card footer -->
               <div class="card-foot">
                 <div class="card-tags">
-                  <span class="ctag">React</span><span class="ctag">Node.js</span><span class="ctag">PostgreSQL</span>
+                  <span class="ctag">Windows Native</span>
+                  <span class="ctag">Claude Max</span>
+                  <span class="ctag">MCP</span>
+                  <span class="ctag">Swarm AI</span>
                 </div>
-                <button class="card-cta-btn">VIEW PROJECT <i class="fas fa-chevron-right"></i></button>
+                <button class="card-cta-btn" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
               </div>
             </div>
           </article>
 
-          <!-- ─── CARD 2 ─── -->
+          <!-- ─── CARD 2: Intelligence + Control ─── -->
           <article class="proj-card" data-index="1">
             <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
             <span class="cc cc-bl"></span><span class="cc cc-br"></span>
             <div class="scan-sweep"></div>
-
             <div class="card-inner">
-              <div class="card-img-strip" id="cardImg1" title="Click to upload project image">
-                <div class="img-placeholder"><i class="fas fa-image"></i><span>CLICK TO UPLOAD PROJECT IMAGE</span></div>
+              <div class="card-img-strip" id="cardImg1" title="Click to upload image">
+                <img src="https://www.genspark.ai/api/files/s/XhaB9RIi"
+                     alt="Backstage Output Review" />
               </div>
               <div class="card-cols">
                 <div class="card-col">
-                  <h3 class="col-heading">FEATURES</h3>
+                  <h3 class="col-heading">OUTPUT REVIEW</h3>
                   <ul class="col-list">
-                    <li>Real-time data pipeline ingestion</li>
-                    <li>Custom drag-and-drop dashboards</li>
-                    <li>Predictive ML model builder</li>
-                    <li>White-label reporting suite</li>
-                    <li>REST & GraphQL API access</li>
+                    <li>Karpathy Proposer scans recent self_healing.json + corrections and proposes new playbooks</li>
+                    <li>Accepted proposals are marked for code-gen — Backstage captures diffs as corrections</li>
+                    <li>Re-indexes QMD automatically after 3+ corrections — Karpathy auto-improve button appears</li>
+                    <li>Iterator reads your Cortex rules + prior corrections before each revision cycle</li>
+                    <li>Rich markdown output viewer with push-to-sheet and save-final workflows</li>
+                    <li>Recent outputs sidebar with timestamped agent run history</li>
+                    <li>One-line natural language edit commands — "drop the em-dashes," "make the opening sharper"</li>
                   </ul>
                 </div>
                 <div class="col-divider"></div>
                 <div class="card-col">
-                  <h3 class="col-heading">BENEFITS</h3>
+                  <h3 class="col-heading">INTELLIGENCE LAYER</h3>
                   <ul class="col-list">
-                    <li>Decisions made 3× faster</li>
-                    <li>Reduce analyst time by 60%</li>
-                    <li>No SQL skills required</li>
-                    <li>Processes 10M rows per second</li>
-                    <li>GDPR & CCPA ready</li>
+                    <li>Decision Journal — unified activity timeline of every spawn, decision, correction &amp; MCP call</li>
+                    <li>Click "Why?" on any entry to see the full reasoning behind every agent decision</li>
+                    <li>Self-Healing / Shadow Run / Spawn Trace views for focused deep-dives</li>
+                    <li>Activity feed filterable by type and agent — 300+ events tracked in real time</li>
+                    <li>Safety system monitors and flags drift before it reaches your clients</li>
+                    <li>System panel with multi-tenant config — operator + client environments in one place</li>
+                    <li>Client Magic Links via HMAC-SHA256 — signed, expiring access with no database needed</li>
                   </ul>
                 </div>
               </div>
               <div class="card-foot">
                 <div class="card-tags">
-                  <span class="ctag">Python</span><span class="ctag">Spark</span><span class="ctag">D3.js</span>
+                  <span class="ctag">Self-Healing</span>
+                  <span class="ctag">Cortex AI</span>
+                  <span class="ctag">Multi-Tenant</span>
+                  <span class="ctag">Zero-DB Auth</span>
                 </div>
-                <button class="card-cta-btn">VIEW PROJECT <i class="fas fa-chevron-right"></i></button>
-              </div>
-            </div>
-          </article>
-
-          <!-- ─── CARD 3 ─── -->
-          <article class="proj-card" data-index="2">
-            <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
-            <span class="cc cc-bl"></span><span class="cc cc-br"></span>
-            <div class="scan-sweep"></div>
-
-            <div class="card-inner">
-              <div class="card-img-strip" id="cardImg2" title="Click to upload project image">
-                <div class="img-placeholder"><i class="fas fa-image"></i><span>CLICK TO UPLOAD PROJECT IMAGE</span></div>
-              </div>
-              <div class="card-cols">
-                <div class="card-col">
-                  <h3 class="col-heading">FEATURES</h3>
-                  <ul class="col-list">
-                    <li>Zero-trust security architecture</li>
-                    <li>AES-256 encryption at rest</li>
-                    <li>Multi-factor biometric auth</li>
-                    <li>Real-time threat detection AI</li>
-                    <li>Automated compliance reports</li>
-                  </ul>
-                </div>
-                <div class="col-divider"></div>
-                <div class="card-col">
-                  <h3 class="col-heading">BENEFITS</h3>
-                  <ul class="col-list">
-                    <li>99.99% threat prevention rate</li>
-                    <li>Reduce compliance costs 50%</li>
-                    <li>5-minute incident response</li>
-                    <li>ISO 27001 & FedRAMP certified</li>
-                    <li>Enterprise SLA guarantees</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="card-foot">
-                <div class="card-tags">
-                  <span class="ctag">Go</span><span class="ctag">Kubernetes</span><span class="ctag">Vault</span>
-                </div>
-                <button class="card-cta-btn">VIEW PROJECT <i class="fas fa-chevron-right"></i></button>
-              </div>
-            </div>
-          </article>
-
-          <!-- ─── CARD 4 ─── -->
-          <article class="proj-card" data-index="3">
-            <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
-            <span class="cc cc-bl"></span><span class="cc cc-br"></span>
-            <div class="scan-sweep"></div>
-
-            <div class="card-inner">
-              <div class="card-img-strip" id="cardImg3" title="Click to upload project image">
-                <div class="img-placeholder"><i class="fas fa-image"></i><span>CLICK TO UPLOAD PROJECT IMAGE</span></div>
-              </div>
-              <div class="card-cols">
-                <div class="card-col">
-                  <h3 class="col-heading">FEATURES</h3>
-                  <ul class="col-list">
-                    <li>Live streaming & video rooms</li>
-                    <li>Portfolio showcase builder</li>
-                    <li>Monetization & tip system</li>
-                    <li>AI content recommendations</li>
-                    <li>Creator analytics suite</li>
-                  </ul>
-                </div>
-                <div class="col-divider"></div>
-                <div class="card-col">
-                  <h3 class="col-heading">BENEFITS</h3>
-                  <ul class="col-list">
-                    <li>Grow audience 10× faster</li>
-                    <li>Earn from day one</li>
-                    <li>500ms global latency</li>
-                    <li>Built-in SEO optimization</li>
-                    <li>White-label ready</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="card-foot">
-                <div class="card-tags">
-                  <span class="ctag">Next.js</span><span class="ctag">WebRTC</span><span class="ctag">Redis</span>
-                </div>
-                <button class="card-cta-btn">VIEW PROJECT <i class="fas fa-chevron-right"></i></button>
+                <button class="card-cta-btn" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
               </div>
             </div>
           </article>
@@ -447,7 +372,7 @@
       </div><!-- /card-viewport -->
 
       <!-- NEXT ARROW -->
-      <button class="nav-arrow nav-next" id="nextBtn" aria-label="Next project">
+      <button class="nav-arrow nav-next" id="nextBtn" aria-label="Next view">
         <svg viewBox="0 0 60 80" class="arrow-svg">
           <polygon points="10,10 50,40 10,70" class="arrow-poly"/>
           <polygon points="10,10 50,40 10,70" class="arrow-poly-glow"/>
@@ -464,7 +389,7 @@
       <div class="carousel-dots" id="carouselDots"></div>
       <div class="status-readout">
         <span class="sr-item"><span class="blink-dot"></span>LIVE</span>
-        <span class="sr-item">PROJECT <span id="curIdx">01</span> / <span id="totIdx">04</span></span>
+        <span class="sr-item">VIEW <span id="curIdx">01</span> / <span id="totIdx">02</span></span>
         <span class="sr-item" id="yearLabel"></span>
       </div>
     </div>

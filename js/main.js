@@ -10,12 +10,16 @@ const CFG = {
   email:    'mailto:you@example.com',
   schedule: 'https://calendly.com/yourlink',
 
-  // Project data — edit these to match your real projects
+  // Project / card data
   projects: [
-    { title: 'PROJECT NEXUS',     tagline: 'Enterprise SaaS collaboration platform' },
-    { title: 'ORBIT ANALYTICS',   tagline: 'AI-powered intelligence dashboard'       },
-    { title: 'VAULT PLATFORM',    tagline: 'Zero-trust enterprise security suite'     },
-    { title: 'PULSE CONNECT',     tagline: 'Creator community web platform'          },
+    {
+      title:   'BACKSTAGE',
+      tagline: 'AI Agent Command Center — Windows Native',
+    },
+    {
+      title:   'BACKSTAGE',
+      tagline: 'Output Review · Decision Journal · Intelligence Layer',
+    },
   ],
 };
 
@@ -208,16 +212,23 @@ class Carousel {
     // Update counter
     if (this.curEl) this.curEl.textContent = String(this.cur + 1).padStart(2, '0');
 
-    // Update title
+    // Update title + tagline
     const p = CFG.projects[this.cur];
+    const tagEl = document.getElementById('projectTagline');
     if (this.titleEl && p) {
       this.titleEl.style.opacity = '0';
       this.titleEl.style.transform = 'translateY(-8px)';
+      if (tagEl) { tagEl.style.opacity = '0'; }
       setTimeout(() => {
         this.titleEl.textContent = p.title;
         this.titleEl.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
         this.titleEl.style.opacity = '1';
         this.titleEl.style.transform = 'translateY(0)';
+        if (tagEl) {
+          tagEl.textContent = p.tagline;
+          tagEl.style.transition = 'opacity 0.4s ease';
+          tagEl.style.opacity = '1';
+        }
       }, 200);
     }
 
@@ -580,45 +591,31 @@ function animatePanelBars() {
 }
 
 /* ============================================================
-   IMAGE UPLOAD  (card strips + device screens)
+   IMAGE UPLOAD  (card strips — click to swap with custom image)
    ============================================================ */
 function initImageUpload() {
-  // Card image strips
+  // Card image strips — clicking replaces the image
   $$('.card-img-strip').forEach((strip, i) => {
+    strip.style.cursor = 'pointer';
+    strip.title = 'Click to replace with your own image';
     strip.addEventListener('click', () => {
       const inp = document.createElement('input');
-      inp.type  = 'file';
+      inp.type   = 'file';
       inp.accept = 'image/*';
       inp.onchange = e => {
         const file = e.target.files[0];
         if (!file) return;
         const fr = new FileReader();
         fr.onload = ev => {
-          strip.innerHTML = `<img src="${ev.target.result}" alt="Project ${i+1} screenshot" />`;
-          // Mirror to the matching device screen
-          const devEl = document.getElementById(`devScreen${i + 1}`);
-          if (devEl) {
-            devEl.innerHTML = `<img src="${ev.target.result}" alt="Device preview" style="width:100%;height:100%;object-fit:cover;" />`;
+          // Replace or update img inside strip
+          let img = strip.querySelector('img');
+          if (!img) {
+            strip.innerHTML = '';
+            img = document.createElement('img');
+            strip.appendChild(img);
           }
-        };
-        fr.readAsDataURL(file);
-      };
-      inp.click();
-    });
-  });
-
-  // Device screens also accept clicks
-  $$('.dev-screen-inner').forEach((screen, i) => {
-    screen.addEventListener('click', () => {
-      const inp = document.createElement('input');
-      inp.type  = 'file';
-      inp.accept = 'image/*';
-      inp.onchange = e => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const fr = new FileReader();
-        fr.onload = ev => {
-          screen.innerHTML = `<img src="${ev.target.result}" alt="Project screenshot" style="width:100%;height:100%;object-fit:cover;" />`;
+          img.src = ev.target.result;
+          img.alt = `Project screenshot ${i+1}`;
         };
         fr.readAsDataURL(file);
       };
