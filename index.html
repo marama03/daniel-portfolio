@@ -124,28 +124,32 @@ html,body {
 
 .gal-device { position:absolute; transform-style:preserve-3d; will-change:transform; pointer-events:none; }
 
-/* Devices fill the full 38% lane — large, staggered, overlapping for depth */
-.gd-1 { top:2%;  right:1%;  width:88%;  animation:gdrift1 9s  ease-in-out infinite alternate; }
-.gd-2 { top:50%; right:3%;  width:80%;  animation:gdrift2 11s ease-in-out infinite alternate; animation-delay:1.4s; }
-.gd-3 { top:26%; right:-2%; width:70%;  animation:gdrift3 8s  ease-in-out infinite alternate; animation-delay:.7s; }
-.gd-4 { top:5%;  right:48%; width:52%;  animation:gdrift4 10s ease-in-out infinite alternate; animation-delay:2.2s; }
+/* Devices fill the full 38% lane
+   JS (initGalaxySpotlight) handles smooth z-order via opacity+filter+zIndex transitions */
+.gd-1 { top:2%;  right:1%;  width:88%;  z-index:4; animation:gdrift1 9s  ease-in-out infinite alternate; }
+.gd-2 { top:50%; right:3%;  width:80%;  z-index:3; animation:gdrift2 11s ease-in-out infinite alternate; animation-delay:1.4s; }
+.gd-3 { top:26%; right:-2%; width:70%;  z-index:2; animation:gdrift3 8s  ease-in-out infinite alternate; animation-delay:.7s; }
+.gd-4 { top:5%;  right:48%; width:52%;  z-index:1; animation:gdrift4 10s ease-in-out infinite alternate; animation-delay:2.2s; }
 
-/* Bigger, more dramatic drift — Y travel 40-60px, stronger rotation */
+/* Smooth transition for spotlight effect (JS sets opacity/filter/z-index) */
+.gal-device { transition: opacity 1.4s ease, filter 1.4s ease; }
+
+/* Dramatic float — scale kept out of keyframes so JS can control it independently */
 @keyframes gdrift1 {
-  from { transform:translateY(0px)   rotateX(8deg)  rotateY(-14deg) scale(1); }
-  to   { transform:translateY(-52px) rotateX(-6deg) rotateY(12deg)  scale(1.04); }
+  from { transform:translateY(0px)   rotateX(8deg)  rotateY(-14deg); }
+  to   { transform:translateY(-54px) rotateX(-6deg) rotateY(12deg);  }
 }
 @keyframes gdrift2 {
-  from { transform:translateY(0px)   rotateX(-7deg) rotateY(12deg)  scale(1); }
-  to   { transform:translateY(-44px) rotateX(8deg)  rotateY(-10deg) scale(1.03); }
+  from { transform:translateY(0px)   rotateX(-7deg) rotateY(12deg);  }
+  to   { transform:translateY(-46px) rotateX(8deg)  rotateY(-10deg); }
 }
 @keyframes gdrift3 {
-  from { transform:translateY(0px)   rotateX(6deg)  rotateY(8deg)   scale(1); }
-  to   { transform:translateY(-38px) rotateX(-8deg) rotateY(-8deg)  scale(1.05); }
+  from { transform:translateY(0px)   rotateX(6deg)  rotateY(8deg);   }
+  to   { transform:translateY(-40px) rotateX(-8deg) rotateY(-8deg);  }
 }
 @keyframes gdrift4 {
-  from { transform:translateY(0px)   rotateX(-9deg) rotateY(-8deg)  scale(1); }
-  to   { transform:translateY(-46px) rotateX(7deg)  rotateY(12deg)  scale(1.04); }
+  from { transform:translateY(0px)   rotateX(-9deg) rotateY(-8deg);  }
+  to   { transform:translateY(-48px) rotateX(7deg)  rotateY(12deg);  }
 }
 
 .gd-frame { border-radius:4px; overflow:hidden; position:relative; transition:transform .35s var(--ease),filter .35s; }
@@ -879,9 +883,72 @@ function animRingVal(id,lo,hi){const el=document.getElementById(id);if(!el)retur
 function buildStars(id){
   const c=document.getElementById(id);if(!c)return;
   const g=c.getContext('2d');
-  function draw(){c.width=window.innerWidth;c.height=window.innerHeight;const count=Math.floor(c.width*c.height/6000);for(let i=0;i<count;i++){const x=Math.random()*c.width,y=Math.random()*c.height,r=Math.random()*1.2+.2,a=Math.random()*.6+.1;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fillStyle=Math.random()>.85?`rgba(236,228,183,${a*.8})`:`rgba(236,115,35,${a*.7})`;g.fill();}for(let i=0;i<12;i++){const x=Math.random()*c.width,y=Math.random()*c.height;g.beginPath();g.arc(x,y,1.5,0,Math.PI*2);g.fillStyle=`rgba(255,255,255,${Math.random()*.8+.2})`;g.shadowColor='#fff';g.shadowBlur=4;g.fill();g.shadowBlur=0;}}
-  draw();window.addEventListener('resize',draw);
-  setInterval(()=>{const sl=Math.floor(c.width*c.height/25000);for(let i=0;i<sl;i++){const x=Math.random()*c.width,y=Math.random()*c.height;g.clearRect(x-2,y-2,6,6);const r=Math.random()*1.4+.2,a=Math.random()*.5+.1;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fillStyle=`rgba(236,115,35,${a})`;g.fill();}},2000);
+  let W,H,stars=[];
+
+  function initStars(){
+    W=c.width=window.innerWidth;
+    H=c.height=window.innerHeight;
+    const count=Math.floor(W*H/4800);
+    stars=[];
+    for(let i=0;i<count;i++){
+      const bright=Math.random()>.88;
+      const shoot=Math.random()>.97;
+      stars.push({
+        x:Math.random()*W, y:Math.random()*H,
+        r:bright?1.3+Math.random()*.7 : 0.2+Math.random()*0.9,
+        vx:(shoot?2.2+Math.random()*2.8 : 0.05+Math.random()*0.16),
+        vy:(shoot?0.7+Math.random()*1.2 : 0.01+Math.random()*0.05),
+        a:bright?0.6+Math.random()*.4 : 0.15+Math.random()*.4,
+        ph:Math.random()*Math.PI*2,
+        bright, shoot
+      });
+    }
+  }
+
+  let last=0,fr=0;
+  function tick(ts){
+    if(ts-last<33){requestAnimationFrame(tick);return;}
+    last=ts; fr++;
+    g.clearRect(0,0,W,H);
+
+    stars.forEach(s=>{
+      s.x+=s.vx; s.y+=s.vy;
+      if(s.x>W+20){s.x=-10; s.y=Math.random()*H;}
+      if(s.y>H+20){s.y=-10; s.x=Math.random()*W;}
+
+      /* Twinkle pulse */
+      const tw=s.bright ? 0.32*Math.sin(fr*0.038+s.ph) : 0.12*Math.sin(fr*0.022+s.ph);
+      const alpha=Math.max(0.04,Math.min(1,s.a+tw));
+
+      if(s.shoot){
+        /* Streak tail */
+        const tl=s.vx*16;
+        const grd=g.createLinearGradient(s.x-tl,s.y-tl*0.45,s.x,s.y);
+        grd.addColorStop(0,'transparent');
+        grd.addColorStop(1,`rgba(255,225,160,${alpha*0.8})`);
+        g.beginPath();g.strokeStyle=grd;g.lineWidth=s.r*0.8;
+        g.moveTo(s.x-tl,s.y-tl*0.45);g.lineTo(s.x,s.y);g.stroke();
+      }
+
+      g.beginPath();
+      g.arc(s.x,s.y,s.r,0,Math.PI*2);
+      if(s.bright||s.shoot){
+        g.fillStyle=`rgba(255,255,255,${alpha})`;
+        g.shadowColor='rgba(255,240,200,.9)'; g.shadowBlur=s.r*3.5;
+      } else {
+        g.fillStyle=Math.random()>.65
+          ?`rgba(236,228,183,${alpha*0.7})`
+          :`rgba(236,115,35,${alpha*0.55})`;
+        g.shadowBlur=0;
+      }
+      g.fill(); g.shadowBlur=0;
+    });
+    requestAnimationFrame(tick);
+  }
+
+  initStars();
+  window.addEventListener('resize',initStars);
+  requestAnimationFrame(tick);
 }
 
 function buildNebula(id){
@@ -900,7 +967,59 @@ class Waveform {
 
 function buildHex(){const el=$('#hexInner');if(!el)return;const chars='0123456789ABCDEF';const r8=()=>Array.from({length:8},()=>chars[Math.floor(Math.random()*16)]).join('');const lines=Array.from({length:90},()=>`<div>${r8()}</div>`).join('');el.innerHTML=lines+lines;setInterval(()=>{const all=$$('div',el),p=all[Math.floor(Math.random()*all.length)];if(p){p.textContent=r8();p.style.color=Math.random()>.8?'rgba(236,228,183,.55)':'rgba(236,115,35,.45)';}},140);}
 
-function initParallax(){const devs=$$('.gal-device');if(!devs.length)return;let mx=.5,my=.5,cx=.5,cy=.5,tk=false;document.addEventListener('mousemove',e=>{mx=e.clientX/window.innerWidth;my=e.clientY/window.innerHeight;if(!tk){tk=true;requestAnimationFrame(()=>{cx+=(mx-cx)*.05;cy+=(my-cy)*.05;const dx=(cx-.5)*2,dy=(cy-.5)*2;devs.forEach(d=>{const dep=parseFloat(d.dataset.drift||1);d.style.marginLeft=dx*dep*28+'px';d.style.marginTop=dy*dep*20+'px';});tk=false;});}});}
+function initParallax(){
+  const devs=$$('.gal-device');if(!devs.length)return;
+  let mx=.5,my=.5,cx=.5,cy=.5,tk=false;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX/window.innerWidth; my=e.clientY/window.innerHeight;
+    if(!tk){tk=true;requestAnimationFrame(()=>{
+      cx+=(mx-cx)*.05; cy+=(my-cy)*.05;
+      const dx=(cx-.5)*2, dy=(cy-.5)*2;
+      devs.forEach(d=>{
+        const dep=parseFloat(d.dataset.drift||1);
+        d.style.marginLeft=dx*dep*28+'px';
+        d.style.marginTop =dy*dep*20+'px';
+      });
+      tk=false;
+    });}
+  });
+}
+
+/* ── GALAXY SPOTLIGHT ──
+   Smooth z-order rotation: active device gets z:10, brightens with glow;
+   others dim to 0.65 opacity. CSS transition (1.4s ease) on opacity+filter
+   makes the crossfade buttery. z-index flips atomically but reads naturally
+   because the opacity fade masks the hard jump. */
+function initGalaxySpotlight(){
+  const devs=$$('.gal-device');
+  if(!devs.length)return;
+  const N=devs.length;
+  const BASE_Z=[1,2,3,4];  /* idle depth order */
+  const HOLD=8000;          /* ms each device stays spotlit */
+  let front=0;
+
+  function spotlight(idx){
+    devs.forEach((d,i)=>{
+      if(i===idx){
+        d.style.zIndex='10';
+        d.style.opacity='1';
+        d.style.filter=[
+          'brightness(1.25)',
+          'drop-shadow(0 0 16px rgba(236,115,35,.95))',
+          'drop-shadow(0 0 40px rgba(236,115,35,.5))',
+          'drop-shadow(0 0 70px rgba(236,115,35,.2))'
+        ].join(' ');
+      } else {
+        d.style.zIndex=String(BASE_Z[i]);
+        d.style.opacity='0.62';
+        d.style.filter='brightness(0.78) drop-shadow(0 0 3px rgba(236,115,35,.15))';
+      }
+    });
+  }
+
+  spotlight(front);
+  setInterval(()=>{ front=(front+1)%N; spotlight(front); }, HOLD);
+}
 
 function setPhoto(src){
   const p=$('#aboutPhoto');if(!p)return;
@@ -931,7 +1050,7 @@ function boot(){const s=$('.stage'),l=$('#leftCol');[s,l].forEach(el=>{if(el)el.
 
 document.addEventListener('DOMContentLoaded',()=>{
   const s=document.createElement('style');s.textContent='@keyframes flashOver{from{opacity:.5}to{opacity:0}}';document.head.appendChild(s);
-  boot();buildDots();buildStars('canvas-stars');buildNebula('canvas-nebula');buildHex();new Waveform('waveform');initParallax();initKeyboard();initSwipe();initPhotoUpload();initImageUpload();
+  boot();buildDots();buildStars('canvas-stars');buildNebula('canvas-nebula');buildHex();new Waveform('waveform');initParallax();initGalaxySpotlight();initKeyboard();initSwipe();initPhotoUpload();initImageUpload();
   $('#btnRight')?.addEventListener('click',navRight);$('#btnLeft')?.addEventListener('click',navLeft);$('#btnUp')?.addEventListener('click',navUp);$('#btnDown')?.addEventListener('click',navDown);
   updateInfo();
   const yr=$('#yearLbl');if(yr)yr.textContent='© '+new Date().getFullYear();
