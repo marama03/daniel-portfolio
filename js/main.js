@@ -100,11 +100,7 @@ function swoosh(type = 'lr') {
   } catch(_) {}
 }
 
-/* ── GALAXY IMAGE SWAP ── */
-function updateGalaxy(brand) {
-  $$('.gd-img-backstage').forEach(img => { img.style.display = brand === 'backstage' ? '' : 'none'; });
-  $$('.gd-img-pizza').forEach(img     => { img.style.display = brand === 'pizza'     ? '' : 'none'; });
-}
+/* ── GALAXY IMAGE SWAP (first definition removed — full version below) ── */
 
 /* ── SLIDE MANAGER ── */
 const slides = $$('.proj-slide');
@@ -113,12 +109,19 @@ function showSlide(newIdx, direction = 'down') {
   const current = slides.findIndex(s => s.classList.contains('active-slide'));
   if (current === newIdx) return;
 
+  const isMobile = window.innerWidth <= 860;
+
   // Exit current
   if (current >= 0) {
-    const exitClass = (direction === 'up' || direction === 'prev') ? 'exit-up' : 'exit-down';
-    slides[current].classList.remove('active-slide');
-    slides[current].classList.add(exitClass);
-    setTimeout(() => slides[current]?.classList.remove(exitClass), 520);
+    if (isMobile) {
+      // Mobile: instant swap, no CSS transition (opacity/transform overridden by media query)
+      slides[current].classList.remove('active-slide');
+    } else {
+      const exitClass = (direction === 'up' || direction === 'prev') ? 'exit-up' : 'exit-down';
+      slides[current].classList.remove('active-slide');
+      slides[current].classList.add(exitClass);
+      setTimeout(() => slides[current]?.classList.remove(exitClass), 520);
+    }
   }
 
   // Enter new
@@ -459,7 +462,7 @@ function initParallax() {
 
 /* ── GALAXY IMAGE SWAP ── */
 function updateGalaxy(brand) {
-  /* Show/hide images in each device frame based on active brand */
+  /* Show/hide images in each device frame based on active brand (backstage | pizza | rafiki) */
   $$('.gd-img').forEach(img => {
     const isBrand = img.classList.contains(`gd-img-${brand}`);
     img.style.display = isBrand ? 'block' : 'none';
