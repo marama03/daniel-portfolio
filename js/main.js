@@ -10,12 +10,13 @@ const CFG = {
   email:    'mailto:daniel@maramamrketing.com',
   schedule: 'https://lets.confirmatime.com/virtual-coffee',
 
-  /* 2 projects × 2 faces = 4 slides total
-     LEFT/RIGHT  = switch between Backstage ↔ Pizza House
+  /* 3 projects × 2 faces = 6 slides total
+     LEFT/RIGHT  = switch between projects
      UP/DOWN     = flip Features ↔ Benefits on same project */
   projects: [
     { title:'BACKSTAGE',   sub:'AI Agent Command Center — Windows Native',          brand:'backstage' },
     { title:'PIZZA HOUSE', sub:'Full-Stack Restaurant Web System — Gettysburg, PA', brand:'pizza'     },
+    { title:'RAFIKI',      sub:'AI Personal Assistant — Built on n8n',              brand:'rafiki'    },
   ],
 };
 
@@ -146,6 +147,15 @@ function updateInfo() {
   }
   // Swap galaxy images based on active brand
   updateGalaxy(p.brand);
+  // Swap title glow color per brand
+  const titleEl2 = $('#projTitle');
+  if (titleEl2) {
+    if (p.brand === 'rafiki') {
+      titleEl2.style.backgroundImage = 'linear-gradient(180deg,#ffe580 0%,#ec7323 45%,#ef4124 100%)';
+    } else {
+      titleEl2.style.backgroundImage = 'linear-gradient(180deg,#ffe580 0%,#ec7323 45%,#ef4124 100%)';
+    }
+  }
 
   // Up/down labels
   const projLbl = $('#udProjLabel');
@@ -444,6 +454,15 @@ function initParallax() {
         ticking = false;
       });
     }
+  });
+}
+
+/* ── GALAXY IMAGE SWAP ── */
+function updateGalaxy(brand) {
+  /* Show/hide images in each device frame based on active brand */
+  $$('.gd-img').forEach(img => {
+    const isBrand = img.classList.contains(`gd-img-${brand}`);
+    img.style.display = isBrand ? 'block' : 'none';
   });
 }
 
