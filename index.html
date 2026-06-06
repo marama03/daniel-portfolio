@@ -108,13 +108,13 @@ html,body {
 @keyframes hexScroll { to{transform:translateY(-50%)} }
 
 /* ══════════════════════════════════════════
-   GALAXY ZONE — right decorative lane ONLY
-   z-index:1, hard-clipped, never overlaps card
+   GALAXY ZONE — right decorative lane
+   Wider zone = more room for big floating devices
 ═══════════════════════════════════════════ */
 .galaxy-zone {
   position:fixed;
   right:0; top:0; bottom:0;
-  width:30%;
+  width:36%;            /* wider lane — fills the dead corridor */
   z-index:1;            /* below everything */
   pointer-events:none;
   overflow:hidden;
@@ -124,23 +124,35 @@ html,body {
 
 .gal-device { position:absolute; transform-style:preserve-3d; will-change:transform; pointer-events:none; }
 
-/* All 4 devices — fill the right lane generously */
-.gd-1 { top:3%;  right:2%;  width:260px; animation:gdrift1 9s  ease-in-out infinite alternate; }
-.gd-2 { top:54%; right:5%;  width:230px; animation:gdrift2 11s ease-in-out infinite alternate; animation-delay:1.2s; }
-.gd-3 { top:30%; right:1%;  width:200px; animation:gdrift3 8s  ease-in-out infinite alternate; animation-delay:.6s; }
-.gd-4 { top:6%;  right:55%; width:140px; animation:gdrift4 10s ease-in-out infinite alternate; animation-delay:2s; }
+/* Devices — use % widths so they scale with the zone */
+/* gd-1: large, upper right */
+.gd-1 { top:2%;  right:1%;  width:55%; animation:gdrift1 9s  ease-in-out infinite alternate; }
+/* gd-2: large, lower left of zone */
+.gd-2 { top:55%; right:42%; width:50%; animation:gdrift2 11s ease-in-out infinite alternate; animation-delay:1.2s; }
+/* gd-3: mid, overlapping gd-1 slightly */
+.gd-3 { top:32%; right:2%;  width:44%; animation:gdrift3 8s  ease-in-out infinite alternate; animation-delay:.6s; }
+/* gd-4: small accent, far left of zone */
+.gd-4 { top:5%;  right:56%; width:30%; animation:gdrift4 10s ease-in-out infinite alternate; animation-delay:2s; }
 
-@keyframes gdrift1 { from{transform:translateY(0) rotateX(6deg) rotateY(-10deg)} to{transform:translateY(-22px) rotateX(-4deg) rotateY(8deg)} }
-@keyframes gdrift2 { from{transform:translateY(0) rotateX(-5deg) rotateY(9deg)} to{transform:translateY(-18px) rotateX(6deg) rotateY(-7deg)} }
-@keyframes gdrift3 { from{transform:translateY(0) rotateX(4deg) rotateY(5deg)} to{transform:translateY(-14px) rotateX(-6deg) rotateY(-5deg)} }
-@keyframes gdrift4 { from{transform:translateY(0) rotateX(-7deg) rotateY(-5deg)} to{transform:translateY(-20px) rotateX(5deg) rotateY(9deg)} }
+/* Bigger, more dramatic drift */
+@keyframes gdrift1 { from{transform:translateY(0px)   rotateX(8deg)  rotateY(-14deg) scale(1)}    to{transform:translateY(-38px) rotateX(-6deg) rotateY(12deg)  scale(1.04)} }
+@keyframes gdrift2 { from{transform:translateY(0px)   rotateX(-7deg) rotateY(12deg)  scale(1)}    to{transform:translateY(-30px) rotateX(8deg)  rotateY(-10deg) scale(1.03)} }
+@keyframes gdrift3 { from{transform:translateY(0px)   rotateX(5deg)  rotateY(8deg)   scale(1)}    to{transform:translateY(-26px) rotateX(-8deg) rotateY(-8deg)  scale(1.05)} }
+@keyframes gdrift4 { from{transform:translateY(0px)   rotateX(-9deg) rotateY(-8deg)  scale(1)}    to{transform:translateY(-32px) rotateX(7deg)  rotateY(14deg)  scale(1.04)} }
 
 .gd-frame { border-radius:4px; overflow:hidden; position:relative; transition:transform .35s var(--ease),filter .35s; }
 .gd-frame-monitor { border:2px solid rgba(236,115,35,.55); aspect-ratio:16/10; }
 .gd-frame-wide    { border:2px solid rgba(236,115,35,.45); aspect-ratio:16/10; }
 .gd-frame-laptop  { border:2px solid rgba(236,115,35,.45); aspect-ratio:16/10; }
 .gd-frame-tall    { border:2px solid rgba(239,65,36,.5);   aspect-ratio:16/10; }
-.gd-img { width:100%; height:100%; object-fit:cover; object-position:top left; display:block; }
+/* Default image crop — centered, shows node graph content */
+.gd-img { width:100%; height:100%; object-fit:cover; object-position:center center; display:block; }
+/* n8n workflow images: nodes are in the center/right — crop there */
+.gd-img-rafiki { object-position:40% 35%; }
+/* Backstage: DAG canvas is center-left */
+.gd-img-backstage { object-position:20% 30%; }
+/* Pizza: marketing header is top-center */
+.gd-img-pizza { object-position:center 20%; }
 .gd-glow { position:absolute; bottom:-14px; left:50%; transform:translateX(-50%); width:120%; height:22px; border-radius:50%; filter:blur(8px); pointer-events:none; }
 .gd-glow-orange { background:radial-gradient(ellipse,rgba(236,115,35,.45),transparent 70%); }
 .gd-glow-red    { background:radial-gradient(ellipse,rgba(239,65,36,.4),transparent 70%); }
@@ -220,8 +232,8 @@ html,body {
 .stage {
   position:fixed; inset:0; z-index:10;
   display:flex; flex-direction:column; align-items:center; justify-content:space-between;
-  /* left 228px clears left-col; right 28% clears galaxy lane */
-  padding:14px 28% 10px 228px;
+  /* left 228px clears left-col; right 37% clears the wider galaxy lane */
+  padding:14px 37% 10px 228px;
   pointer-events:none;
 }
 
@@ -253,7 +265,7 @@ html,body {
 
 /* ── CARD STAGE — strict container ── */
 .card-stage {
-  flex:1; max-width:680px; min-width:0; width:100%;
+  flex:1; max-width:620px; min-width:0; width:100%;
   position:relative; height:100%;
   display:flex; align-items:center;
   perspective:1200px;
@@ -303,7 +315,13 @@ html,body {
 /* Image bar */
 .slide-img-bar { width:100%; height:90px; flex-shrink:0; border-radius:4px; overflow:hidden; border:1px dashed rgba(236,115,35,.25); background:rgba(236,115,35,.03); cursor:pointer; transition:border-color .2s; }
 .slide-img-bar:hover { border-color:rgba(236,115,35,.6); }
-.slide-img-bar img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; transition:opacity .35s ease; }
+.slide-img-bar img { width:100%; height:100%; object-fit:cover; object-position:center 30%; display:block; transition:opacity .35s ease; }
+/* Rafiki n8n images: node graph is center/lower — show that */
+.slide-img-bar img[src*="rafiki"] { object-position:40% 45%; }
+/* Backstage DAG: interesting content is center */
+.slide-img-bar img[src*="backstage"] { object-position:25% 35%; }
+/* Pizza: marketing image top-center */
+.slide-img-bar img[src*="pizza"] { object-position:center 15%; }
 
 /* Face label */
 .slide-face-label { display:flex; align-items:center; gap:10px; }
@@ -863,7 +881,7 @@ class Waveform {
 
 function buildHex(){const el=$('#hexInner');if(!el)return;const chars='0123456789ABCDEF';const r8=()=>Array.from({length:8},()=>chars[Math.floor(Math.random()*16)]).join('');const lines=Array.from({length:90},()=>`<div>${r8()}</div>`).join('');el.innerHTML=lines+lines;setInterval(()=>{const all=$$('div',el),p=all[Math.floor(Math.random()*all.length)];if(p){p.textContent=r8();p.style.color=Math.random()>.8?'rgba(236,228,183,.55)':'rgba(236,115,35,.45)';}},140);}
 
-function initParallax(){const devs=$$('.gal-device');if(!devs.length)return;let mx=.5,my=.5,cx=.5,cy=.5,tk=false;document.addEventListener('mousemove',e=>{mx=e.clientX/window.innerWidth;my=e.clientY/window.innerHeight;if(!tk){tk=true;requestAnimationFrame(()=>{cx+=(mx-cx)*.05;cy+=(my-cy)*.05;const dx=(cx-.5)*2,dy=(cy-.5)*2;devs.forEach(d=>{const dep=parseFloat(d.dataset.drift||1);d.style.marginLeft=dx*dep*18+'px';d.style.marginTop=dy*dep*12+'px';});tk=false;});}});}
+function initParallax(){const devs=$$('.gal-device');if(!devs.length)return;let mx=.5,my=.5,cx=.5,cy=.5,tk=false;document.addEventListener('mousemove',e=>{mx=e.clientX/window.innerWidth;my=e.clientY/window.innerHeight;if(!tk){tk=true;requestAnimationFrame(()=>{cx+=(mx-cx)*.05;cy+=(my-cy)*.05;const dx=(cx-.5)*2,dy=(cy-.5)*2;devs.forEach(d=>{const dep=parseFloat(d.dataset.drift||1);d.style.marginLeft=dx*dep*26+'px';d.style.marginTop=dy*dep*18+'px';});tk=false;});}});}
 
 function setPhoto(src){const p=$('#aboutPhoto');if(!p)return;p.innerHTML=`<img src="${src}" alt="Daniel" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;display:block;"/>`;const h=$('#uploadHint');if(h){h.style.opacity='0';h.style.pointerEvents='none';}p.style.boxShadow='0 0 30px rgba(236,115,35,.7),0 0 80px rgba(236,115,35,.3)';}
 
