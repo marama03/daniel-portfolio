@@ -10,12 +10,12 @@ const CFG = {
   email:    'mailto:daniel@maramamrketing.com',
   schedule: 'https://lets.confirmatime.com/virtual-coffee',
 
-  /* Each project has 2 faces: features (even index) + benefits (odd index) */
+  /* 2 projects × 2 faces = 4 slides total
+     LEFT/RIGHT  = switch between Backstage ↔ Pizza House
+     UP/DOWN     = flip Features ↔ Benefits on same project */
   projects: [
-    { title:'BACKSTAGE',    sub:'AI Agent Command Center — Windows Native',                   brand:'backstage' },
-    { title:'BACKSTAGE',    sub:'Intelligence Layer — Output Review & Decision Journal',       brand:'backstage' },
-    { title:'PIZZA HOUSE',  sub:'Full-Stack Restaurant Web System — Gettysburg, PA',           brand:'pizza' },
-    { title:'PIZZA HOUSE',  sub:'AI Ordering · Growth Engine · Owner Dashboard',               brand:'pizza' },
+    { title:'BACKSTAGE',   sub:'AI Agent Command Center — Windows Native',          brand:'backstage' },
+    { title:'PIZZA HOUSE', sub:'Full-Stack Restaurant Web System — Gettysburg, PA', brand:'pizza'     },
   ],
 };
 
@@ -150,10 +150,13 @@ function updateInfo() {
   // Up/down labels
   const projLbl = $('#udProjLabel');
   const faceLbl = $('#udFaceLabel');
-  if (projLbl) projLbl.textContent = `0${currentProj+1} / 0${CFG.projects.length}`;
+  if (projLbl) projLbl.textContent = 'FLIP VIEW';
   if (faceLbl) {
     faceLbl.textContent = currentFace.toUpperCase();
-    faceLbl.style.color = currentFace === 'benefits' ? 'var(--o2)' : 'var(--o1)';
+    faceLbl.style.color = '#ffffff';
+    faceLbl.style.textShadow = currentFace === 'benefits'
+      ? '0 0 10px rgba(239,65,36,.9), 0 0 24px rgba(239,65,36,.5)'
+      : '0 0 10px rgba(236,115,35,.9), 0 0 24px rgba(236,115,35,.5)';
   }
 
   // Dots

@@ -243,7 +243,10 @@
       <!-- CARD STACK — up/down flips between FEATURES & BENEFITS -->
       <div class="card-stage" id="cardStage">
 
-        <!-- Slide 0: FEATURES view of project 0 -->
+        <!-- ═══════════════════════════════════════
+             BACKSTAGE  — Project 0
+             Slide 0: FEATURES
+        ════════════════════════════════════════ -->
         <div class="proj-slide active-slide" data-proj="0" data-face="features">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
           <span class="cc cc-bl"></span><span class="cc cc-br"></span>
@@ -254,7 +257,7 @@
             </div>
             <div class="slide-face-label">
               <span class="face-badge">FEATURES</span>
-              <span class="face-hint">▲▼ flip for benefits</span>
+              <span class="face-hint">▼ see benefits</span>
             </div>
             <ul class="slide-list">
               <li>One command center for every agent — scheduled tasks, services, MCP servers &amp; Claude stack in one native Windows dashboard</li>
@@ -274,18 +277,18 @@
           </div>
         </div>
 
-        <!-- Slide 1: BENEFITS view of project 0 -->
+        <!-- Slide 1: BENEFITS — Backstage -->
         <div class="proj-slide" data-proj="0" data-face="benefits">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
           <span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
             <div class="slide-img-bar" data-imgbar="0" title="Click to upload screenshot">
-              <img src="images/backstage-swarm-dag.jpg" alt="Backstage Swarm DAG" />
+              <img src="images/backstage-output-review.jpg" alt="Backstage Output Review" />
             </div>
             <div class="slide-face-label">
               <span class="face-badge face-badge-benefits">BENEFITS</span>
-              <span class="face-hint">▲▼ flip for features</span>
+              <span class="face-hint">▲ see features</span>
             </div>
             <ul class="slide-list">
               <li>The boring-but-valuable work runs while you sleep — wake up to drafts, prospects &amp; reports already done</li>
@@ -305,87 +308,25 @@
           </div>
         </div>
 
-        <!-- Slide 2: FEATURES view of project 1 (Intelligence Layer) -->
+        <!-- ═══════════════════════════════════════
+             PIZZA HOUSE  — Project 1
+             Slide 2: FEATURES
+        ════════════════════════════════════════ -->
         <div class="proj-slide" data-proj="1" data-face="features">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
           <span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
             <div class="slide-img-bar" data-imgbar="1" title="Click to upload screenshot">
-              <img src="images/backstage-output-review.jpg" alt="Output Review" />
+              <img src="images/pizza-marketing.jpg" alt="Pizza House System" />
             </div>
             <div class="slide-face-label">
               <span class="face-badge">FEATURES</span>
-              <span class="face-hint">▲▼ flip for benefits</span>
+              <span class="face-hint">▼ see benefits</span>
             </div>
             <ul class="slide-list">
-              <li>Output Review — Karpathy Proposer scans corrections + spawn errors and proposes new playbooks for failure patterns</li>
-              <li>Accepted proposals are marked for code-gen — Backstage captures diffs as corrections and re-indexes QMD automatically</li>
-              <li>Iterator reads Cortex rules + prior corrections before each revision — "Save Final" captures the diff permanently</li>
-              <li>Decision Journal — unified activity timeline of every spawn, decision, correction, Cortex rule added, and MCP call</li>
-              <li>Click "Why?" on any entry to see the full reasoning chain behind every agent decision in chronological order</li>
-              <li>System panel with multi-tenant config — operator + client environments, export bundles for client deployment</li>
-              <li>Client Magic Links — HMAC-SHA256 signed, expiring access tokens. No database needed, no extra infrastructure</li>
-            </ul>
-            <div class="slide-foot">
-              <div class="slide-tags">
-                <span class="stag">Karpathy Proposer</span><span class="stag">Cortex</span><span class="stag">Multi-Tenant</span>
-              </div>
-              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 3: BENEFITS view of project 1 -->
-        <div class="proj-slide" data-proj="1" data-face="benefits">
-          <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
-          <span class="cc cc-bl"></span><span class="cc cc-br"></span>
-          <div class="sweep-line"></div>
-          <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="1" title="Click to upload screenshot">
-              <img src="images/backstage-output-review.jpg" alt="Output Review" />
-            </div>
-            <div class="slide-face-label">
-              <span class="face-badge face-badge-benefits">BENEFITS</span>
-              <span class="face-hint">▲▼ flip for features</span>
-            </div>
-            <ul class="slide-list">
-              <li>Every agent action is auditable — 300+ events tracked with full reasoning. Compliance and trust baked in from day one</li>
-              <li>Drift caught before it costs you — safety system and STALE detection flag degrading agents before clients see the output</li>
-              <li>AI gets smarter on your judgment — 3+ corrections unlocks Karpathy auto-improve, compounding over time</li>
-              <li>Multiple clients, one operator — manage Demo, Dev, Prod, and Staging environments without context-switching chaos</li>
-              <li>White-glove client delivery — export bundles + magic link portal. Clients see their data, not your infrastructure</li>
-              <li>No surprise bills — multi-tenant runs entirely on Claude Max. Add clients without adding API cost</li>
-              <li>Rollback &amp; restore — automatic snapshots before every Promote. One click to revert if something breaks</li>
-            </ul>
-            <div class="slide-foot">
-              <div class="slide-tags">
-                <span class="stag">Self-Healing</span><span class="stag">Audit Trail</span><span class="stag">Zero Extra Cost</span>
-              </div>
-              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
-            </div>
-          </div>
-        </div>
-
-        <!-- ═══════════════════════════════════
-             PIZZA HOUSE  — Project 2 (slides 4–5)
-             Slide 4: FEATURES view of project 2
-        ═══════════════════════════════════ -->
-        <div class="proj-slide" data-proj="2" data-face="features">
-          <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
-          <span class="cc cc-bl"></span><span class="cc cc-br"></span>
-          <div class="sweep-line"></div>
-          <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="2" title="Click to upload screenshot">
-              <img src="images/pizza-menu.jpg" alt="Pizza House Menu" />
-            </div>
-            <div class="slide-face-label">
-              <span class="face-badge">FEATURES</span>
-              <span class="face-hint">▲▼ flip for benefits</span>
-            </div>
-            <ul class="slide-list">
-              <li>Native online ordering &amp; checkout — full menu, cart, and payment running on your domain, pushing orders straight to Clover</li>
-              <li>First-party customer database — every name, number, and order history is captured on every order and stored in your database</li>
+              <li>Native online ordering &amp; checkout — full menu, cart, and payment running on your domain, pushing orders straight to Clover. No redirect to a third-party site</li>
+              <li>First-party customer database — every name, number, and order history captured on every order and stored in your database, not a middleman's</li>
               <li>Lifecycle marketing automation — win-back texts, milestone offers, and abandoned-cart nudges fire off real order data automatically</li>
               <li>Server-side ad tracking — first-party pixels plus Conversions API so Meta and Google see every order, not just the ones that survive cookie blocking</li>
               <li>Loyalty &amp; referral engine — points, rewards, and refer-a-friend keep regulars coming back to your site, not a delivery app</li>
@@ -402,18 +343,18 @@
           </div>
         </div>
 
-        <!-- Slide 5: BENEFITS view of project 2 -->
-        <div class="proj-slide" data-proj="2" data-face="benefits">
+        <!-- Slide 3: BENEFITS — Pizza House -->
+        <div class="proj-slide" data-proj="1" data-face="benefits">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
           <span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="2" title="Click to upload screenshot">
-              <img src="images/pizza-menu.jpg" alt="Pizza House Menu" />
+            <div class="slide-img-bar" data-imgbar="1" title="Click to upload screenshot">
+              <img src="images/pizza-marketing.jpg" alt="Pizza House System" />
             </div>
             <div class="slide-face-label">
               <span class="face-badge face-badge-benefits">BENEFITS</span>
-              <span class="face-hint">▲▼ flip for features</span>
+              <span class="face-hint">▲ see features</span>
             </div>
             <ul class="slide-list">
               <li>You own the customer, not a middleman — every order builds your list. Slice and DoorDash can't rent your regulars back to you</li>
@@ -433,71 +374,6 @@
           </div>
         </div>
 
-        <!-- ═══════════════════════════════════
-             PIZZA HOUSE  — Project 3 (slides 6–7)
-             Slide 6: FEATURES — AI + Growth System view
-        ═══════════════════════════════════ -->
-        <div class="proj-slide" data-proj="3" data-face="features">
-          <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
-          <span class="cc cc-bl"></span><span class="cc cc-br"></span>
-          <div class="sweep-line"></div>
-          <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="3" title="Click to upload screenshot">
-              <img src="images/pizza-marketing.jpg" alt="Pizza House System" />
-            </div>
-            <div class="slide-face-label">
-              <span class="face-badge">FEATURES</span>
-              <span class="face-hint">▲▼ flip for benefits</span>
-            </div>
-            <ul class="slide-list">
-              <li>AI answers calls 24/7 — takes orders, confirms them, and sends tickets to the kitchen. Captures every caller, even at 11pm Friday</li>
-              <li>Customer profiles auto-built — every order appends to a live profile: what they order, how often, how much they spend. That data is yours</li>
-              <li>Win-back texts fire automatically — haven't ordered in 2 weeks? They get a personalized text at $2 off. No manual work, no campaign setup</li>
-              <li>Smart upsells at checkout — relevant add-ons surface based on this customer's actual order history, not generic suggestions</li>
-              <li>Loyalty your way — points, rewards, referrals. Fully configurable. Runs on your rules, not a third-party app's algorithm</li>
-              <li>Auto-review engine — 5-star experiences get routed to Google. Complaints come to you privately so you fix them before they go public</li>
-              <li>Campaign manager — one dashboard to send announcements, promote LTOs, and track every campaign's revenue attribution</li>
-            </ul>
-            <div class="slide-foot">
-              <div class="slide-tags">
-                <span class="stag">AI Voice</span><span class="stag">Win-Back</span><span class="stag">Reviews</span><span class="stag">Campaigns</span>
-              </div>
-              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 7: BENEFITS view of project 3 -->
-        <div class="proj-slide" data-proj="3" data-face="benefits">
-          <span class="cc cc-tl"></span><span class="cc cc-tr"></span>
-          <span class="cc cc-bl"></span><span class="cc cc-br"></span>
-          <div class="sweep-line"></div>
-          <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="3" title="Click to upload screenshot">
-              <img src="images/pizza-marketing.jpg" alt="Pizza House System" />
-            </div>
-            <div class="slide-face-label">
-              <span class="face-badge face-badge-benefits">BENEFITS</span>
-              <span class="face-hint">▲▼ flip for features</span>
-            </div>
-            <ul class="slide-list">
-              <li>The website isn't the product — the system is. Every feature compounds: more orders → better data → smarter marketing → more repeat orders</li>
-              <li>You stop paying rent on your own customers — Slice, DoorDash, and Grubhub charge you to reach people who already know your name</li>
-              <li>40–60% cheaper ad acquisition — server-side Conversions API passes order data directly to Meta and Google, sharpening targeting without third-party cookies</li>
-              <li>Regulars spend more over time — loyalty and win-back lift average ticket and visit frequency without any manual effort from the owner</li>
-              <li>No more voicemail = no more lost sales — every unanswered call is a potential order gone to a competitor. The AI closes it instead</li>
-              <li>Reviews climb the local pack — a consistent, compliant review flow means more people find you on Google Maps before they find a competitor</li>
-              <li>Built for owners, not IT — one dashboard, plain-language metrics, and no technical staff required to run it day to day</li>
-            </ul>
-            <div class="slide-foot">
-              <div class="slide-tags">
-                <span class="stag">Compounding Growth</span><span class="stag">Zero Commission</span><span class="stag">Local Pack</span>
-              </div>
-              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
-            </div>
-          </div>
-        </div>
-
       </div><!-- /card-stage -->
 
       <!-- RIGHT nav arrow -->
@@ -509,12 +385,12 @@
 
     <!-- ── UP / DOWN face-flip arrows ── -->
     <div class="nav-ud-wrap">
-      <button class="nav-ud nav-up"   id="btnUp"   aria-label="Previous face"><i class="fas fa-chevron-up"></i></button>
+      <button class="nav-ud nav-up"   id="btnUp"   aria-label="Flip to features"><i class="fas fa-chevron-up"></i></button>
       <div class="nav-ud-info">
-        <span class="ud-proj"  id="udProjLabel">01 / 02</span>
-        <span class="ud-face"  id="udFaceLabel">FEATURES</span>
+        <span class="ud-proj" id="udProjLabel">FLIP VIEW</span>
+        <span class="ud-face" id="udFaceLabel">FEATURES</span>
       </div>
-      <button class="nav-ud nav-down" id="btnDown" aria-label="Next face"><i class="fas fa-chevron-down"></i></button>
+      <button class="nav-ud nav-down" id="btnDown" aria-label="Flip to benefits"><i class="fas fa-chevron-down"></i></button>
     </div>
 
     <!-- ── BOTTOM HUD BAR ── -->
