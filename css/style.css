@@ -355,12 +355,12 @@ html, body {
   font-family:var(--f-body); font-size:.7rem; color:rgba(243,243,243,.65);
   text-align:center; line-height:1.45; letter-spacing:.02em;
 }
-.about-socials { display:flex; gap:7px; justify-content:center; margin-top:2px; }
+.about-socials { display:flex; gap:7px; justify-content:center; margin-top:4px; }
 .social-btn {
-  width:26px; height:26px; border-radius:50%;
+  width:32px; height:32px; border-radius:50%;
   border:1px solid rgba(236,115,35,.4);
   background:rgba(236,115,35,.08);
-  color:var(--o1); font-size:.7rem;
+  color:var(--o1); font-size:.85rem;
   display:flex; align-items:center; justify-content:center;
   text-decoration:none; cursor:pointer;
   transition:all .25s var(--ease);

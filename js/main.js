@@ -6,9 +6,9 @@
 
 /* ── CONFIG ── */
 const CFG = {
-  website:  'https://yourwebsite.com',
-  email:    'mailto:you@example.com',
-  schedule: 'https://calendly.com/yourlink',
+  website:  'https://www.maramamarketing.com',
+  email:    'mailto:daniel@maramamrketing.com',
+  schedule: 'https://lets.confirmatime.com/virtual-coffee',
 
   /* Each project has 2 faces: features (even index) + benefits (odd index) */
   projects: [
@@ -435,9 +435,22 @@ function initParallax() {
 }
 
 /* ── ABOUT PHOTO UPLOAD ── */
+function setPhoto(src) {
+  const photo = $('#aboutPhoto');
+  if (!photo) return;
+  photo.innerHTML = `<img src="${src}" alt="Daniel — AI Systems Architect" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;display:block;" />`;
+  const hint = $('#uploadHint');
+  if (hint) { hint.style.opacity = '0'; hint.style.pointerEvents = 'none'; }
+  photo.style.borderColor = 'var(--o1)';
+  photo.style.boxShadow = '0 0 30px rgba(236,115,35,.7), 0 0 80px rgba(236,115,35,.3)';
+}
+
 function initPhotoUpload() {
   const photo = $('#aboutPhoto');
   if (!photo) return;
+
+  // Auto-load the saved profile photo
+  setPhoto('images/profile-photo.jpg');
 
   function triggerUpload() {
     const inp = document.createElement('input');
@@ -446,15 +459,7 @@ function initPhotoUpload() {
       const file = e.target.files[0];
       if (!file) return;
       const fr = new FileReader();
-      fr.onload = ev => {
-        photo.innerHTML = `<img src="${ev.target.result}" alt="Profile photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />`;
-        // Hide upload hint once photo is set
-        const hint = $('#uploadHint');
-        if (hint) { hint.style.opacity = '0'; hint.style.pointerEvents = 'none'; }
-        // Add glow to photo border
-        photo.style.borderColor = 'var(--o1)';
-        photo.style.boxShadow = '0 0 30px rgba(236,115,35,.7), 0 0 80px rgba(236,115,35,.3)';
-      };
+      fr.onload = ev => setPhoto(ev.target.result);
       fr.readAsDataURL(file);
     };
     inp.click();
