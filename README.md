@@ -1,104 +1,136 @@
-# 🔴 Portfolio HUD — Backstage · AI Systems Architect
+# 🔴 Portfolio HUD — Daniel · AI Systems Architect
+### Marama Marketing · [maramamarketing.com](https://www.maramamarketing.com)
 
-> **Netflix × Iron Man × Motion Array**  
-> Brand colors: `#000022` · `#ec7323` · `#ef4124` · `#ece4b7` · `#f3f3f3` · `#666666`
+> **Netflix × Iron Man × Motion Array aesthetic**  
+> Brand: `#000022` bg · `#ec7323` orange · `#ef4124` red · `#ece4b7` cream · `#f3f3f3` light · `#666666` grey
+
+**Live URL:** https://yngstbec.gensparkspace.com/
 
 ---
 
-## ✅ Layout & Features
+## ✅ Completed Features
 
-### Top-Left — About Me Panel (STATIC across all slides)
-- **Neon-ring profile photo** — spinning orange/red/cyan concentric rings (brand colors)
-- Click the photo to upload your real headshot
-- **YOUR NAME** — editable in HTML (`#aboutName`)
-- **AI Systems Architect** — title line in orange glow
-- Short bio text — editable in HTML (`#aboutBio`)
-- Social links: LinkedIn, GitHub, X/Twitter
+### About Me Panel (top-left, always visible)
+- **Large neon-ring profile photo** — 162×162px ring wrap, 108×108px photo circle
+- 3 spinning SVG arcs: orange (6s) · red (9s counter) · cream (13s) — all brand-color gradient strokes
+- Animated **conic-gradient border** on photo circle — orange → red → cream, rotating 3s/cycle
+- Two pulsing outer halo rings (CSS `::before` / `::after`)
+- Daniel's profile photo auto-loads from `images/profile-photo.jpg`
+- Click photo to swap with any image via file picker
+- Name: **DANIEL** · Title: AI Systems Architect
+- LinkedIn button (centered, single social)
 
-### Left Column — Contact Buttons
-- **Website** · **Email** · **Schedule Call** — pill buttons, orange glow on hover
-- Update URLs in `js/main.js` → `CFG.website / email / schedule`
+### Contact Buttons
+| Button | Links To |
+|---|---|
+| Website | https://www.maramamarketing.com |
+| Email | daniel@maramamrketing.com |
+| Schedule Call | https://lets.confirmatime.com/virtual-coffee |
 
-### Center — Smart Navigation System
+### Navigation System
 | Input | Action |
 |---|---|
-| ← Left arrow / `ArrowLeft` key / swipe left | Previous project |
-| → Right arrow / `ArrowRight` key / swipe right | Next project |
-| ▲ Up arrow / `ArrowUp` key / swipe up | Flip to FEATURES view |
-| ▼ Down arrow / `ArrowDown` key / swipe down | Flip to BENEFITS view |
-| Dot indicators | Jump to any project |
+| ← / `ArrowLeft` / swipe left | Previous project |
+| → / `ArrowRight` / swipe right | Next project |
+| ▲ / `ArrowUp` / swipe up | Flip to FEATURES |
+| ▼ / `ArrowDown` / swipe down | Flip to BENEFITS |
+| Dot indicators (bottom) | Jump to any project |
 
-- **Left/Right** navigates between PROJECTS — title and tagline animate
-- **Up/Down** stays on same project but flips between FEATURES ↔ BENEFITS
-- FEATURES badge = orange, BENEFITS badge = red — visually distinct
-- Swoosh sound: LR = horizontal stereo sweep, UD = pitch flip tone
-- Spring-curve slide animations with rotateX depth effect
+- Directional swoosh sound (Web Audio API, stereo pan)
+- Spring-curve slide animations with rotateX depth
+- HUD dot indicators animate on project change
+- Ring telemetry readouts animate on every nav
 
-### Right Side — Galaxy Zone (floating 3D Backstage screenshots)
-- **4 real screenshots** floating in a starfield nebula
-- CSS-only drift animations (no JS loop = zero CPU overhead)
-- Mouse parallax shifts devices in 3D depth
-- Subtle static nebula glow canvas (drawn once, not animated)
-- Devices: Swarm DAG (monitor), Output Review (wide), Swarm Builder (laptop), Decision Journal (tall)
+### Projects (4 total · 8 slides · Left/Right to navigate)
 
-### Background
-- **Stars canvas** — drawn once, twinkle batch update every 2s (low bandwidth)
-- **Perspective 3D grid** — CSS transform, no canvas
-- **X-shape light rays** — CSS only
-- **Spinning HUD rings** — SVG + CSS animation, top corners
-- **Wireframe schematics** — SVG, bottom corners (cyan left, orange right)
-- **Hex telemetry stream** — right edge, CSS scroll
+| # | Title | Sub | Slides |
+|---|---|---|---|
+| 1 | BACKSTAGE | AI Agent Command Center — Windows Native | Features · Benefits |
+| 2 | BACKSTAGE | Intelligence Layer — Output Review & Decision Journal | Features · Benefits |
+| 3 | PIZZA HOUSE | Full-Stack Restaurant Web System — Gettysburg, PA | Features · Benefits |
+| 4 | PIZZA HOUSE | AI Ordering · Growth Engine · Owner Dashboard | Features · Benefits |
+
+### Galaxy Zone (right side, desktop only)
+- 4 floating device mockups with CSS-only drift animations
+- **Auto-swaps images** when you navigate to Pizza House vs Backstage
+- Mouse parallax on all 4 devices (throttled via rAF)
+- Static nebula canvas (drawn once, brand orange/red blobs)
+- Hides on mobile ≤860px
+
+### Background & HUD Chrome
+- Star particle field — batch twinkle every 2s (low CPU)
+- Perspective 3D grid (CSS-only)
+- X-shape volumetric light rays
+- Spinning SVG HUD rings — top corners, orange/cream arcs
+- Wireframe schematics — bottom corners (cream left, orange right)
+- Hex telemetry data stream — right edge, CSS scroll
+- Bottom waveform visualizer — 30fps cap, orange + red wave
+- All **100% brand color** — zero teal/cyan anywhere
+
+### Mobile
+- Galaxy zone hidden ≤860px
+- Left column collapses to horizontal row
+- Ring scales to 130px · photo to 86px
+- Swipe all 4 directions supported
 
 ---
 
-## ⚙️ Customization
-
-### 1. Your info
-- **Name**: Change `YOUR NAME` text in `#aboutName` div
-- **Bio**: Change text in `#aboutBio` paragraph
-- **Social links**: Update `href="#"` on `.social-btn` anchors
-- **Photo**: Click the profile ring to upload your photo live
-
-### 2. Contact links (`js/main.js` top)
-```js
-const CFG = {
-  website:  'https://yourwebsite.com',
-  email:    'mailto:you@example.com',
-  schedule: 'https://calendly.com/yourlink',
-};
+## 📂 File Structure
 ```
-
-### 3. Add more projects
-- Add a `{ title, sub }` entry to `CFG.projects`
-- Add matching FEATURES slide + BENEFITS slide in `index.html`
-- Follow the `data-proj` index pattern
-
-### 4. Replace screenshots
-- Swap files in `images/` folder, or click any card's image bar to upload live
-
----
-
-## 📱 Mobile
-- Galaxy zone hides on ≤860px (saves bandwidth)
-- Left column collapses to a horizontal row
-- About panel stacks vertically
-- Swipe left/right for projects, up/down for features/benefits
-- HUD rings + schematics hide for clean mobile layout
-
----
-
-## 📂 Files
-```
-index.html                          — Full markup
-css/style.css                       — All styles (brand colors, HUD, galaxy, mobile)
-js/main.js                          — Nav, audio, stars, waveform, parallax
+index.html
+css/
+  style.css
+js/
+  main.js
 images/
+  profile-photo.jpg               ← Daniel's headshot
   backstage-swarm-dag.jpg
   backstage-output-review.jpg
   backstage-swarm-builder.jpg
   backstage-decision-journal.jpg
-README.md
+  pizza-dashboard.jpg
+  pizza-menu.jpg
+  pizza-track-order.jpg
+  pizza-account.jpg
+  pizza-marketing.jpg
 ```
 
+---
+
+## ⚙️ Quick Customization
+
+### Contact links — `js/main.js` top
+```js
+const CFG = {
+  website:  'https://www.maramamarketing.com',
+  email:    'mailto:daniel@maramamrketing.com',
+  schedule: 'https://lets.confirmatime.com/virtual-coffee',
+};
+```
+
+### Add a new project
+1. Add `{ title, sub, brand }` to `CFG.projects` in `js/main.js`
+2. Add matching FEATURES + BENEFITS `.proj-slide` pair in `index.html`
+3. Add a `data-imgbar` image bar pointing to your new image index
+4. Add galaxy images for the new brand if needed
+
+### LinkedIn URL
+Find in `index.html`:
+```html
+<a href="https://www.linkedin.com/in/" ...>
+```
+Replace `/in/` with your actual LinkedIn profile slug.
+
+---
+
+## 🔜 Suggested Next Steps
+- [ ] Add LinkedIn profile URL
+- [ ] Add a 3rd client project (same dual-axis nav pattern)
+- [ ] Dashboard screenshot for Pizza House once available
+- [ ] Add your own domain via Publish settings
+- [ ] Add a mobile-friendly "tap to expand" for slide bullets on small screens
+
+---
+
 ## 🚀 Deploy
-**Publish tab** → live with one click.
+**Publish tab** → one click → live at https://yngstbec.gensparkspace.com/
