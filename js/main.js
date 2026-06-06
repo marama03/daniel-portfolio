@@ -438,7 +438,8 @@ function initParallax() {
 function initPhotoUpload() {
   const photo = $('#aboutPhoto');
   if (!photo) return;
-  photo.addEventListener('click', () => {
+
+  function triggerUpload() {
     const inp = document.createElement('input');
     inp.type = 'file'; inp.accept = 'image/*';
     inp.onchange = e => {
@@ -446,12 +447,20 @@ function initPhotoUpload() {
       if (!file) return;
       const fr = new FileReader();
       fr.onload = ev => {
-        photo.innerHTML = `<img src="${ev.target.result}" alt="Profile photo" />`;
+        photo.innerHTML = `<img src="${ev.target.result}" alt="Profile photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />`;
+        // Hide upload hint once photo is set
+        const hint = $('#uploadHint');
+        if (hint) { hint.style.opacity = '0'; hint.style.pointerEvents = 'none'; }
+        // Add glow to photo border
+        photo.style.borderColor = 'var(--o1)';
+        photo.style.boxShadow = '0 0 30px rgba(236,115,35,.7), 0 0 80px rgba(236,115,35,.3)';
       };
       fr.readAsDataURL(file);
     };
     inp.click();
-  });
+  }
+
+  photo.addEventListener('click', triggerUpload);
 }
 
 /* ── IMAGE BAR UPLOAD (card screenshots) ── */

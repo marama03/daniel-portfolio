@@ -142,22 +142,28 @@
     <!-- ABOUT ME PANEL (static) -->
     <div class="about-panel" id="aboutPanel">
       <div class="about-ring-wrap">
-        <!-- Neon ring SVG behind photo -->
-        <svg class="about-ring-svg" viewBox="0 0 120 120">
-          <circle cx="60" cy="60" r="54" class="ar-track"/>
-          <circle cx="60" cy="60" r="54" class="ar-spin ar-spin-o"/>
-          <circle cx="60" cy="60" r="46" class="ar-track"/>
-          <circle cx="60" cy="60" r="46" class="ar-spin ar-spin-c"/>
-          <circle cx="60" cy="60" r="38" class="ar-track"/>
-          <circle cx="60" cy="60" r="38" class="ar-spin ar-spin-r"/>
+        <!-- Neon ring SVG behind photo — 3 spinning arcs -->
+        <svg class="about-ring-svg" viewBox="0 0 180 180">
+          <!-- Outer orange arc -->
+          <circle cx="90" cy="90" r="82" class="ar-track"/>
+          <circle cx="90" cy="90" r="82" class="ar-spin ar-spin-o"/>
+          <!-- Mid red arc -->
+          <circle cx="90" cy="90" r="70" class="ar-track"/>
+          <circle cx="90" cy="90" r="70" class="ar-spin ar-spin-c"/>
+          <!-- Inner cream arc -->
+          <circle cx="90" cy="90" r="58" class="ar-track"/>
+          <circle cx="90" cy="90" r="58" class="ar-spin ar-spin-r"/>
         </svg>
         <!-- Profile photo — click to upload -->
         <div class="about-photo" id="aboutPhoto" title="Click to upload your photo">
           <div class="photo-placeholder">
             <i class="fas fa-user"></i>
+            <span>Click to<br>add photo</span>
           </div>
         </div>
       </div>
+      <!-- Upload hint -->
+      <div class="about-upload-hint" id="uploadHint" onclick="document.getElementById('aboutPhoto').click()">⬆ Upload Photo</div>
 
       <div class="about-info">
         <div class="about-name" id="aboutName">YOUR NAME</div>
