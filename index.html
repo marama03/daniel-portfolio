@@ -144,6 +144,26 @@
       <div class="about-ring-wrap">
         <!-- Neon ring SVG behind photo — 3 spinning arcs -->
         <svg class="about-ring-svg" viewBox="0 0 180 180">
+          <defs>
+            <!-- Orange gradient arc -->
+            <linearGradient id="grad-o" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#ec7323" stop-opacity="1"/>
+              <stop offset="45%"  stop-color="#ffe580" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#ef4124" stop-opacity="1"/>
+            </linearGradient>
+            <!-- Red gradient arc -->
+            <linearGradient id="grad-c" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#ef4124" stop-opacity="1"/>
+              <stop offset="50%"  stop-color="#ec7323" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#ef4124" stop-opacity=".6"/>
+            </linearGradient>
+            <!-- Cream gradient arc -->
+            <linearGradient id="grad-r" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#ece4b7" stop-opacity=".9"/>
+              <stop offset="50%"  stop-color="#ec7323" stop-opacity=".7"/>
+              <stop offset="100%" stop-color="#ece4b7" stop-opacity=".4"/>
+            </linearGradient>
+          </defs>
           <!-- Outer orange arc -->
           <circle cx="90" cy="90" r="82" class="ar-track"/>
           <circle cx="90" cy="90" r="82" class="ar-spin ar-spin-o"/>
@@ -154,6 +174,8 @@
           <circle cx="90" cy="90" r="58" class="ar-track"/>
           <circle cx="90" cy="90" r="58" class="ar-spin ar-spin-r"/>
         </svg>
+        <!-- Animated conic-gradient border ring -->
+        <div class="photo-border-ring" aria-hidden="true"></div>
         <!-- Profile photo — click to upload -->
         <div class="about-photo" id="aboutPhoto" title="Click to upload your photo">
           <div class="photo-placeholder">

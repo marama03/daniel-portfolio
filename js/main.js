@@ -271,7 +271,7 @@ function buildStars(canvasId) {
       const a = Math.random() * 0.6 + 0.1;
       g.beginPath();
       g.arc(x, y, r, 0, Math.PI*2);
-      g.fillStyle = Math.random() > 0.85 ? `rgba(0,200,224,${a})` : `rgba(236,115,35,${a * 0.7})`;
+      g.fillStyle = Math.random() > 0.85 ? `rgba(236,228,183,${a * 0.8})` : `rgba(236,115,35,${a * 0.7})`;
       g.fill();
     }
     // Occasional brighter stars
@@ -323,7 +323,7 @@ function buildNebula(canvasId) {
     const blobs = [
       { x:.7, y:.25, r:.28, col:'rgba(236,115,35,.06)' },
       { x:.5, y:.65, r:.32, col:'rgba(239,65,36,.05)' },
-      { x:.85, y:.55, r:.22, col:'rgba(0,200,224,.04)' },
+      { x:.85, y:.55, r:.22, col:'rgba(239,65,36,.04)'  },
       { x:.3, y:.4,  r:.2,  col:'rgba(236,228,183,.03)' },
     ];
     blobs.forEach(b => {
@@ -400,7 +400,7 @@ function buildHex() {
     const p = all[Math.floor(Math.random()*all.length)];
     if (p) {
       p.textContent = rand8();
-      p.style.color = Math.random()>.8 ? 'rgba(0,200,224,.6)' : 'rgba(236,115,35,.45)';
+      p.style.color = Math.random()>.8 ? 'rgba(236,228,183,.55)' : 'rgba(236,115,35,.45)';
     }
   }, 140);
 }
