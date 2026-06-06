@@ -12,8 +12,10 @@ const CFG = {
 
   /* Each project has 2 faces: features (even index) + benefits (odd index) */
   projects: [
-    { title:'BACKSTAGE', sub:'AI Agent Command Center — Windows Native' },
-    { title:'BACKSTAGE', sub:'Intelligence Layer — Output Review & Decision Journal' },
+    { title:'BACKSTAGE',    sub:'AI Agent Command Center — Windows Native',                   brand:'backstage' },
+    { title:'BACKSTAGE',    sub:'Intelligence Layer — Output Review & Decision Journal',       brand:'backstage' },
+    { title:'PIZZA HOUSE',  sub:'Full-Stack Restaurant Web System — Gettysburg, PA',           brand:'pizza' },
+    { title:'PIZZA HOUSE',  sub:'AI Ordering · Growth Engine · Owner Dashboard',               brand:'pizza' },
   ],
 };
 
@@ -97,6 +99,12 @@ function swoosh(type = 'lr') {
   } catch(_) {}
 }
 
+/* ── GALAXY IMAGE SWAP ── */
+function updateGalaxy(brand) {
+  $$('.gd-img-backstage').forEach(img => { img.style.display = brand === 'backstage' ? '' : 'none'; });
+  $$('.gd-img-pizza').forEach(img     => { img.style.display = brand === 'pizza'     ? '' : 'none'; });
+}
+
 /* ── SLIDE MANAGER ── */
 const slides = $$('.proj-slide');
 
@@ -136,6 +144,8 @@ function updateInfo() {
     subEl.style.opacity = '0';
     setTimeout(() => { subEl.textContent = p.sub; subEl.style.transition='opacity .4s ease'; subEl.style.opacity='1'; }, 220);
   }
+  // Swap galaxy images based on active brand
+  updateGalaxy(p.brand);
 
   // Up/down labels
   const projLbl = $('#udProjLabel');
