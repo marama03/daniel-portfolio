@@ -1003,16 +1003,12 @@ function initGalaxySpotlight(){
       if(i===idx){
         d.style.zIndex='10';
         d.style.opacity='1';
-        d.style.filter=[
-          'brightness(1.25)',
-          'drop-shadow(0 0 16px rgba(236,115,35,.95))',
-          'drop-shadow(0 0 40px rgba(236,115,35,.5))',
-          'drop-shadow(0 0 70px rgba(236,115,35,.2))'
-        ].join(' ');
+        /* Subtle orange rim only — no brightness boost so image stays true */
+        d.style.filter='drop-shadow(0 0 8px rgba(236,115,35,.55)) drop-shadow(0 0 22px rgba(236,115,35,.22))';
       } else {
         d.style.zIndex=String(BASE_Z[i]);
-        d.style.opacity='0.62';
-        d.style.filter='brightness(0.78) drop-shadow(0 0 3px rgba(236,115,35,.15))';
+        d.style.opacity='0.7';
+        d.style.filter='brightness(0.88)';
       }
     });
   }
