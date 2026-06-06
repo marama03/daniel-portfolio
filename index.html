@@ -124,11 +124,11 @@ html,body {
 
 .gal-device { position:absolute; transform-style:preserve-3d; will-change:transform; pointer-events:none; }
 
-/* All 4 devices positioned fully INSIDE the 30% lane */
-.gd-1 { top:5%;  right:4%;  width:190px; animation:gdrift1 9s  ease-in-out infinite alternate; }
-.gd-2 { top:52%; right:7%;  width:170px; animation:gdrift2 11s ease-in-out infinite alternate; animation-delay:1.2s; }
-.gd-3 { top:28%; right:3%;  width:145px; animation:gdrift3 8s  ease-in-out infinite alternate; animation-delay:.6s; }
-.gd-4 { top:10%; right:51%; width:110px; animation:gdrift4 10s ease-in-out infinite alternate; animation-delay:2s; }
+/* All 4 devices — fill the right lane generously */
+.gd-1 { top:3%;  right:2%;  width:260px; animation:gdrift1 9s  ease-in-out infinite alternate; }
+.gd-2 { top:54%; right:5%;  width:230px; animation:gdrift2 11s ease-in-out infinite alternate; animation-delay:1.2s; }
+.gd-3 { top:30%; right:1%;  width:200px; animation:gdrift3 8s  ease-in-out infinite alternate; animation-delay:.6s; }
+.gd-4 { top:6%;  right:55%; width:140px; animation:gdrift4 10s ease-in-out infinite alternate; animation-delay:2s; }
 
 @keyframes gdrift1 { from{transform:translateY(0) rotateX(6deg) rotateY(-10deg)} to{transform:translateY(-22px) rotateX(-4deg) rotateY(8deg)} }
 @keyframes gdrift2 { from{transform:translateY(0) rotateX(-5deg) rotateY(9deg)} to{transform:translateY(-18px) rotateX(6deg) rotateY(-7deg)} }
@@ -149,8 +149,8 @@ html,body {
    LEFT COLUMN
 ═══════════════════════════════════════════ */
 .left-col {
-  position:fixed; left:12px; top:50%; transform:translateY(-50%);
-  z-index:20; display:flex; flex-direction:column; align-items:center; gap:14px; width:196px;
+  position:fixed; left:20px; top:50%; transform:translateY(-50%);
+  z-index:20; display:flex; flex-direction:column; align-items:center; gap:14px; width:200px;
 }
 .about-panel {
   width:100%; background:rgba(0,0,30,.92); border:1px solid rgba(236,115,35,.4); border-radius:10px;
@@ -220,7 +220,8 @@ html,body {
 .stage {
   position:fixed; inset:0; z-index:10;
   display:flex; flex-direction:column; align-items:center; justify-content:space-between;
-  padding:14px 31% 10px 218px;   /* right 31% clears 30% galaxy + buffer */
+  /* left 228px clears left-col; right 28% clears galaxy lane */
+  padding:14px 28% 10px 228px;
   pointer-events:none;
 }
 
@@ -252,7 +253,7 @@ html,body {
 
 /* ── CARD STAGE — strict container ── */
 .card-stage {
-  flex:1; max-width:560px; min-width:0; width:100%;
+  flex:1; max-width:680px; min-width:0; width:100%;
   position:relative; height:100%;
   display:flex; align-items:center;
   perspective:1200px;
@@ -300,9 +301,9 @@ html,body {
 .slide-inner { display:flex; flex-direction:column; height:100%; padding:14px 18px 12px; gap:10px; overflow:hidden; }
 
 /* Image bar */
-.slide-img-bar { width:100%; height:72px; flex-shrink:0; border-radius:4px; overflow:hidden; border:1px dashed rgba(236,115,35,.25); background:rgba(236,115,35,.03); cursor:pointer; transition:border-color .2s; }
+.slide-img-bar { width:100%; height:90px; flex-shrink:0; border-radius:4px; overflow:hidden; border:1px dashed rgba(236,115,35,.25); background:rgba(236,115,35,.03); cursor:pointer; transition:border-color .2s; }
 .slide-img-bar:hover { border-color:rgba(236,115,35,.6); }
-.slide-img-bar img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+.slide-img-bar img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; transition:opacity .35s ease; }
 
 /* Face label */
 .slide-face-label { display:flex; align-items:center; gap:10px; }
@@ -350,8 +351,8 @@ html,body {
   body { height:auto; overflow-x:hidden; overflow-y:auto; display:flex; flex-direction:column; min-height:100vh; padding-bottom:30px; }
 
   /* Kill fixed */
-  .stage    { position:relative !important; inset:auto !important; padding:10px 8px 16px !important; z-index:2 !important; flex-direction:column; align-items:stretch; justify-content:flex-start; }
-  .left-col { position:relative !important; left:auto !important; top:auto !important; transform:none !important; width:100% !important; flex-direction:column !important; align-items:center !important; padding:16px 12px 12px !important; gap:12px !important; z-index:2 !important; }
+  .stage    { position:relative !important; inset:auto !important; padding:10px 10px 16px !important; z-index:2 !important; flex-direction:column; align-items:stretch; justify-content:flex-start; }
+  .left-col { position:relative !important; left:auto !important; top:auto !important; transform:none !important; width:100% !important; flex-direction:column !important; align-items:center !important; padding:16px 16px 12px !important; gap:12px !important; z-index:2 !important; }
 
   /* Hide decorations */
   .galaxy-zone,.hud-ring,.schematic,.hex-col,.rays-wrap,.grid-perspective,#canvas-stars { display:none !important; }
@@ -572,7 +573,7 @@ html,body {
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="0"><img src="images/backstage-swarm-dag.jpg" alt="Backstage Swarm DAG" /></div>
+            <div class="slide-img-bar" data-imgbar="0"><img src="images/backstage-swarm-dag.jpg" alt="Backstage Swarm DAG" data-face-src="images/backstage-swarm-dag.jpg" /></div>
             <div class="slide-face-label"><span class="face-badge">FEATURES</span><span class="face-hint">▼ see benefits</span></div>
             <ul class="slide-list">
               <li>One command center for every agent — scheduled tasks, services, MCP servers &amp; Claude stack in one native Windows dashboard</li>
@@ -595,7 +596,7 @@ html,body {
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="0"><img src="images/backstage-output-review.jpg" alt="Backstage Output Review" /></div>
+            <div class="slide-img-bar" data-imgbar="0b"><img src="images/backstage-output-review.jpg" alt="Backstage Output Review" data-face-src="images/backstage-output-review.jpg" /></div>
             <div class="slide-face-label"><span class="face-badge face-badge-benefits">BENEFITS</span><span class="face-hint">▲ see features</span></div>
             <ul class="slide-list">
               <li>The boring-but-valuable work runs while you sleep — wake up to drafts, prospects &amp; reports already done</li>
@@ -618,7 +619,7 @@ html,body {
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="1"><img src="images/pizza-marketing.jpg" alt="Pizza House System" /></div>
+            <div class="slide-img-bar" data-imgbar="1"><img src="images/pizza-marketing.jpg" alt="Pizza House Features" data-face-src="images/pizza-marketing.jpg" /></div>
             <div class="slide-face-label"><span class="face-badge">FEATURES</span><span class="face-hint">▼ see benefits</span></div>
             <ul class="slide-list">
               <li>Native online ordering &amp; checkout — full menu, cart, and payment running on your domain, pushing orders straight to Clover. No redirect to a third-party site</li>
@@ -642,7 +643,7 @@ html,body {
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="1"><img src="images/pizza-marketing.jpg" alt="Pizza House System" /></div>
+            <div class="slide-img-bar" data-imgbar="1b"><img src="images/pizza-menu.jpg" alt="Pizza House Benefits" data-face-src="images/pizza-menu.jpg" /></div>
             <div class="slide-face-label"><span class="face-badge face-badge-benefits">BENEFITS</span><span class="face-hint">▲ see features</span></div>
             <ul class="slide-list">
               <li>You own the customer, not a middleman — every order builds your list. Slice and DoorDash can't rent your regulars back to you</li>
@@ -665,7 +666,7 @@ html,body {
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="2"><img src="images/rafiki-workflows.jpg" alt="Rafiki Workflows" /></div>
+            <div class="slide-img-bar" data-imgbar="2"><img src="images/rafiki-workflows.jpg" alt="Rafiki Features" data-face-src="images/rafiki-workflows.jpg" /></div>
             <div class="slide-face-label"><span class="face-badge">FEATURES</span><span class="face-hint">▼ see benefits</span></div>
             <ul class="slide-list">
               <li>Inbox, handled — reads, searches, drafts, and sends email through your own Gmail, so the right reply is ready before you sit down to it</li>
@@ -690,7 +691,7 @@ html,body {
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
-            <div class="slide-img-bar" data-imgbar="2"><img src="images/rafiki-morning-briefing.jpg" alt="Rafiki Morning Briefing" /></div>
+            <div class="slide-img-bar" data-imgbar="2b"><img src="images/rafiki-morning-briefing.jpg" alt="Rafiki Benefits" data-face-src="images/rafiki-morning-briefing.jpg" /></div>
             <div class="slide-face-label"><span class="face-badge face-badge-benefits">BENEFITS</span><span class="face-hint">▲ see features</span></div>
             <ul class="slide-list">
               <li>One assistant, not ten tabs — calendar, email, meetings, contacts, tasks, and research answer to a single point of contact instead of scattering across apps</li>
@@ -805,6 +806,12 @@ function showSlide(newIdx, dir='down') {
     }
   }
   slides[newIdx].classList.add('active-slide');
+  // Fade header image in when slide becomes active
+  const headerImg = slides[newIdx].querySelector('.slide-img-bar img');
+  if (headerImg) {
+    headerImg.style.opacity = '0';
+    setTimeout(() => { headerImg.style.opacity = '1'; }, 80);
+  }
   updateInfo();
 }
 
