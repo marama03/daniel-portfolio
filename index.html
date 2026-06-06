@@ -912,7 +912,14 @@ function setPhoto(src){
 }
 
 function initPhotoUpload(){
-  const p=$('#aboutPhoto');if(!p)return;\n  /* Try to load the saved profile photo; show hint only if it fails */\n  const testImg=new Image();\n  testImg.onload=()=>setPhoto('images/profile-photo.jpg');\n  testImg.onerror=()=>{ const h=$('#uploadHint');if(h)h.classList.add('show-hint'); };\n  testImg.src='images/profile-photo.jpg';\n  function go(){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>setPhoto(ev.target.result);fr.readAsDataURL(f);};inp.click();}\n  p.addEventListener('click',go);\n}
+  const p=$('#aboutPhoto');if(!p)return;
+  const testImg=new Image();
+  testImg.onload=()=>setPhoto('images/profile-photo.jpg');
+  testImg.onerror=()=>{ const h=$('#uploadHint');if(h)h.classList.add('show-hint'); };
+  testImg.src='images/profile-photo.jpg';
+  function go(){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>setPhoto(ev.target.result);fr.readAsDataURL(f);};inp.click();}
+  p.addEventListener('click',go);
+}
 
 function initImageUpload(){$$('.slide-img-bar').forEach(bar=>{bar.addEventListener('click',()=>{const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>{const idx=bar.dataset.imgbar;$$(`[data-imgbar="${idx}"] img`).forEach(img=>{img.src=ev.target.result;});};fr.readAsDataURL(f);};inp.click();});});}
 
