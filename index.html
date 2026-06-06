@@ -204,12 +204,15 @@ html,body {
 .photo-placeholder { display:flex; flex-direction:column; align-items:center; gap:7px; color:rgba(236,115,35,.7); text-align:center; pointer-events:none; }
 .photo-placeholder i { font-size:2.4rem; }
 .photo-placeholder span { font-family:var(--f-hud); font-size:.38rem; letter-spacing:.12em; color:rgba(236,115,35,.55); text-transform:uppercase; line-height:1.3; }
-.about-upload-hint { font-family:var(--f-hud); font-size:.42rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(236,115,35,.5); text-align:center; margin-top:-4px; cursor:pointer; animation:hintPulse 2.4s ease-in-out infinite; transition:color .2s; }
+/* Upload hint — hidden once real photo is loaded */
+.about-upload-hint { display:none; font-family:var(--f-hud); font-size:.4rem; letter-spacing:.12em; text-transform:uppercase; color:rgba(236,115,35,.4); text-align:center; margin-top:-4px; cursor:pointer; animation:hintPulse 2.4s ease-in-out infinite; transition:color .2s; }
+.about-upload-hint.show-hint { display:block; }
 .about-upload-hint:hover { color:var(--o1); }
 @keyframes hintPulse { 0%,100%{opacity:.45} 50%{opacity:.9} }
 .about-info { width:100%; display:flex; flex-direction:column; align-items:center; gap:4px; }
-.about-name  { font-family:var(--f-hud); font-size:.65rem; font-weight:700; letter-spacing:.1em; color:var(--lt); text-align:center; text-shadow:0 0 8px rgba(255,255,255,.25); }
-.about-title { font-family:var(--f-hud); font-size:.42rem; letter-spacing:.14em; color:var(--o1); text-shadow:var(--go-sm); text-align:center; text-transform:uppercase; }
+.about-name  { font-family:var(--f-hud); font-size:.72rem; font-weight:700; letter-spacing:.05em; color:var(--lt); text-align:center; text-shadow:0 0 8px rgba(255,255,255,.25); line-height:1.2; }
+/* Title uses body font at readable size — not tiny Orbitron micro-text */
+.about-title { font-family:var(--f-body); font-size:.82rem; font-weight:600; letter-spacing:.05em; color:var(--o1); text-shadow:var(--go-sm); text-align:center; line-height:1.3; }
 .about-divider { width:70%; height:1px; background:linear-gradient(to right,transparent,var(--o1),transparent); opacity:.5; margin:2px 0; }
 .about-bio { font-family:var(--f-body); font-size:.7rem; color:rgba(243,243,243,.65); text-align:center; line-height:1.45; letter-spacing:.02em; }
 .about-socials { display:flex; gap:7px; justify-content:center; margin-top:4px; }
@@ -402,15 +405,18 @@ html,body {
   .proj-slide.active-slide { display:flex !important; }
   .proj-slide.exit-up,.proj-slide.exit-down { display:none !important; }
 
-  .slide-img-bar { height:55px !important; }
+  .slide-img-bar { height:90px !important; }
+  .about-title { font-size:.78rem !important; }
   .nav-ud-wrap   { margin:8px auto !important; }
 }
 @media (max-width:560px) {
   .about-ring-wrap  { width:110px !important; height:110px !important; }
   .about-photo      { width:72px  !important; height:72px  !important; }
   .photo-border-ring{ width:80px  !important; height:80px  !important; }
-  .proj-title  { font-size:1.6rem !important; }
+  .proj-title  { font-size:1.5rem !important; }
   .proj-sub    { font-size:.55rem !important; }
+  .about-name  { font-size:.68rem !important; }
+  .about-title { font-size:.72rem !important; }
   .slide-inner { padding:10px 12px !important; gap:8px !important; }
   .slide-list li { font-size:.78rem !important; }
   .card-arena  { flex-direction:column; gap:6px; }
@@ -555,7 +561,7 @@ html,body {
       </div>
       <div class="about-upload-hint" id="uploadHint" onclick="document.getElementById('aboutPhoto').click()">⬆ Upload Photo</div>
       <div class="about-info">
-        <div class="about-name">DANIEL</div>
+        <div class="about-name">DANIEL MARAMA</div>
         <div class="about-title">AI Systems Architect</div>
         <div class="about-divider"></div>
         <p class="about-bio">Building autonomous agent systems that work while you sleep. Operator, not bottleneck.</p>
@@ -896,9 +902,17 @@ function buildHex(){const el=$('#hexInner');if(!el)return;const chars='012345678
 
 function initParallax(){const devs=$$('.gal-device');if(!devs.length)return;let mx=.5,my=.5,cx=.5,cy=.5,tk=false;document.addEventListener('mousemove',e=>{mx=e.clientX/window.innerWidth;my=e.clientY/window.innerHeight;if(!tk){tk=true;requestAnimationFrame(()=>{cx+=(mx-cx)*.05;cy+=(my-cy)*.05;const dx=(cx-.5)*2,dy=(cy-.5)*2;devs.forEach(d=>{const dep=parseFloat(d.dataset.drift||1);d.style.marginLeft=dx*dep*28+'px';d.style.marginTop=dy*dep*20+'px';});tk=false;});}});}
 
-function setPhoto(src){const p=$('#aboutPhoto');if(!p)return;p.innerHTML=`<img src="${src}" alt="Daniel" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;display:block;"/>`;const h=$('#uploadHint');if(h){h.style.opacity='0';h.style.pointerEvents='none';}p.style.boxShadow='0 0 30px rgba(236,115,35,.7),0 0 80px rgba(236,115,35,.3)';}
+function setPhoto(src){
+  const p=$('#aboutPhoto');if(!p)return;
+  p.innerHTML=`<img src="${src}" alt="Daniel Marama" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;display:block;"/>`;
+  /* Hide the upload hint completely once a real photo is shown */
+  const h=$('#uploadHint');
+  if(h){ h.classList.remove('show-hint'); }
+  p.style.boxShadow='0 0 30px rgba(236,115,35,.7),0 0 80px rgba(236,115,35,.3)';
+}
 
-function initPhotoUpload(){const p=$('#aboutPhoto');if(!p)return;setPhoto('images/profile-photo.jpg');function go(){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>setPhoto(ev.target.result);fr.readAsDataURL(f);};inp.click();}p.addEventListener('click',go);}
+function initPhotoUpload(){
+  const p=$('#aboutPhoto');if(!p)return;\n  /* Try to load the saved profile photo; show hint only if it fails */\n  const testImg=new Image();\n  testImg.onload=()=>setPhoto('images/profile-photo.jpg');\n  testImg.onerror=()=>{ const h=$('#uploadHint');if(h)h.classList.add('show-hint'); };\n  testImg.src='images/profile-photo.jpg';\n  function go(){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>setPhoto(ev.target.result);fr.readAsDataURL(f);};inp.click();}\n  p.addEventListener('click',go);\n}
 
 function initImageUpload(){$$('.slide-img-bar').forEach(bar=>{bar.addEventListener('click',()=>{const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>{const idx=bar.dataset.imgbar;$$(`[data-imgbar="${idx}"] img`).forEach(img=>{img.src=ev.target.result;});};fr.readAsDataURL(f);};inp.click();});});}
 
