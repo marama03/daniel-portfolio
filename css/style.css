@@ -128,7 +128,7 @@ html, body {
 .galaxy-zone {
   position:fixed;
   right:0; top:0; bottom:0;
-  width:42%;             /* right 42% of screen */
+  width:38%;             /* right 38% of screen */
   z-index:3;
   pointer-events:none;
   overflow:hidden;
@@ -149,10 +149,10 @@ html, body {
 }
 
 /* Positions */
-.gd-1 { top:6%;  right:2%;  width:240px; animation:gdrift1 9s  ease-in-out infinite alternate; }
-.gd-2 { top:54%; right:5%;  width:210px; animation:gdrift2 11s ease-in-out infinite alternate; animation-delay:1.2s; }
-.gd-3 { top:30%; right:1%;  width:170px; animation:gdrift3 8s  ease-in-out infinite alternate; animation-delay:.6s; }
-.gd-4 { top:8%;  right:30%; width:140px; animation:gdrift4 10s ease-in-out infinite alternate; animation-delay:2s; }
+.gd-1 { top:5%;  right:3%;  width:200px; animation:gdrift1 9s  ease-in-out infinite alternate; }
+.gd-2 { top:52%; right:6%;  width:180px; animation:gdrift2 11s ease-in-out infinite alternate; animation-delay:1.2s; }
+.gd-3 { top:28%; right:2%;  width:150px; animation:gdrift3 8s  ease-in-out infinite alternate; animation-delay:.6s; }
+.gd-4 { top:6%;  right:28%; width:120px; animation:gdrift4 10s ease-in-out infinite alternate; animation-delay:2s; }
 
 @keyframes gdrift1 {
   from { transform:translateY(0px)   rotateX(6deg)   rotateY(-10deg); }
@@ -181,7 +181,7 @@ html, body {
 .gal-device:hover .gd-frame { transform:scale(1.04); filter:brightness(1.12); }
 
 .gd-frame-monitor { border:2px solid rgba(236,115,35,.55); aspect-ratio:16/10; }
-.gd-frame-wide    { border:2px solid rgba(0,200,224,.5);   aspect-ratio:16/10; }
+.gd-frame-wide    { border:2px solid rgba(236,115,35,.45); aspect-ratio:16/10; }
 .gd-frame-laptop  { border:2px solid rgba(236,115,35,.45); aspect-ratio:16/10; }
 .gd-frame-tall    { border:2px solid rgba(239,65,36,.5);   aspect-ratio:16/10; }
 
@@ -450,7 +450,7 @@ html, body {
   display:flex; flex-direction:column;
   align-items:center; justify-content:space-between;
   /* Push content away from left panel and galaxy zone */
-  padding:14px 68px 10px 220px;
+  padding:14px calc(38% + 20px) 10px 220px;
   pointer-events:none;
 }
 
@@ -506,10 +506,11 @@ html, body {
 
 /* ── CARD STAGE ── */
 .card-stage {
-  flex:1; max-width:680px;
+  flex:1; max-width:600px; min-width:0;
   position:relative; height:100%;
   display:flex; align-items:center;
   perspective:1200px;
+  overflow:visible;
 }
 
 /* ── PROJECT SLIDE ── */
