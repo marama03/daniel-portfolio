@@ -324,6 +324,8 @@ html,body {
 .slide-img-bar { width:100%; height:90px; flex-shrink:0; border-radius:4px; overflow:hidden; border:1px dashed rgba(236,115,35,.25); background:rgba(236,115,35,.03); cursor:pointer; transition:border-color .2s; }
 .slide-img-bar:hover { border-color:rgba(236,115,35,.6); }
 .slide-img-bar img { width:100%; height:100%; object-fit:cover; object-position:center center; display:block; transition:opacity .35s ease; }
+/* Cockpit — page header and stat row sit at the top of every view */
+.slide-img-bar img[src*="cockpit"] { object-position:top center; }
 /* Rafiki images — nodes live centre-screen, not top-left */
 .slide-img-bar img[src*="rafiki"] { object-position:center center; }
 /* Backstage — UI chrome at top is most useful */
@@ -503,7 +505,8 @@ html,body {
 
     <div class="gal-device gd-1" data-drift="1.4">
       <div class="gd-frame gd-frame-monitor">
-        <img src="images/backstage-swarm-dag.jpg"    alt="" class="gd-img gd-img-backstage" />
+        <img src="images/cockpit-agents.jpg"         alt="" class="gd-img gd-img-cockpit" />
+        <img src="images/backstage-swarm-dag.jpg"    alt="" class="gd-img gd-img-backstage" style="display:none" />
         <img src="images/pizza-marketing.jpg"        alt="" class="gd-img gd-img-pizza"     style="display:none" />
         <img src="images/rafiki-workflows.jpg"       alt="" class="gd-img gd-img-rafiki"    style="display:none" />
       </div>
@@ -512,7 +515,8 @@ html,body {
 
     <div class="gal-device gd-2" data-drift="0.9">
       <div class="gd-frame gd-frame-wide">
-        <img src="images/backstage-output-review.jpg" alt="" class="gd-img gd-img-backstage" />
+        <img src="images/cockpit-usage.jpg"           alt="" class="gd-img gd-img-cockpit" />
+        <img src="images/backstage-output-review.jpg" alt="" class="gd-img gd-img-backstage" style="display:none" />
         <img src="images/pizza-menu.jpg"              alt="" class="gd-img gd-img-pizza"     style="display:none" />
         <img src="images/rafiki-morning-briefing.jpg" alt="" class="gd-img gd-img-rafiki"    style="display:none" />
       </div>
@@ -521,7 +525,8 @@ html,body {
 
     <div class="gal-device gd-3" data-drift="1.8">
       <div class="gd-frame gd-frame-laptop">
-        <img src="images/backstage-swarm-builder.jpg" alt="" class="gd-img gd-img-backstage" />
+        <img src="images/cockpit-flows.jpg"           alt="" class="gd-img gd-img-cockpit" />
+        <img src="images/backstage-swarm-builder.jpg" alt="" class="gd-img gd-img-backstage" style="display:none" />
         <img src="images/pizza-track-order.jpg"       alt="" class="gd-img gd-img-pizza"     style="display:none" />
         <img src="images/rafiki-workflows2.jpg"       alt="" class="gd-img gd-img-rafiki"    style="display:none" />
       </div>
@@ -530,7 +535,8 @@ html,body {
 
     <div class="gal-device gd-4" data-drift="1.2">
       <div class="gd-frame gd-frame-tall">
-        <img src="images/backstage-decision-journal.jpg" alt="" class="gd-img gd-img-backstage" />
+        <img src="images/cockpit-scheduled.jpg"          alt="" class="gd-img gd-img-cockpit" />
+        <img src="images/backstage-decision-journal.jpg" alt="" class="gd-img gd-img-backstage" style="display:none" />
         <img src="images/pizza-account.jpg"              alt="" class="gd-img gd-img-pizza"     style="display:none" />
         <img src="images/rafiki-workflows2.jpg"          alt="" class="gd-img gd-img-rafiki"    style="display:none" />
       </div>
@@ -597,8 +603,55 @@ html,body {
 
       <div class="card-stage" id="cardStage">
 
-        <!-- BACKSTAGE FEATURES -->
+        <!-- COCKPIT FEATURES -->
         <div class="proj-slide active-slide" data-proj="0" data-face="features">
+          <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
+          <div class="sweep-line"></div>
+          <div class="slide-inner">
+            <div class="slide-img-bar" data-imgbar="c0"><img src="images/cockpit-agents.jpg" alt="The Cockpit Agent Roster" data-face-src="images/cockpit-agents.jpg" /></div>
+            <div class="slide-face-label"><span class="face-badge">FEATURES</span><span class="face-hint">▼ see benefits</span></div>
+            <ul class="slide-list">
+              <li>Your own private AI platform, on your own machine — extract a zip, run one file, and the whole install is yours. No cloud account, no per-seat bill</li>
+              <li>A staffed org, not a chatbot — 38 agents with real jobs (chief of staff, publisher, scout, prospector, curator), each with its own memory, skills and lane</li>
+              <li>Multi-agent pipelines — hand one agent's output straight to the next (Scout → Prioritizer → Copywriter) with every hand-off traced</li>
+              <li>Work that runs without you — scheduled jobs fire daily and weekly, from the morning brief to the overnight prospecting scan</li>
+              <li>Runs on the AI subscription you already pay for — the built-in token meter shows over $1,300 of would-have-been API spend in a single month, delivered at $0</li>
+              <li>It updates itself — signed releases arrive, verify against a baked-in key, apply in place and restart. Code only; your data is never touched</li>
+              <li>A real kill switch — every running task is visible, costed live while it runs, and stoppable mid-flight, with hard spend ceilings per agent</li>
+              <li>Zero dependencies — no npm install, no database, no container. The code that ships is the code that runs</li>
+            </ul>
+            <div class="slide-foot">
+              <div class="slide-tags"><span class="stag">Zero Deps</span><span class="stag">Node.js</span><span class="stag">Multi-Agent</span><span class="stag">Self-Updating</span></div>
+              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COCKPIT BENEFITS -->
+        <div class="proj-slide" data-proj="0" data-face="benefits">
+          <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
+          <div class="sweep-line"></div>
+          <div class="slide-inner">
+            <div class="slide-img-bar" data-imgbar="c0b"><img src="images/cockpit-usage.jpg" alt="The Cockpit Token Meter" data-face-src="images/cockpit-usage.jpg" /></div>
+            <div class="slide-face-label"><span class="face-badge face-badge-benefits">BENEFITS</span><span class="face-hint">▲ see features</span></div>
+            <ul class="slide-list">
+              <li>You own the machine, the data and the agents — nothing leaves your hardware, so there is no vendor holding your business hostage</li>
+              <li>No per-seat SaaS bill that grows with your team — one subscription you already pay for covers the whole platform</li>
+              <li>The boring-but-valuable work is already done when you sit down — briefs, drafts, scans and reports waiting, not a queue to start</li>
+              <li>Spend can't run away from you — live cost on every task, a hard ceiling per agent, and one button that stops everything at once</li>
+              <li>Nothing happens in the dark — untrusted content is screened before an agent sees it, every action lands in an audit trail, and alerts reach you off the box</li>
+              <li>Your backup is proven, not assumed — nightly encrypted snapshots, and a restore that has actually been performed and verified end to end</li>
+              <li>Hand it to a client and walk away — they run their own instance on their own subscription, and you can still support, update and roll it back remotely</li>
+            </ul>
+            <div class="slide-foot">
+              <div class="slide-tags"><span class="stag">Sovereign</span><span class="stag">$0 Marginal</span><span class="stag">Audited</span><span class="stag">Client-Ready</span></div>
+              <button class="slide-cta" onclick="openLink('website')">LEARN MORE <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BACKSTAGE FEATURES -->
+        <div class="proj-slide" data-proj="1" data-face="features">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
@@ -621,7 +674,7 @@ html,body {
         </div>
 
         <!-- BACKSTAGE BENEFITS -->
-        <div class="proj-slide" data-proj="0" data-face="benefits">
+        <div class="proj-slide" data-proj="1" data-face="benefits">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
@@ -644,7 +697,7 @@ html,body {
         </div>
 
         <!-- PIZZA HOUSE FEATURES -->
-        <div class="proj-slide" data-proj="1" data-face="features">
+        <div class="proj-slide" data-proj="2" data-face="features">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
@@ -668,7 +721,7 @@ html,body {
         </div>
 
         <!-- PIZZA HOUSE BENEFITS -->
-        <div class="proj-slide" data-proj="1" data-face="benefits">
+        <div class="proj-slide" data-proj="2" data-face="benefits">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
@@ -691,7 +744,7 @@ html,body {
         </div>
 
         <!-- RAFIKI FEATURES -->
-        <div class="proj-slide" data-proj="2" data-face="features">
+        <div class="proj-slide" data-proj="3" data-face="features">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
@@ -716,7 +769,7 @@ html,body {
         </div>
 
         <!-- RAFIKI BENEFITS -->
-        <div class="proj-slide" data-proj="2" data-face="benefits">
+        <div class="proj-slide" data-proj="3" data-face="benefits">
           <span class="cc cc-tl"></span><span class="cc cc-tr"></span><span class="cc cc-bl"></span><span class="cc cc-br"></span>
           <div class="sweep-line"></div>
           <div class="slide-inner">
@@ -772,6 +825,7 @@ const CFG = {
   email:    'mailto:daniel@maramamrketing.com',
   schedule: 'https://lets.confirmatime.com/virtual-coffee',
   projects: [
+    { title:'THE COCKPIT', sub:'Sovereign AI Agent Platform — Customer-Hosted',     brand:'cockpit'   },
     { title:'BACKSTAGE',   sub:'AI Agent Command Center — Windows Native',          brand:'backstage' },
     { title:'PIZZA HOUSE', sub:'Full-Stack Restaurant Web System — Gettysburg, PA', brand:'pizza'     },
     { title:'RAFIKI',      sub:'AI Personal Assistant — Built on n8n',              brand:'rafiki'    },
@@ -816,6 +870,7 @@ function swoosh(type='lr') {
 
 /* Per-brand image crop positions so the most interesting part of each screenshot is visible */
 const GALAXY_POS = {
+  cockpit:   'top center',      /* Cockpit views lead with the page header + stat row */
   backstage: 'top left',
   pizza:     'top center',
   rafiki:    'center center',   /* n8n nodes are in the centre of the canvas, not top-left */

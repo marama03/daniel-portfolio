@@ -20,6 +20,11 @@ README.md
 
 ## Projects
 
+Carousel order is driven by `CFG.projects` in `index.html`; each project needs two
+`.proj-slide` blocks (features + benefits) in matching DOM order, plus four
+`gd-img-<brand>` images in the galaxy zone.
+
+- **THE COCKPIT** — Sovereign AI Agent Platform (customer-hosted)
 - **BACKSTAGE** — AI Agent Command Center (Windows Native)
 - **PIZZA HOUSE** — Full-Stack Restaurant Web System (Gettysburg, PA)
 - **RAFIKI** — AI Personal Assistant built on n8n
